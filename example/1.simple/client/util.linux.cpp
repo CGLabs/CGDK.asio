@@ -1,4 +1,6 @@
-﻿#if defined(__linux__)
+﻿#include <stdio.h>
+#if defined(__linux__)
+#include <unistd.h>
 #include <termios.h>  
 
 class _keyboard_init
