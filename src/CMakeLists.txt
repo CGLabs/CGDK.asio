@@ -71,10 +71,12 @@ SET (SRC_FILES
 asio.Nstatistics.cpp
 asio.Nconnective.cpp
 asio.Nconnector.cpp
+asio.Nconnect_requestable.cpp
 asio.Nacceptor.cpp
 asio.Isocket_tcp.cpp
 asio.Nsocket_tcp.cpp
-asio.Nsocket_tcp_client.cpp
+asio.Nsocket_tcp_gahter.cpp
+asio.Nsocket_tcp_gahter_buffer.cpp
 asio.system.cpp
 )
 
