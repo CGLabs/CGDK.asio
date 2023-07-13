@@ -69,7 +69,7 @@ INCLUDE_DIRECTORIES(
 
 # 9) library directories
 LINK_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/cgdk/asio
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib
 )
 
 
@@ -109,7 +109,7 @@ ADD_EXECUTABLE(${PROJECT_NAME}.${BUILD_TYPE} ${SRC_FILES})
 
 # 4) link
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}.${BUILD_TYPE}
-	cgdk.asio_linux.${BUILD_TYPE}
+	cgdk/asio/cgdk.asio_linux.${BUILD_TYPE}
 	${USED_LIBS}
 	rt
 	pthread
