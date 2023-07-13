@@ -61,6 +61,12 @@ SET ( CMAKE_CXX_FLAGS "-DC_FLAGS -fexceptions -std=c++20" )
 SET ( CMAKE_CXX_FLAGS_DEBUG "-D_DEBUG -g3 -Wall -Wextra" )
 SET ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3 -Wall -Wextra" )
 
+# 8) include directories
+INCLUDE_DIRECTORIES(
+	${CMAKE_CURRENT_SOURCE_DIR}/../include
+	./
+)
+
 
 # ----------------------------------------------------------------------------
 # source files
