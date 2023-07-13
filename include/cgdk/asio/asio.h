@@ -100,10 +100,10 @@ const size_t RECEIVE_BUFFER_SIZE = 8192;
 		#if WDK_NTDDI_VERSION >= NTDDI_WIN10
 			#ifdef NDEBUG
 				#pragma message("[cgcii.asio] 'cgcii.asio_Windows10.0_x64_Release.lib' will be linked")
-				#pragma comment(lib, "cgcii.asio/cgcii.asio_Windows10.0_x64_Release.lib")
+				#pragma comment(lib, "cgdk/asio/cgcii.asio_Windows10.0_x64_Release.lib")
 			#else
 				#pragma message("[cgcii.asio] 'cgcii.asio_Windows10.0_x64_Debug.lib' will be linked")
-				#pragma comment(lib, "cgcii.asio/cgcii.asio_Windows10.0_x64_Debug.lib")
+				#pragma comment(lib, "cgdk/asio/cgcii.asio_Windows10.0_x64_Debug.lib")
 			#endif
 		// Error - No supported
 		#else
