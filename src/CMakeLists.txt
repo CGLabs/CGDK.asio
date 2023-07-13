@@ -80,16 +80,16 @@ INCLUDE_DIRECTORIES(
 SET (SRC_FILES
 
 # core (asio)
-asio.Nstatistics.cpp
-asio.Nconnective.cpp
-asio.Nconnector.cpp
-asio.Nconnect_requestable.cpp
-asio.Nacceptor.cpp
-asio.Isocket_tcp.cpp
-asio.Nsocket_tcp.cpp
-asio.Nsocket_tcp_gather.cpp
-asio.Nsocket_tcp_gather_buffer.cpp
-asio.system.cpp
+cgdk.asio.Nstatistics.cpp
+cgdk.asio.Nconnective.cpp
+cgdk.asio.Nconnector.cpp
+cgdk.asio.Nconnect_requestable.cpp
+cgdk.asio.Nacceptor.cpp
+cgdk.asio.Isocket_tcp.cpp
+cgdk.asio.Nsocket_tcp.cpp
+cgdk.asio.Nsocket_tcp_gather.cpp
+cgdk.asio.Nsocket_tcp_gather_buffer.cpp
+cgdk.asio.system.cpp
 )
 
 
