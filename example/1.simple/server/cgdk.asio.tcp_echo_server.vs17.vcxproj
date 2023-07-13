@@ -16,7 +16,7 @@
     <ProjectGuid>{6947ca3f-ba21-4747-9301-26f1ee9e1649}</ProjectGuid>
     <RootNamespace>CGDK10tcpechoserverasioconsole</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>cgcii.asio.tcp_echo_server</ProjectName>
+    <ProjectName>cgdk.asio.tcp_echo_server</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -110,7 +110,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cgcii.asio.tcp_echo_server.cpp" />
+    <ClCompile Include="cgdk.asio.tcp_echo_server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

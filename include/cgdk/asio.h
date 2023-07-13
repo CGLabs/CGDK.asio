@@ -62,19 +62,19 @@ namespace asio
 }
 const size_t RECEIVE_BUFFER_SIZE = 8192;
 
-#include "asio.Nstatistics.h"
-#include "asio.Isocket_tcp.h"
-#include "asio.Nsocket_tcp.h"
-#include "asio.Nsocket_tcp_gather.h"
-#include "asio.Nsocket_tcp_gather_buffer.h"
-#include "asio.Nconnect_requestable.h"
-#include "asio.Nsocket_tcp_client.h"
-#include "asio.Nconnective.h"
-#include "asio.Nacceptor.h"
-#include "asio.Nconnector.h"
-#include "asio.acceptor.h"
-#include "asio.connector.h"
-#include "asio.system.h"
+#include "asio/cgdk.asio.Nstatistics.h"
+#include "asio/cgdk.asio.Isocket_tcp.h"
+#include "asio/cgdk.asio.Nsocket_tcp.h"
+#include "asio/cgdk.asio.Nsocket_tcp_gather.h"
+#include "asio/cgdk.asio.Nsocket_tcp_gather_buffer.h"
+#include "asio/cgdk.asio.Nconnect_requestable.h"
+#include "asio/cgdk.asio.Nsocket_tcp_client.h"
+#include "asio/cgdk.asio.Nconnective.h"
+#include "asio/cgdk.asio.Nacceptor.h"
+#include "asio/cgdk.asio.Nconnector.h"
+#include "asio/cgdk.asio.acceptor.h"
+#include "asio/cgdk.asio.connector.h"
+#include "asio/cgdk.asio.system.h"
 
 
 //----------------------------------------------------------------------------
@@ -88,30 +88,30 @@ const size_t RECEIVE_BUFFER_SIZE = 8192;
 	#if defined(WDK_NTDDI_VERSION)
 		// check) 
 		#if !defined(_M_X64)
-			#error "[cgcii.asio] No WIN32-x86. Please use x64"
+			#error "[cgdk.asio] No WIN32-x86. Please use x64"
 		#endif
 
 		// check) 
 		#ifndef _DLL 
-			#error "[cgcii.asio] No Multi-Thread(/MT) or Multi-Thread Debug(/MTd). use Multi-thread DLL(/MD) or Multi-thread DLL Debug(/MDd)"
+			#error "[cgdk.asio] No Multi-Thread(/MT) or Multi-Thread Debug(/MTd). use Multi-thread DLL(/MD) or Multi-thread DLL Debug(/MDd)"
 		#endif
 
 		// WinSDK 10
 		#if WDK_NTDDI_VERSION >= NTDDI_WIN10
 			#ifdef NDEBUG
-				#pragma message("[cgcii.asio] 'cgcii.asio_Windows10.0_x64_Release.lib' will be linked")
-				#pragma comment(lib, "cgdk/asio/cgcii.asio_Windows10.0_x64_Release.lib")
+				#pragma message("[cgdk.asio] 'cgdk.asio_Windows10.0_x64_Release.lib' will be linked")
+				#pragma comment(lib, "cgdk/asio/cgdk.asio_Windows10.0_x64_Release.lib")
 			#else
-				#pragma message("[cgcii.asio] 'cgcii.asio_Windows10.0_x64_Debug.lib' will be linked")
-				#pragma comment(lib, "cgdk/asio/cgcii.asio_Windows10.0_x64_Debug.lib")
+				#pragma message("[cgdk.asio] 'cgdk.asio_Windows10.0_x64_Debug.lib' will be linked")
+				#pragma comment(lib, "cgdk/asio/cgdk.asio_Windows10.0_x64_Debug.lib")
 			#endif
 		// Error - No supported
 		#else
-			#error "[cgcii.asio] Not supported Windonws SDK version (Need Windows SDK 10.0 or higher)"
+			#error "[cgdk.asio] Not supported Windonws SDK version (Need Windows SDK 10.0 or higher)"
 		#endif
 
 	#else
-		#error "[cgcii.asio] Not supported platform toolset (require visual studio 2019 or higher)"
+		#error "[cgdk.asio] Not supported platform toolset (require visual studio 2019 or higher)"
 	#endif
 	#endif
 
@@ -119,5 +119,5 @@ const size_t RECEIVE_BUFFER_SIZE = 8192;
 #elif defined(__APPLE__)
 #elif defined(__linux__)
 #else
-		#error "[cgcii.asio] Not supported platform"
+		#error "[cgdk.asio] Not supported platform"
 #endif

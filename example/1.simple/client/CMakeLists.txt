@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*                    CMake - cgcii.asio.tcp_echo_client                     *
+#*                     CMake - cgdk.asio.tcp_echo_client                     *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 # ----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "cgcii.asio.tcp_echo_client" )
+PROJECT ( "cgdk.asio.tcp_echo_client" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -82,7 +82,7 @@ SET (SRC_FILES
 util.linux.cpp
 
 # main
-cgcii.asio.tcp_echo_client.cpp
+cgdk.asio.tcp_echo_client.cpp
 
 )
 
@@ -110,7 +110,7 @@ ADD_EXECUTABLE(${PROJECT_NAME}.${BUILD_TYPE} ${SRC_FILES})
 
 # 4) link
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}.${BUILD_TYPE}
-	cgcii.asio/cgcii.asio_linux.${BUILD_TYPE}
+	cgdk/asio/cgdk.asio_linux.${BUILD_TYPE}
 	${USED_LIBS}
 	rt
 	pthread

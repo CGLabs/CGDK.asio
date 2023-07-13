@@ -20,7 +20,7 @@
 # setting
 # ----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "cgcii.asio" )
+PROJECT ( "cgdk.asio" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )

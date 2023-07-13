@@ -1,4 +1,4 @@
-﻿#include "cgdk/asio/asio.h"
+﻿#include "cgdk/asio.h"
 
 
 asio::Nsocket_tcp_gather::Nsocket_tcp_gather()

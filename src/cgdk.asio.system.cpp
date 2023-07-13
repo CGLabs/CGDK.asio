@@ -1,4 +1,4 @@
-﻿#include "cgdk/asio/asio.h"
+﻿#include "cgdk/asio.h"
 #if defined(__linux__)
 	#include <sys/resource.h>
 #endif

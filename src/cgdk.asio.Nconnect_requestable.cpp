@@ -1,4 +1,4 @@
-﻿#include "cgdk/asio/asio.h"
+﻿#include "cgdk/asio.h"
 
 
 void asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _endpoint_connect)

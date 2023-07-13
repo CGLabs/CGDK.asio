@@ -39,7 +39,7 @@
     <ProjectGuid>{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CGDsystemobjectwindowsvs16</RootNamespace>
-    <ProjectName>cgcii.asio</ProjectName>
+    <ProjectName>cgdk.asio</ProjectName>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -431,32 +431,32 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="asio.Isocket_tcp.cpp" />
-    <ClCompile Include="asio.Nacceptor.cpp" />
-    <ClCompile Include="asio.Nconnective.cpp" />
-    <ClCompile Include="asio.Nconnector.cpp" />
-    <ClCompile Include="asio.Nconnect_requestable.cpp" />
-    <ClCompile Include="asio.Nsocket_tcp.cpp" />
-    <ClCompile Include="asio.Nsocket_tcp_gather.cpp" />
-    <ClCompile Include="asio.Nsocket_tcp_gather_buffer.cpp" />
-    <ClCompile Include="asio.Nstatistics.cpp" />
-    <ClCompile Include="asio.system.cpp" />
+    <ClCompile Include="cgdk.asio.Isocket_tcp.cpp" />
+    <ClCompile Include="cgdk.asio.Nacceptor.cpp" />
+    <ClCompile Include="cgdk.asio.Nconnective.cpp" />
+    <ClCompile Include="cgdk.asio.Nconnector.cpp" />
+    <ClCompile Include="cgdk.asio.Nconnect_requestable.cpp" />
+    <ClCompile Include="cgdk.asio.Nsocket_tcp.cpp" />
+    <ClCompile Include="cgdk.asio.Nsocket_tcp_gather.cpp" />
+    <ClCompile Include="cgdk.asio.Nsocket_tcp_gather_buffer.cpp" />
+    <ClCompile Include="cgdk.asio.Nstatistics.cpp" />
+    <ClCompile Include="cgdk.asio.system.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\cgdk\asio\asio.acceptor.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.connector.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Isocket_tcp.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nacceptor.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nconnective.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nconnector.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nconnect_requestable.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_client.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_gather.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_gather_buffer.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.Nstatistics.h" />
-    <ClInclude Include="..\include\cgdk\asio\asio.system.h" />
+    <ClInclude Include="..\include\cgdk\asio.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.acceptor.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.connector.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Isocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nacceptor.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nconnective.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nconnector.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nconnect_requestable.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nsocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nsocket_tcp_client.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nsocket_tcp_gather.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nsocket_tcp_gather_buffer.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.Nstatistics.h" />
+    <ClInclude Include="..\include\cgdk\asio\cgdk.asio.system.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

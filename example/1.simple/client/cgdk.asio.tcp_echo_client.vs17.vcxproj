@@ -14,7 +14,10 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cgcii.asio.tcp_echo_client.cpp" />
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cgdk.asio.tcp_echo_client.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -22,7 +25,7 @@
     <ProjectGuid>{0b403609-7ebb-4427-ad32-69a9882e0f59}</ProjectGuid>
     <RootNamespace>tcpechoclientasioconsole</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>cgcii.asio.tcp_echo_client</ProjectName>
+    <ProjectName>cgdk.asio.tcp_echo_client</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

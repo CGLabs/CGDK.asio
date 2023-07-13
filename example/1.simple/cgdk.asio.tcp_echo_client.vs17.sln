@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgcii.asio", "cgcii.asio.vs17.vcxproj", "{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgdk.asio.tcp_echo_client", "client\cgdk.asio.tcp_echo_client.vs17.vcxproj", "{0B403609-7EBB-4427-AD32-69A9882E0F59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}.Debug|x64.ActiveCfg = Debug|x64
-		{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}.Debug|x64.Build.0 = Debug|x64
-		{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}.Release|x64.ActiveCfg = Release|x64
-		{8E08592B-8D9C-4DD9-91CC-A018560DA8CE}.Release|x64.Build.0 = Release|x64
+		{0B403609-7EBB-4427-AD32-69A9882E0F59}.Debug|x64.ActiveCfg = Debug|x64
+		{0B403609-7EBB-4427-AD32-69A9882E0F59}.Debug|x64.Build.0 = Debug|x64
+		{0B403609-7EBB-4427-AD32-69A9882E0F59}.Release|x64.ActiveCfg = Release|x64
+		{0B403609-7EBB-4427-AD32-69A9882E0F59}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F8E410AB-D332-407C-B0E6-394068CC236F}
+		SolutionGuid = {E4E2D8BE-629C-4899-B617-2B46E2227F4B}
 	EndGlobalSection
 EndGlobal
