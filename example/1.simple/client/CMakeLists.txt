@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*             CMake - CGDK10.tcp_echo.client.console with asio              *
+#*                    CMake - cgcii.asio.tcp_echo_client                     *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 # ----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "CGDK10.tcp_echo_client.asio.console" )
+PROJECT ( "cgcii.asio.tcp_echo_client" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -38,28 +38,38 @@ IF (NOT DEFINED CMAKE_BULD_TYPE)
 	SET (CMAKE_BULD_TYPE "Debug")
 ENDIF()
 
-# 5) directories
+# 5) asio
+SET(Boost_USE_STATIC_LIBS OFF)
+SET(Boost_USE_MULTITHREAD ON)
+FIND_PACKAGE(Boost 1.71.0 REQUIRED COMPONENTS system thread)
+IF(Boost_FOUND)
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+ENDIF(Boost_FOUND)
+SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_ASIO_LIBRARY})
+
+# 6) directories
 SET ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 SET ( CMAKE_RUNTIME_OTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 SET ( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR} )
 
-# 6) compile options
+# 7) compile options
 set ( CMAKE_CXX_STANDARD 20)
 set ( CMAKE_CXX_STANDARD_REQUIRED ON)
 SET ( CMAKE_CXX_FLAGS "-DC_FLAGS -fexceptions -std=c++20" )
 SET ( CMAKE_CXX_FLAGS_DEBUG "-D_DEBUG -g3 -Wall -Wextra" )
 SET ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3 -Wall -Wextra" )
 
-# 7) include directories
+# 8) include directories
 INCLUDE_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../../../include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../include
 	./
 )
 
-# 8) library directories
+# 9) library directories
 LINK_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../../../lib/cgdk/sdk10
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib
 )
 
 
@@ -68,24 +78,11 @@ LINK_DIRECTORIES(
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
 
-# core (asio)
-asio/asio.Nstatistics.cpp
-asio/asio.Nconnective.cpp
-asio/asio.Nconnector.cpp
-asio/asio.Nacceptor.cpp
-asio/asio.Isocket_tcp.cpp
-asio/asio.Nsocket_tcp.cpp
-asio/asio.Nsocket_tcp_client.cpp
-asio/asio.system.cpp
-
 # util linux
 util.linux.cpp
 
-# socket
-echo_client.cpp
-
 # main
-CGDK10.tcp_echo_client.asio.cpp
+cgcii.asio.tcp_echo_client.cpp
 
 )
 
@@ -113,8 +110,8 @@ ADD_EXECUTABLE(${PROJECT_NAME}.${BUILD_TYPE} ${SRC_FILES})
 
 # 4) link
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}.${BUILD_TYPE}
-	CGDK10.net.socket_linux.${BUILD_TYPE}
-	CGDK10.system.object_linux.${BUILD_TYPE}
+	cgcii.asio/cgcii.asio_linux.${BUILD_TYPE}
+	${USED_LIBS}
 	rt
 	pthread
 )

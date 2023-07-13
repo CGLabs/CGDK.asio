@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*                CMake - CGDK10.tcp_echo_server.asio.console                *
+#*                    CMake - cgcii.asio.tcp_echo_server                     *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 # ----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "CGDK10.tcp_echo_server.asio.console" )
+PROJECT ( "cgcii.asio.tcp_echo_server" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -61,28 +61,29 @@ SET ( CMAKE_CXX_FLAGS "-DC_FLAGS -fexceptions -std=c++20" )
 SET ( CMAKE_CXX_FLAGS_DEBUG "-D_DEBUG -g3 -Wall -Wextra" )
 SET ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3 -Wall -Wextra" )
 
+# 8) include directories
+INCLUDE_DIRECTORIES(
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../include
+	./
+)
+
+# 9) library directories
+LINK_DIRECTORIES(
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib
+)
+
 
 # ----------------------------------------------------------------------------
 # source files
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
 
-# core (asio)
-asio/asio.Nstatistics.cpp
-asio/asio.Nconnective.cpp
-asio/asio.Nconnector.cpp
-asio/asio.Nacceptor.cpp
-asio/asio.Isocket_tcp.cpp
-asio/asio.Nsocket_tcp.cpp
-asio/asio.Nsocket_tcp_client.cpp
-asio/asio.system.cpp
-
 # util linux
 util.linux.cpp
 
-# echo server console
-CGDK10.tcp_echo_server.asio.console.cpp
-CGDK10.tcp_echo_server.asio.console.ex.cpp
+# main
+cgcii.asio.tcp_echo_server.cpp
+
 )
 
 
@@ -108,6 +109,7 @@ ADD_EXECUTABLE(${PROJECT_NAME}.${BUILD_TYPE} ${SRC_FILES})
 
 # 4) link
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}.${BUILD_TYPE}
+	cgcii.asio/cgcii.asio_linux.${BUILD_TYPE}
 	${USED_LIBS}
 	rt
 	pthread
