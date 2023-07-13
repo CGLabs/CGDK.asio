@@ -443,20 +443,20 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClCompile Include="asio.system.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\cgcii.asio\asio.acceptor.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.connector.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Isocket_tcp.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nacceptor.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nconnective.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nconnector.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nconnect_requestable.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nsocket_tcp.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nsocket_tcp_client.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nsocket_tcp_gather.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nsocket_tcp_gather_buffer.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.Nstatistics.h" />
-    <ClInclude Include="..\include\cgcii.asio\asio.system.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.acceptor.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.connector.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Isocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nacceptor.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nconnective.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nconnector.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nconnect_requestable.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_client.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_gather.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nsocket_tcp_gather_buffer.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.Nstatistics.h" />
+    <ClInclude Include="..\include\cgdk\asio\asio.system.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
