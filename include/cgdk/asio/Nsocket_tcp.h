@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,7 +16,7 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nsocket_tcp : virtual public Isocket_tcp
+class CGDK::asio::Nsocket_tcp : virtual public Isocket_tcp
 {
 public:
 			Nsocket_tcp();

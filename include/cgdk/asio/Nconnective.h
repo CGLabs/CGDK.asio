@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,7 +16,7 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nconnective : public std::enable_shared_from_this<asio::Nconnective>
+class CGDK::asio::Nconnective : public std::enable_shared_from_this<asio::Nconnective>
 {
 public:
 			Nconnective();

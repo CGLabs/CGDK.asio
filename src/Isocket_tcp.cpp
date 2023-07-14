@@ -1,17 +1,17 @@
 ﻿#include "cgdk/asio.h"
 
 
-asio::Isocket_tcp::Isocket_tcp() : 
+CGDK::asio::Isocket_tcp::Isocket_tcp() :
 	m_socket(asio::system::get_io_service().get_executor()),
 	m_socket_state(ESOCKET_STATUE::NONE)
 {
 }
 
-asio::Isocket_tcp::~Isocket_tcp() noexcept
+CGDK::asio::Isocket_tcp::~Isocket_tcp() noexcept
 {
 }
 
-bool asio::Isocket_tcp::closesocket() noexcept
+bool CGDK::asio::Isocket_tcp::closesocket() noexcept
 {
 	// 1) set linger option (abortive close)
 	{
@@ -23,7 +23,7 @@ bool asio::Isocket_tcp::closesocket() noexcept
 	return this->process_close_native_handle();
 }
 
-bool asio::Isocket_tcp::disconnect() noexcept
+bool CGDK::asio::Isocket_tcp::disconnect() noexcept
 {
 	// 1) set linger option (graceful close)
 	{
@@ -41,7 +41,7 @@ bool asio::Isocket_tcp::disconnect() noexcept
 	return !ec;
 }
 
-void asio::Isocket_tcp::process_connective_closesocket() noexcept
+void CGDK::asio::Isocket_tcp::process_connective_closesocket() noexcept
 {
 	// declare) 
 	std::shared_ptr<Nconnective> pconnective;
@@ -62,7 +62,7 @@ void asio::Isocket_tcp::process_connective_closesocket() noexcept
 	pconnective->process_unregister_socket(this->shared_from_this());
 }
 
-bool asio::Isocket_tcp::process_close_native_handle() noexcept
+bool CGDK::asio::Isocket_tcp::process_close_native_handle() noexcept
 {
 	// check) 
 	if (this->m_socket.is_open() == false)

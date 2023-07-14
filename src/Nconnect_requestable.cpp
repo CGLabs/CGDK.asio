@@ -1,7 +1,7 @@
 ﻿#include "cgdk/asio.h"
 
 
-void asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _endpoint_connect)
+void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _endpoint_connect)
 {
 	// 1) set socket state ESOCKET_STATUE::ESTABLISHED
 	{
@@ -29,7 +29,7 @@ void asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _endpoint_
 		});
 }
 
-void asio::Nconnect_requestable::process_connect_request_complete(const boost::system::error_code& _error)
+void CGDK::asio::Nconnect_requestable::process_connect_request_complete(const boost::system::error_code& _error)
 {
 	// check) 실패했을 경우 등록해제하고 소켓을 닫고 끝낸다.
 	if (_error)

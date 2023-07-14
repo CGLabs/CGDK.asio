@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*                     CMake - cgdk.asio.tcp_echo_client                     *
+#*                     CMake - CGDK.asio.tcp_echo_client                     *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 # ----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "cgdk.asio.tcp_echo_client" )
+PROJECT ( "CGDK.asio.tcp_echo_client" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -82,7 +82,7 @@ SET (SRC_FILES
 util.linux.cpp
 
 # main
-cgdk.asio.tcp_echo_client.cpp
+CGDK.asio.tcp_echo_client.cpp
 
 )
 

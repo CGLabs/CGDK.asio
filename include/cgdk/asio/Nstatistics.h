@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,27 +16,16 @@
 //*****************************************************************************
 #pragma once
 
-class asio::system
+class CGDK::asio::Nstatistics
 {
 public:
-	~system() noexcept;
-
-	[[nodiscard]] static boost::asio::io_service& get_io_service() { return get_instance()->io_service; }
-	[[nodiscard]] static std::shared_ptr<asio::system> get_instance() { if (!pinstance) { return init_instance(); }; return pinstance; }
-	static std::shared_ptr<asio::system> init_instance(int _thread_count = -1);
-	static void destroy_instance() noexcept;
-	static void run_executor();
-
-protected:
-	void process_prepare_thread(int _thread_count);
-	void process_run_executor();
-	void process_destroy();
-	boost::asio::io_service io_service;
-	std::vector<std::shared_ptr<std::thread>> m_vector_threads;
-	bool m_is_thread_run = false;
-
-	static std::mutex lock_instance;
-	static std::shared_ptr<asio::system> pinstance;
+	static	std::atomic<uint64_t> statistics_connect_keep;
+	static	std::atomic<uint64_t> statistics_connect_try;
+	static	std::atomic<uint64_t> statistics_connect_success;
+	static	std::atomic<uint64_t> statistics_connect_disconnect;
+	static	std::atomic<uint64_t> statistics_send_messages;
+	static	std::atomic<uint64_t> statistics_send_bytes;
+	static	std::atomic<uint64_t> statistics_send_error;
+	static	std::atomic<uint64_t> statistics_receive_messages;
+	static	std::atomic<uint64_t> statistics_receive_bytes;
 };
-
-

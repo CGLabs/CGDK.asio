@@ -1,7 +1,7 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                                asio classes                               *
+#*                                 CGDK.asio                                 *
 #*                                                                           *
 #*                                   CMake                                   *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 #-----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "cgcii.asio.example" )
+PROJECT ( "CGDK.asio.example" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )

@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,9 +16,17 @@
 //*****************************************************************************
 #pragma once
 
-template <class TSOCKET>
-class asio::connector : public Nconnector
+class CGDK::asio::Nsocket_tcp_gather : public Nsocket_tcp
 {
 public:
-	virtual std::shared_ptr<Isocket_tcp> process_create_socket() override { return std::make_shared<TSOCKET>(); }
+			Nsocket_tcp_gather();
+	virtual ~Nsocket_tcp_gather() noexcept;
+
+protected:
+	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
+	virtual bool process_send(SEND_NODE&& _send_node) override;
+			void process_send_async(const SEND_NODE& _send_node);
+
+			std::list<SEND_NODE> m_send_msgs;
+			std::shared_ptr<Isocket_tcp> m_hold_send;
 };

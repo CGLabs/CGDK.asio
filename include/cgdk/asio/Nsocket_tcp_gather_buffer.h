@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,33 +16,16 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nacceptor : public Nconnective
+class CGDK::asio::Nsocket_tcp_gather_buffer : public Nsocket_tcp_gather
 {
 public:
-			Nacceptor();
-	virtual ~Nacceptor() noexcept;
+			Nsocket_tcp_gather_buffer();
+	virtual ~Nsocket_tcp_gather_buffer() noexcept;
 
-			void start(boost::asio::ip::tcp::endpoint _endpoint);
-			void close() noexcept;
+protected:
+	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
+	virtual bool process_send(SEND_NODE&& _send_node) override;
+			void process_send_gather_async(const SEND_NODE& _send_node);
 
-private:
-	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
-			void process_request_accept();
-			void process_accept();
-
-			struct instance
-			{
-				std::shared_ptr<Nacceptor> pacceptor;
-				std::shared_ptr<tcp::acceptor> accept_context;
-				std::shared_ptr<Isocket_tcp> psocket;
-				void process_accept();
-			};
-			friend struct instance;
-
-			void process_instance_register(std::unique_ptr<instance>&& _instance);
-			void process_instance_unregister(instance* _instance) noexcept;
-
-			std::recursive_mutex m_lockable_acceptor;
-			std::shared_ptr<tcp::acceptor> m_accept_context;
-			std::vector<std::unique_ptr<instance>> m_list_instance;
+			SEND_NODE m_sending;
 };

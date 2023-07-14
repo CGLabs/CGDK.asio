@@ -1,16 +1,16 @@
 ﻿#include "cgdk/asio.h"
 
 
-asio::Nacceptor::Nacceptor()
+CGDK::asio::Nacceptor::Nacceptor()
 {
 }
 
-asio::Nacceptor::~Nacceptor() noexcept
+CGDK::asio::Nacceptor::~Nacceptor() noexcept
 {
 	this->close();
 }
 
-void asio::Nacceptor::start(boost::asio::ip::tcp::endpoint _endpoint)
+void CGDK::asio::Nacceptor::start(boost::asio::ip::tcp::endpoint _endpoint)
 {
 	//-----------------------------------------------------------------------------
 	//  설명) acceptor를 시작한다.
@@ -49,7 +49,7 @@ void asio::Nacceptor::start(boost::asio::ip::tcp::endpoint _endpoint)
 	}
 }
 
-void asio::Nacceptor::close() noexcept
+void CGDK::asio::Nacceptor::close() noexcept
 {
 	//-----------------------------------------------------------------------------
 	//  설명) acceptor를 받는다.
@@ -85,7 +85,7 @@ void asio::Nacceptor::close() noexcept
 	//       close() 후 즉시 객체가 소멸되는 것이 아니라 accpet instance들이 모두 종료되어야 제거된다.
 }
 
-void asio::Nacceptor::process_request_accept()
+void CGDK::asio::Nacceptor::process_request_accept()
 {
 	//-----------------------------------------------------------------------------
 	//  설명) 새로운 accept instance를 생성해서 accept를 걸어 놓는다.
@@ -117,7 +117,7 @@ void asio::Nacceptor::process_request_accept()
 	}
 }
 
-void asio::Nacceptor::process_instance_register(std::unique_ptr<instance>&& _instance)
+void CGDK::asio::Nacceptor::process_instance_register(std::unique_ptr<instance>&& _instance)
 {
 	//-----------------------------------------------------------------------------
 	//  설명) 새로운 accept instance를 등록한다.
@@ -140,7 +140,7 @@ void asio::Nacceptor::process_instance_register(std::unique_ptr<instance>&& _ins
 	this->m_list_instance.push_back(std::move(_instance));
 }
 
-void asio::Nacceptor::process_instance_unregister(instance* _instance) noexcept
+void CGDK::asio::Nacceptor::process_instance_unregister(instance* _instance) noexcept
 {
 	//-----------------------------------------------------------------------------
 	//  설명) 새로운 accept instance를 등록을 해지한다.
@@ -167,7 +167,7 @@ void asio::Nacceptor::process_instance_unregister(instance* _instance) noexcept
 	this->m_list_instance.erase(iter_find);
 }
 
-void asio::Nacceptor::instance::process_accept()
+void CGDK::asio::Nacceptor::instance::process_accept()
 {
 	// 1) alloc socket
 	auto psocket_new = this->pacceptor->process_create_socket();

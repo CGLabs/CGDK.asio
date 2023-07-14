@@ -1,17 +1,17 @@
 ﻿#include "cgdk/asio.h"
 
 
-asio::Nsocket_tcp::Nsocket_tcp()	
+CGDK::asio::Nsocket_tcp::Nsocket_tcp()
 {
 }
 
-asio::Nsocket_tcp::~Nsocket_tcp() noexcept
+CGDK::asio::Nsocket_tcp::~Nsocket_tcp() noexcept
 {
 	// 1) complete close socket
 	this->process_closesocket(boost::asio::error::connection_aborted);
 }
 
-void asio::Nsocket_tcp::process_connect_complete()
+void CGDK::asio::Nsocket_tcp::process_connect_complete()
 {
 	// 1) set socket state ESOCKET_STATUE::ESTABLISHED
 	{
@@ -43,7 +43,7 @@ void asio::Nsocket_tcp::process_connect_complete()
 	this->process_receive_async();
 }
 
-void asio::Nsocket_tcp::process_closesocket(boost::system::error_code _error_code) noexcept
+void CGDK::asio::Nsocket_tcp::process_closesocket(boost::system::error_code _error_code) noexcept
 {
 	// 1) abortive close
 	this->process_close_native_handle();
@@ -91,12 +91,12 @@ void asio::Nsocket_tcp::process_closesocket(boost::system::error_code _error_cod
 	}
 }
 
-bool asio::Nsocket_tcp::process_send(SEND_NODE&& _send_node)
+bool CGDK::asio::Nsocket_tcp::process_send(SEND_NODE&& _send_node)
 {
 	return this->process_send_sync(std::move(_send_node));
 }
 
-bool asio::Nsocket_tcp::process_send_sync(SEND_NODE&& _send_node)
+bool CGDK::asio::Nsocket_tcp::process_send_sync(SEND_NODE&& _send_node)
 {
 	// check) 
 	if (this->m_socket_state < ESOCKET_STATUE::CLOSING)
@@ -132,7 +132,7 @@ bool asio::Nsocket_tcp::process_send_sync(SEND_NODE&& _send_node)
 	// return)
 	return true;
 }
-void asio::Nsocket_tcp::process_receive_async()
+void CGDK::asio::Nsocket_tcp::process_receive_async()
 {
 	// definitions) 
 	static const size_t MAX_MESSAGE_SIZE = 1024 * 1024;

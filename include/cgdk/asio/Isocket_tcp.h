@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,15 +16,7 @@
 //*****************************************************************************
 #pragma once
 
-enum class ESOCKET_STATUE : int
-{
-	NONE = 0,
-	SYN = 1,
-	CLOSING = 2,
-	ESTABLISHED = 3,
-};
-
-class asio::Isocket_tcp : public std::enable_shared_from_this<Isocket_tcp>
+class CGDK::asio::Isocket_tcp : public std::enable_shared_from_this<Isocket_tcp>
 {
 public:
 	struct SEND_NODE { shared_buffer buf_send; size_t message_count{ 0 }; };

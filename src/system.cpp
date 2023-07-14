@@ -3,11 +3,11 @@
 	#include <sys/resource.h>
 #endif
 
-std::mutex asio::system::lock_instance;
-std::shared_ptr<asio::system> asio::system::pinstance;
+std::mutex CGDK::asio::system::lock_instance;
+std::shared_ptr<CGDK::asio::system> CGDK::asio::system::pinstance;
 
 
-std::shared_ptr<asio::system> asio::system::init_instance(int _thread_count)
+std::shared_ptr<CGDK::asio::system> CGDK::asio::system::init_instance(int _thread_count)
 {
 	// declare) 
 	std::shared_ptr<asio::system> temp_instance;
@@ -30,12 +30,12 @@ std::shared_ptr<asio::system> asio::system::init_instance(int _thread_count)
 	return temp_instance;
 }
 
-void asio::system::destroy_instance() noexcept
+void CGDK::asio::system::destroy_instance() noexcept
 {
 	get_instance()->process_destroy();
 }
 
-asio::system::~system() noexcept
+CGDK::asio::system::~system() noexcept
 {
 	// 1) destroy io_service
 	this->process_destroy();
@@ -50,12 +50,12 @@ asio::system::~system() noexcept
 	}
 }
 
-void asio::system::run_executor()
+void CGDK::asio::system::run_executor()
 {
 	get_instance()->io_service.run_one();
 }
 
-void asio::system::process_run_executor()
+void CGDK::asio::system::process_run_executor()
 {
 	// declare) 
 	boost::system::error_code ec;
@@ -89,7 +89,7 @@ void _expanding_max_open_files() noexcept
 }
 #endif
 
-void asio::system::process_prepare_thread(int _thread_count)
+void CGDK::asio::system::process_prepare_thread(int _thread_count)
 {
 	// check)
 	assert(this->m_is_thread_run == false);
@@ -133,7 +133,7 @@ void asio::system::process_prepare_thread(int _thread_count)
 	}
 }
 
-void asio::system::process_destroy()
+void CGDK::asio::system::process_destroy()
 {
 	// 1) thread run flag 'false'
 	this->m_is_thread_run = false;

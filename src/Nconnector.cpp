@@ -1,25 +1,25 @@
 ﻿#include "cgdk/asio.h"
 
 
-asio::Nconnector::Nconnector()
+CGDK::asio::Nconnector::Nconnector()
 {
 }
 
-asio::Nconnector::~Nconnector() noexcept
+CGDK::asio::Nconnector::~Nconnector() noexcept
 {
 }
 
-void asio::Nconnector::start(const boost::asio::any_io_executor& _executor)
+void CGDK::asio::Nconnector::start(const boost::asio::any_io_executor& _executor)
 {
 	// 1) create socket
 	this->m_executor = _executor;
 }
 
-void asio::Nconnector::close() noexcept
+void CGDK::asio::Nconnector::close() noexcept
 {
 }
 
-void asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect)
+void CGDK::asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect)
 {
 	// 1) allock new socket
 	auto psocket_new = this->process_create_socket();
@@ -74,7 +74,7 @@ void asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _endpoint_
 	}
 }
 
-void asio::Nconnector::process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error)
+void CGDK::asio::Nconnector::process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error)
 {
 	try
 	{

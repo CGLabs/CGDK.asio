@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,14 +16,6 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nconnect_requestable : virtual public Isocket_tcp
+class CGDK::asio::Nsocket_tcp_client : public Nsocket_tcp, public Nconnect_requestable
 {
-public:
-			Nconnect_requestable() {}
-	virtual ~Nconnect_requestable() noexcept {}
-public:
-	void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
-
-protected:
-	void process_connect_request_complete(const boost::system::error_code& _error);
 };

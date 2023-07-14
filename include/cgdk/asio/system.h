@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,17 +16,27 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nsocket_tcp_gather : public Nsocket_tcp
+class CGDK::asio::system
 {
 public:
-			Nsocket_tcp_gather();
-	virtual ~Nsocket_tcp_gather() noexcept;
+	~system() noexcept;
+
+	[[nodiscard]] static boost::asio::io_service& get_io_service() { return get_instance()->io_service; }
+	[[nodiscard]] static std::shared_ptr<asio::system> get_instance() { if (!pinstance) { return init_instance(); }; return pinstance; }
+	static std::shared_ptr<asio::system> init_instance(int _thread_count = -1);
+	static void destroy_instance() noexcept;
+	static void run_executor();
 
 protected:
-	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
-	virtual bool process_send(SEND_NODE&& _send_node) override;
-			void process_send_async(const SEND_NODE& _send_node);
+	void process_prepare_thread(int _thread_count);
+	void process_run_executor();
+	void process_destroy();
+	boost::asio::io_service io_service;
+	std::vector<std::shared_ptr<std::thread>> m_vector_threads;
+	bool m_is_thread_run = false;
 
-			std::list<SEND_NODE> m_send_msgs;
-			std::shared_ptr<Isocket_tcp> m_hold_send;
+	static std::mutex lock_instance;
+	static std::shared_ptr<asio::system> pinstance;
 };
+
+

@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,19 +16,9 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nconnector : public Nconnective
+template <class TSOCKET>
+class CGDK::asio::connector : public Nconnector
 {
 public:
-			Nconnector();
-	virtual ~Nconnector() noexcept;
-
-	void start(const boost::asio::any_io_executor& _executor);
-	void close() noexcept;
-
-	void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);
-	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
-	void process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error);
-
-private:
-			boost::asio::any_io_executor m_executor;
+	virtual std::shared_ptr<Isocket_tcp> process_create_socket() override { return std::make_shared<TSOCKET>(); }
 };

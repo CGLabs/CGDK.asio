@@ -17,16 +17,9 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nstatistics
+template <class TSOCKET>
+class CGDK::asio::acceptor : public Nacceptor
 {
 public:
-	static	std::atomic<uint64_t> statistics_connect_keep;
-	static	std::atomic<uint64_t> statistics_connect_try;
-	static	std::atomic<uint64_t> statistics_connect_success;
-	static	std::atomic<uint64_t> statistics_connect_disconnect;
-	static	std::atomic<uint64_t> statistics_send_messages;
-	static	std::atomic<uint64_t> statistics_send_bytes;
-	static	std::atomic<uint64_t> statistics_send_error;
-	static	std::atomic<uint64_t> statistics_receive_messages;
-	static	std::atomic<uint64_t> statistics_receive_bytes;
+	virtual std::shared_ptr<Isocket_tcp> process_create_socket() override { return std::make_shared<TSOCKET>(); }
 };

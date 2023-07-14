@@ -1,15 +1,15 @@
 ﻿#include "cgdk/asio.h"
 
 
-asio::Nconnective::Nconnective()
+CGDK::asio::Nconnective::Nconnective()
 {
 }
 
-asio::Nconnective::~Nconnective() noexcept
+CGDK::asio::Nconnective::~Nconnective() noexcept
 {
 }
 
-void asio::Nconnective::send(shared_buffer&& _buffer)
+void CGDK::asio::Nconnective::send(shared_buffer&& _buffer)
 {
 	// lock) 
 	std::unique_lock lock(this->m_lockable_list_sockets);
@@ -21,7 +21,7 @@ void asio::Nconnective::send(shared_buffer&& _buffer)
 	}
 }
 
-void asio::Nconnective::close_connectable_all() noexcept
+void CGDK::asio::Nconnective::close_connectable_all() noexcept
 {
 	// 1) copy sockets
 	std::vector<std::shared_ptr<Isocket_tcp>> vector_socket;
@@ -38,7 +38,7 @@ void asio::Nconnective::close_connectable_all() noexcept
 	}
 }
 
-void asio::Nconnective::disconnect_connectable_all() noexcept
+void CGDK::asio::Nconnective::disconnect_connectable_all() noexcept
 {
 	// 1) copy sockets
 	std::vector<std::shared_ptr<Isocket_tcp>> vector_socket;
@@ -55,7 +55,7 @@ void asio::Nconnective::disconnect_connectable_all() noexcept
 	}
 }
 
-void asio::Nconnective::process_register_socket(const std::shared_ptr<Isocket_tcp>& _psocket)
+void CGDK::asio::Nconnective::process_register_socket(const std::shared_ptr<Isocket_tcp>& _psocket)
 {
 	std::unique_lock lock(this->m_lockable_list_sockets);
 
@@ -87,7 +87,7 @@ void asio::Nconnective::process_register_socket(const std::shared_ptr<Isocket_tc
 	}
 }
 
-void asio::Nconnective::process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept
+void CGDK::asio::Nconnective::process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept
 {
 	std::unique_lock lock(this->m_lockable_list_sockets);
 
@@ -107,7 +107,7 @@ void asio::Nconnective::process_unregister_socket(const std::shared_ptr<Isocket_
 	this->m_list_sockets.erase(_psocket);
 }
 
-void asio::Nconnective::destroy_connectable_all() noexcept
+void CGDK::asio::Nconnective::destroy_connectable_all() noexcept
 {
 	// declare) 
 	std::set<std::shared_ptr<Isocket_tcp>> list_sockets;

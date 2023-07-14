@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -17,16 +16,13 @@
 //*****************************************************************************
 #pragma once
 
-class asio::Nsocket_tcp_gather_buffer : public Nsocket_tcp_gather
+namespace CGDK
 {
-public:
-			Nsocket_tcp_gather_buffer();
-	virtual ~Nsocket_tcp_gather_buffer() noexcept;
-
-protected:
-	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
-	virtual bool process_send(SEND_NODE&& _send_node) override;
-			void process_send_gather_async(const SEND_NODE& _send_node);
-
-			SEND_NODE m_sending;
-};
+	enum class ESOCKET_STATUE : int
+	{
+		NONE = 0,
+		SYN = 1,
+		CLOSING = 2,
+		ESTABLISHED = 3,
+	};
+}

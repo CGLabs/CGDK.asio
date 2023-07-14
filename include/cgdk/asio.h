@@ -1,7 +1,6 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
 //*                           asio network classes                            *
 //*                                                                           *
@@ -41,40 +40,44 @@ using boost::asio::mutable_buffer;
 using boost::asio::const_buffer;
 using namespace CGDK;
 
-namespace asio
+namespace CGDK
 {
-	class Isocket_tcp;
+	namespace asio
+	{
+		class Isocket_tcp;
 
-	class Nstatistics;
-	class Nconnective;
-	class Nacceptor;
-	class Nconnector;
-	class Nconnect_requestable;
-	class Nsocket_tcp;
-	class Nsocket_tcp_gather;
-	class Nsocket_tcp_gather_buffer;
-	class Nsocket_tcp_client;
+		class Nstatistics;
+		class Nconnective;
+		class Nacceptor;
+		class Nconnector;
+		class Nconnect_requestable;
+		class Nsocket_tcp;
+		class Nsocket_tcp_gather;
+		class Nsocket_tcp_gather_buffer;
+		class Nsocket_tcp_client;
 
-	template <class> class acceptor;
-	template <class> class connector;
+		template <class> class acceptor;
+		template <class> class connector;
 
-	class system;
+		class system;
+	}
+	const size_t RECEIVE_BUFFER_SIZE = 8192;
 }
-const size_t RECEIVE_BUFFER_SIZE = 8192;
 
-#include "asio/cgdk.asio.Nstatistics.h"
-#include "asio/cgdk.asio.Isocket_tcp.h"
-#include "asio/cgdk.asio.Nsocket_tcp.h"
-#include "asio/cgdk.asio.Nsocket_tcp_gather.h"
-#include "asio/cgdk.asio.Nsocket_tcp_gather_buffer.h"
-#include "asio/cgdk.asio.Nconnect_requestable.h"
-#include "asio/cgdk.asio.Nsocket_tcp_client.h"
-#include "asio/cgdk.asio.Nconnective.h"
-#include "asio/cgdk.asio.Nacceptor.h"
-#include "asio/cgdk.asio.Nconnector.h"
-#include "asio/cgdk.asio.acceptor.h"
-#include "asio/cgdk.asio.connector.h"
-#include "asio/cgdk.asio.system.h"
+#include "asio/definitions.h"
+#include "asio/Nstatistics.h"
+#include "asio/Isocket_tcp.h"
+#include "asio/Nsocket_tcp.h"
+#include "asio/Nsocket_tcp_gather.h"
+#include "asio/Nsocket_tcp_gather_buffer.h"
+#include "asio/Nconnect_requestable.h"
+#include "asio/Nsocket_tcp_client.h"
+#include "asio/Nconnective.h"
+#include "asio/Nacceptor.h"
+#include "asio/Nconnector.h"
+#include "asio/acceptor.h"
+#include "asio/connector.h"
+#include "asio/system.h"
 
 
 //----------------------------------------------------------------------------
