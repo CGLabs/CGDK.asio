@@ -27,12 +27,16 @@ example파일들은 /example디렉토리의 각 디렉토리 안쪽에 server와
 
 ###linux
 cmake가 필요하며 Debug로 컴파일을 하려면 루트에서 
-> cmake . -DCMAKE_BUILD_TYPE=Debug
-> make
+```bash
+$ cmake . -DCMAKE_BUILD_TYPE=Debug
+$ make
+` ``
 
 Release로 컴파일 하고 싶을 때에는 Debug대시 Release로만 변경하면 된다.
-> cmake . -DCMAKE_BUILD_TYPE=Release
-> make
+```bash
+$ cmake . -DCMAKE_BUILD_TYPE=Release
+$ make
+` ``
 
 루트 디렉토리에서 하면 lib파일과 example까지 모두 컴파일 되며 디렉토리별로 컴파일 할수 있다.
 예를 들어 /src 디렉토리에 동일한 작업을 하면 lib파일만 컴파일 된다.
