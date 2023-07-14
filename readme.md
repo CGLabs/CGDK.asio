@@ -19,13 +19,13 @@ server에서 사용할 수 있는 수준의 높은 성능과 안정성을 확보
 모듈이 컴파일 되면 /lib/cgdk/asio 디렉토리 밑에 .lib파일 혹은 .a파일이 생성된다.
 lib directory로 /lib/cgdk/asio를 설정해 주어야 한다.
 
-##compile
-###windows
+## compile
+### windows
 visual studio 2022이상이 필요하다.
 lib파일은 'src/CGDK.asio.vs17.sln'을 열어 컴파일이 가능하다.
 example파일들은 /example디렉토리의 각 디렉토리 안쪽에 server와 client 용 sln파일들을 있으며 이들을 열어서 컴파일 하면 된다.
 
-###linux
+### linux
 cmake가 필요하며 Debug로 컴파일을 하려면 루트에서 
 ```bash
 $ cmake . -DCMAKE_BUILD_TYPE=Debug
