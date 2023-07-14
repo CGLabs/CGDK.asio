@@ -23,7 +23,7 @@ public:
 
 		// - send 10 times
 		for(int i=0;i<10;++i)
-			send(buf);
+			this->send(buf);
 	}
 	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept override
 	{

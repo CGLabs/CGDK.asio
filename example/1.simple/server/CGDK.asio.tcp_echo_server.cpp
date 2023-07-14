@@ -6,7 +6,7 @@
 	int _getch();
 #endif
 
-class socket_tcp : public asio::Nsocket_tcp_gather_buffer
+class socket_tcp : public asio::Nsocket_tcp
 {
 public:
 	virtual void on_connect() override
@@ -25,7 +25,7 @@ public:
 		std::cout << "@ message received " << _msg.size() << "bytes" << std::endl;
 
 		// - echo send
-		send(_msg);
+		this->send(_msg);
 		return 1;
 	}
 };
