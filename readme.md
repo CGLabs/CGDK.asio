@@ -7,7 +7,7 @@ CGDK.buffer를 사용해 송수신이 가능하도록 처리를 했다.
 server에서 사용할 수 있는 수준의 높은 성능과 안정성을 확보하도록 설계가 되었다.
 
 # Getting Start
-##Directory
+## Directory
 ### /include 
 .h파일들이 들어 있는 디렉토리로 컴파일시 이곳을 include directory로 설정해 주어야 한다.
 'include/cgdk/asio.h' 파일을 #include를 통해 포함시켜주어야 한다.
