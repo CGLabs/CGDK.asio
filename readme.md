@@ -43,10 +43,10 @@ $ make
 
 ## Project 설정
 
-## examples
-### 1. simle tcp echo
+# Examples
+## 1. simle tcp echo
 가장 간단한 server와 client를 만들 수 있는 방법을 설명한 예제이다.
-#### server
+### server
 기본 구성 요소인 acceptor의 사용 방법을 설명한다.
 1. 먼저 CGDK.asio의 헤더 파일을 include해준다.
 ```c++
@@ -106,7 +106,7 @@ int main()
 접속이 종료되면 on_disconnect 함수를 호출해 준다.
 socket_tcp 객체에 send 함수를 호출하면 그 소켓이 연결된 클라이언트에 메시지를 전송한다.
 
-#### client
+### client
 접속을 시도하는 방법을 설명한다.
 서버와 동일한 방법으로 socket_tcp을 CGDK::asio::Nsocket_tcp과 CGDK::asio::Nconnect_requestable를 상속받아 정의한다.
 
