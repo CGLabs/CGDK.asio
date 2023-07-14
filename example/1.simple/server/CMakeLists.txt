@@ -109,7 +109,7 @@ ADD_EXECUTABLE(${PROJECT_NAME}.${BUILD_TYPE} ${SRC_FILES})
 
 # 4) link
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}.${BUILD_TYPE}
-	cgdk.asio_linux.${BUILD_TYPE}
+	CGDK.asio_linux.${BUILD_TYPE}
 	${USED_LIBS}
 	rt
 	pthread
