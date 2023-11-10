@@ -38,7 +38,7 @@ Debug로 컴파일을 하려면 프로젝트의 루트 디렉토리에에서<br>
 $ cmake . -DCMAKE_BUILD_TYPE=Debug
 $ make
 ```
-Release로 컴파일 하려면  Debug대시 Release로만 변경해서 컴파일 하시면 됩니다.<br>
+Release로 컴파일 하려면<br>
 ```bash
 $ cmake . -DCMAKE_BUILD_TYPE=Release
 $ make
