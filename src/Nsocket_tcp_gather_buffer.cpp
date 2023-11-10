@@ -197,4 +197,3 @@ void CGDK::asio::Nsocket_tcp_gather_buffer::process_send_gather_async(const SEND
 			}
         });
 }
-
