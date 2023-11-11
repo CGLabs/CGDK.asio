@@ -31,7 +31,7 @@ void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _end
 
 void CGDK::asio::Nconnect_requestable::process_connect_request_complete(const boost::system::error_code& _error)
 {
-	// check) 실패했을 경우 등록해제하고 소켓을 닫고 끝낸다.
+	// check) 실패했을 경우 socket을 등록 해제후 close하고 끝낸다.
 	if (_error)
 	{
 		// - rollback (set socket state ESOCKET_STATUE::NONE)

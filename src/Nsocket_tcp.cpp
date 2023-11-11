@@ -146,7 +146,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 	this->m_hold_receiving = this->m_received_msg.get_source();
 
 	// 3) send async
-	this->m_socket.async_read_some(m_receiving_msg,
+	this->m_socket.async_read_some(this->m_receiving_msg,
 		[=, this](boost::system::error_code _error_code, std::size_t _length)
 		{
 			// - release receiving buffer
@@ -160,7 +160,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 				//  'boost::asio::error::eof' -> 정상접속 종료(graceful close)
 				//  'boost::asio::error::connection_reset' -> 비정상 접속 종료(abortive close)
 				// ----------------------------------------------------------------------------
-				// - complete closesocket
+				// - closesocket
 				this->process_closesocket(_error_code);
 	
 				// - release
@@ -187,7 +187,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 			try
 			{
-				// loop) remained_size가 head_size보다 작으면 끝냄.
+				// loop) remained_size가 header_size보다 작으면 message 읽기 중단.
 				while (temp_received.size() >= 4)
 				{
 					// - get message size
@@ -234,17 +234,17 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 				if (this->m_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_receiving_msg.size() < temp_buffer.size())
 				{
-					// - 기본 메시지 buffer의 크기
+					// - 기본 메시지 buffer 크기
 					auto size_new = RECEIVE_BUFFER_SIZE;
 
-					// - 만약 다음 메시지의 크기가 기본 메시지 buffer의 크기보다 크면 메시지 만큼을 더한다.
+					// - 만약 다음 메시지의 크기가 기본 메시지 buffer 크기보다 크면 메시지 크기 만큼을 더한다.
 					if (temp_buffer.size() > RECEIVE_BUFFER_SIZE)
 						size_new += temp_buffer.size();
 
-					// - 새로운 buffer를 할당받는다.
+					// - 새로운 buffer를 할 당받는다.
 					auto buf_new = alloc_shared_buffer(size_new);
 
-					// - 남아 있는 데이터가 있으면 복사한다.
+					// - 남아 있는 데이터가 있으면 새로운 buffer의 제일 앞에 복사한다.
 					if(temp_received.size() != 0)
 						memcpy(buf_new.data(), temp_received.data(), temp_received.size());
 

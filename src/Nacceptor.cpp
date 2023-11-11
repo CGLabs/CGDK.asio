@@ -18,7 +18,7 @@ void CGDK::asio::Nacceptor::start(boost::asio::ip::tcp::endpoint _endpoint)
 	//  
 	//  
 	//-----------------------------------------------------------------------------
-	// 1) create context
+	// 1) create io_context
 	auto accept_context = std::make_shared<tcp::acceptor>(asio::system::get_io_service().get_executor(), _endpoint);
 
 	// 2) copy create handle
@@ -29,7 +29,7 @@ void CGDK::asio::Nacceptor::start(boost::asio::ip::tcp::endpoint _endpoint)
 
 	try
 	{
-		// 3) accept 대기할 수는 thread의 수만큼
+		// 3) accept 대기할 socket은 thread 수만큼만...
 		auto accept_count = std::thread::hardware_concurrency();
 
 		// 4) request accept
@@ -55,7 +55,7 @@ void CGDK::asio::Nacceptor::close() noexcept
 	//  설명) acceptor를 받는다.
 	// 
 	//  더 이상 accept를 받지 않음은 물론 이 acceptor로 접속한 모든 socket을 접속
-	//  종료처리한다.
+	//  종료 처리한다.
 	//-----------------------------------------------------------------------------
 
 	// 1) accept 받은 모든 connectalbe(socket)을 먼저 접속 종료 한다.
@@ -81,8 +81,8 @@ void CGDK::asio::Nacceptor::close() noexcept
 	accept_context->close();
 
 	// 설명) handle만 닫게 되면 accept instance들은 실패를 리턴하며 스스로 제거될 것이다.
-	//       따라서 m_iist_instance는 따로 제거하지 않는다.
-	//       close() 후 즉시 객체가 소멸되는 것이 아니라 accpet instance들이 모두 종료되어야 제거된다.
+	//       따라서 m_iist_instance에서는 제거하지 않는다.
+	//       close() 후 즉시 객체가 소멸되는 것이 아니라 accpet instance들이 모두 종료 되어야 제거된다.
 }
 
 void CGDK::asio::Nacceptor::process_request_accept()
@@ -90,11 +90,11 @@ void CGDK::asio::Nacceptor::process_request_accept()
 	//-----------------------------------------------------------------------------
 	//  설명) 새로운 accept instance를 생성해서 accept를 걸어 놓는다.
 	// 
-	//  새로운 accept instance를 생성한 후 등록하고 accept를 걸어둔다.
+	//  새로운 accept instance를 생성한 후 등록하고 accept를 걸어 둔다.
 	//  여러 개의 accept instance를 실행할 수가 있다.
-	//  일반적으로는 1개의 accept instance만드로 충분하지만 빈번한 접속을 처리하기
+	//  일반적으로는 1개의 accept instance만으로 충분하지만 빈번한 접속을 처리하기
 	//  위해 여러 개의 accpet instance를 걸어 놓을 수도 있다.
-	//  thread 수만큼의 accept instance 이상은 대부분의 경우 의미 없다.
+	//  thread수 이상의 accept instance은 대부분 의미 없다.
 	//-----------------------------------------------------------------------------
 
 	// 1) instance를 만든다.
@@ -132,7 +132,7 @@ void CGDK::asio::Nacceptor::process_instance_register(std::unique_ptr<instance>&
 	// lock) 
 	std::lock_guard cs{this->m_lockable_acceptor};
 
-	// 1) accept설정
+	// 1) accept 설정
 	_instance->pacceptor = dynamic_pointer_cast<Nacceptor>(this->shared_from_this());
 	_instance->accept_context = this->m_accept_context;
 
@@ -143,7 +143,7 @@ void CGDK::asio::Nacceptor::process_instance_register(std::unique_ptr<instance>&
 void CGDK::asio::Nacceptor::process_instance_unregister(instance* _instance) noexcept
 {
 	//-----------------------------------------------------------------------------
-	//  설명) 새로운 accept instance를 등록을 해지한다.
+	//  설명) accept instance를 등록을 해지한다.
 	// 
 	//  해당 accept instance를 찾아 등록 해지한다.
 	//  acceotor의 종료를 위해 close()를 할 경우 accpetor instance들은 처리에 error
