@@ -144,7 +144,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\lib\cgdk\asio</OutDir>
+    <OutDir>..\lib\cgdk\asio\</OutDir>
     <IntDir>..\output\$(ProjectName)\$(TargetPlatformIdentifier)_$(PlatformTarget)_$(PlatformToolset)_$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_$(SDKIdentifier)$(WindowsTargetPlatformVersion)_$(PlatformTarget)_$(Configuration)</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -176,7 +176,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\lib\cgdk\asio</OutDir>
+    <OutDir>..\lib\cgdk\asio\</OutDir>
     <IntDir>..\output\$(ProjectName)\$(TargetPlatformIdentifier)_$(PlatformTarget)_$(PlatformToolset)_$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_$(SDKIdentifier)$(WindowsTargetPlatformVersion)_$(PlatformTarget)_$(Configuration)</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -441,9 +441,9 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\Nconnector.h" />
     <ClInclude Include="..\include\cgdk\asio\Nconnect_requestable.h" />
     <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_async.h" />
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_async_gather.h" />
     <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_client.h" />
-    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_gather.h" />
-    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_gather_buffer.h" />
     <ClInclude Include="..\include\cgdk\asio\Nstatistics.h" />
     <ClInclude Include="..\include\cgdk\asio\system.h" />
   </ItemGroup>
@@ -454,8 +454,8 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClCompile Include="Nconnector.cpp" />
     <ClCompile Include="Nconnect_requestable.cpp" />
     <ClCompile Include="Nsocket_tcp.cpp" />
-    <ClCompile Include="Nsocket_tcp_gather.cpp" />
-    <ClCompile Include="Nsocket_tcp_gather_buffer.cpp" />
+    <ClCompile Include="Nsocket_tcp_async.cpp" />
+    <ClCompile Include="Nsocket_tcp_async_gather.cpp" />
     <ClCompile Include="Nstatistics.cpp" />
     <ClCompile Include="system.cpp" />
   </ItemGroup>

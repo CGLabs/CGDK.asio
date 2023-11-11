@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*                     CMake - CGDK.asio.tcp_echo_client                     *
+#*             CMake - CGDK10.tcp_echo.client.console with asio              *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -11,7 +11,7 @@
 #*  This Program is programmed by Cho SangHyun. sangduck@cgcii.co.kr         *
 #*  Best for Game Developement and Optimized for Game Developement.          *
 #*                                                                           *
-#*                (c) 2019 Cho Sanghyun All right reserved.                  *
+#*                (c) 2016 Cho Sanghyun All right reserved.                  *
 #*                          http://www.CGCII.co.kr                           *
 #*                                                                           *
 #*****************************************************************************
@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.tcp_echo_client" )
+PROJECT ( "CGDK.asio.example.tcp_echo.client" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -81,9 +81,12 @@ SET (SRC_FILES
 # util linux
 util.linux.cpp
 
-# main
-CGDK.asio.tcp_echo_client.cpp
+# socket
+echo_client.cpp
 
+# main
+CGDK.asio.tcp_echo_server.cpp
+echo_client.cpp
 )
 
 

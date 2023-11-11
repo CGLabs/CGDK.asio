@@ -1,7 +1,7 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                                asio classes                               *
+#*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
 #*                                   CMake                                   *
 #*                                                                           *
@@ -19,12 +19,12 @@
 #-----------------------------------------------------------------------------
 # setting
 #-----------------------------------------------------------------------------
-# 1) require
+# 1) build version
 CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "cgcii.asio" )
+PROJECT ( "CGDK.asio.ex.example.tcp_echo" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -37,8 +37,9 @@ SET ( DEFAULT_BUILD_TYPE Debug )
 #-----------------------------------------------------------------------------
 # compile
 #-----------------------------------------------------------------------------
-# 1) asio library files
-ADD_SUBDIRECTORY (src)
+# 1) client - CGCII
+ADD_SUBDIRECTORY (client)
 
-# 2) example
-ADD_SUBDIRECTORY (example)
+# 2) client - asio
+ADD_SUBDIRECTORY (server)
+

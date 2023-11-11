@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
-#*                     CMake - CGDK.asio.tcp_echo_client                     *
+#*          CMake - CGDK10.example.tcp_echo_server.asio.ex.console           *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -11,7 +11,7 @@
 #*  This Program is programmed by Cho SangHyun. sangduck@cgcii.co.kr         *
 #*  Best for Game Developement and Optimized for Game Developement.          *
 #*                                                                           *
-#*                (c) 2019 Cho Sanghyun All right reserved.                  *
+#*                (c) 2016 Cho Sanghyun All right reserved.                  *
 #*                          http://www.CGCII.co.kr                           *
 #*                                                                           *
 #*****************************************************************************
@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.tcp_echo_client" )
+PROJECT ( "CGDK.asio.example.tcp_echo.server" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -78,19 +78,18 @@ LINK_DIRECTORIES(
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
 
-# util linux
+# linux util
 util.linux.cpp
 
-# main
-CGDK.asio.tcp_echo_client.cpp
-
+# echo server console
+CGDK.asio.tcp_echo_server.console.cpp
+CGDK.asio.tcp_echo_server.console.ex.cpp
 )
 
 
 # ----------------------------------------------------------------------------
 # compile
 # ----------------------------------------------------------------------------
-# 1) set variable
 IF (${CMAKE_BUILD_TYPE} MATCHES "Debug")
 	SET (BUILD_MESSAGE "Debug")
 	SET (BUILD_TYPE "Debug")

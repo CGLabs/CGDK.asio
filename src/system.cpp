@@ -60,11 +60,15 @@ void CGDK::asio::system::process_run_executor()
 	// declare) 
 	boost::system::error_code ec;
 
+	// 1) work quard
+	boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard(this->io_service.get_executor());
+
 	for (;;)
 	{
-		// - run
+		// 2) run
 		this->io_service.run(ec);
 
+		// 3) restart
 		if (this->m_is_thread_run)
 			this->io_service.restart();
 		else

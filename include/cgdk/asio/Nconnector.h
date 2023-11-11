@@ -10,7 +10,7 @@
 //*  This Program is programmed by Cho SangHyun. sangduck@cgcii.co.kr         *
 //*  Best for Game Developement and Optimized for Game Developement.          *
 //*                                                                           *
-//*                (c) 2003. Cho Sanghyun. All right reserved.                *
+//*                (c) 2019. Cho Sanghyun. All right reserved.                *
 //*                          http://www.CGCII.co.kr                           *
 //*                                                                           *
 //*****************************************************************************
@@ -23,6 +23,7 @@ public:
 	virtual ~Nconnector() noexcept;
 
 	void start(const boost::asio::any_io_executor& _executor);
+	void start();
 	void close() noexcept;
 
 	void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);

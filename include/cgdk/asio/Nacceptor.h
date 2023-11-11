@@ -10,7 +10,7 @@
 //*  This Program is programmed by Cho SangHyun. sangduck@cgcii.co.kr         *
 //*  Best for Game Developement and Optimized for Game Developement.          *
 //*                                                                           *
-//*                (c) 2003. Cho Sanghyun. All right reserved.                *
+//*                (c) 2019. Cho Sanghyun. All right reserved.                *
 //*                          http://www.CGCII.co.kr                           *
 //*                                                                           *
 //*****************************************************************************
@@ -24,7 +24,6 @@ public:
 
 			void start(boost::asio::ip::tcp::endpoint _endpoint);
 			void close() noexcept;
-
 private:
 	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
 			void process_request_accept();

@@ -1,7 +1,7 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                               CGDK::buffer                                *
-//*                       ver 5.0 / release 2021.11.01                        *
+//*                       ver 3.03 / release 2023.10.17                       *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -124,7 +124,7 @@ struct member_size_of
 	constexpr operator Type () const noexcept
 	{
 		// 1) pre-offset
-		offset = alliened_offset_pre<IALIGN>(offset, sizeof(Type));
+		offset = align_offset_pre<IALIGN>(offset, sizeof(Type));
 
 		// 2) get get_size_of source
 		size_object += get_size_of<std::size_t, std::decay_t<Type>>(*reinterpret_cast<const Type*>(source + offset));

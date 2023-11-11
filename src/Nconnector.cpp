@@ -15,6 +15,11 @@ void CGDK::asio::Nconnector::start(const boost::asio::any_io_executor& _executor
 	this->m_executor = _executor;
 }
 
+void CGDK::asio::Nconnector::start()
+{
+	this->start(asio::system::get_io_service().get_executor());
+}
+
 void CGDK::asio::Nconnector::close() noexcept
 {
 }
