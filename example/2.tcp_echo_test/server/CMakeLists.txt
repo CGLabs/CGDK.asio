@@ -69,7 +69,7 @@ INCLUDE_DIRECTORIES(
 
 # 9) library directories
 LINK_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/cgdk/asio.ex
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/cgdk/asio
 )
 
 
