@@ -24,7 +24,6 @@ public:
 
 			void start(boost::asio::ip::tcp::endpoint _endpoint);
 			void close() noexcept;
-
 private:
 	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
 			void process_request_accept();

@@ -1,7 +1,7 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                               CGDK::buffer                                *
-//*                       ver 5.0 / release 2021.11.01                        *
+//*                       ver 3.03 / release 2023.10.17                       *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -21,13 +21,13 @@
 #include <stdexcept>
 #include <type_traits>
 
-// 2) memory
-#if defined(_MSC_VER)
-	#include <xmemory>
-#else
+// 2) stl
+#if !defined(_MSC_VER)
 	#include <memory.h>
 	#include <list>
 #endif
+#include <memory>
+#include <string>
 
 
 //-----------------------------------------------------------------------------
@@ -1261,7 +1261,7 @@ template<class B, class T>	class serializer_append<B, own_ptr<T>, std::enable_if
 							};
 template<class B, class T>	class serializer_extract<B, own_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
 							{	using TX = std::remove_const_t<T>;
-								public:	using type = own_ptr<TX>&&;
+								public:	using type = own_ptr<TX>;
 								template<class S> constexpr static type _do_extract(S& _s) { own_ptr<TX> t = make_own<TX>(); t->serialize_in(_s); return t;}
 								template<class D, class S> constexpr static void _do_extract(D& _dest, S& _s) { _dest = make_own<TX>(); _dest->serialize_in(_s);}
 							};
@@ -1280,11 +1280,11 @@ template<class T>			class serializer_size_of<own_ptr<T>, std::enable_if_t<std::i
 							};
 #endif
 
-// 2) std::shared_ptr<T>- Ibuffer_serializable
+// 4) std::shared_ptr<T>- Ibuffer_serializable
 template<class B, class T>	class serializer_append<B, std::shared_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
 							{	using TX = std::remove_const_t<T>;
 								public:	using type = _buffer_view<typename B::element_t>;
-								template<class S> constexpr static type _do_append(S& _s, const TX* _data) { auto len_old = _s.size(); if(_data != nullptr) {const_cast<TX*>(_data)->serialize_out(_s);} else { _s.template _append<COUNT_T>(COUNT_T(0)-1);} return type(_s.data() + len_old, _s.size() - len_old);}
+								template<class S> constexpr static type _do_append(S& _s, const std::shared_ptr<T>& _data) { auto len_old = _s.size(); if(_data != nullptr) { _data->serialize_out(_s);} else { _s.template _append<COUNT_T>(COUNT_T(0)-1);} return type(_s.data() + len_old, _s.size() - len_old);}
 							};
 template<class B, class T>	class serializer_extract<B, std::shared_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
 							{	using TX = std::remove_const_t<T>;
@@ -1301,7 +1301,33 @@ template<class B, class T>	class serializer_peek<B, std::shared_ptr<T>, std::ena
 template<class T>			class serializer_size_of<std::shared_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
 							{	using TX = std::remove_const_t<T>;
 								public:
-								constexpr static std::size_t  _get_append_size(const TX* _object) { return _object->get_size_of(); }
+								constexpr static std::size_t  _get_append_size(const std::shared_ptr<T>& _object) { return _object->get_size_of(); }
+								template<class S> 
+								constexpr static std::size_t  _get_extract_size(const S& _buffer, int64_t& _offset) noexcept { CGDK_ASSERT_ERROR; return 0;}
+							};
+
+// 5) std::unique_ptr<T>- Ibuffer_serializable
+template<class B, class T>	class serializer_append<B, std::unique_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
+							{	using TX = std::remove_const_t<T>;
+								public:	using type = _buffer_view<typename B::element_t>;
+								template<class S> constexpr static type _do_append(S& _s, const std::unique_ptr<T>& _data) { auto len_old = _s.size(); if(_data != nullptr) { _data->serialize_out(_s);} else { _s.template _append<COUNT_T>(COUNT_T(0)-1);} return type(_s.data() + len_old, _s.size() - len_old);}
+							};
+template<class B, class T>	class serializer_extract<B, std::unique_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
+							{	using TX = std::remove_const_t<T>;
+								public:	using type = std::unique_ptr<TX>;
+								template<class S> constexpr static type _do_extract(S& _s) { std::unique_ptr<TX> t = std::make_unique<TX>(); t->serialize_in(_s); return t;}
+								template<class D, class S> constexpr static void _do_extract(D& _dest, S& _s) { _dest = std::make_unique<TX>(); _dest->serialize_in(_s);}
+							};
+template<class B, class T>	class serializer_peek<B, std::unique_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
+							{	using TX = std::remove_const_t<T>;
+								public:	using type = std::unique_ptr<TX>;
+								template<class S> constexpr static type _do_peek(const S& _s, int64_t& _offset) { S tb =_s + static_cast<std::size_t>(_offset); type tx; tx->serialize_in(tb); return tx;}
+								template<class D, class S> constexpr static void _do_peek(D& _dest, const S& _s, int64_t& _offset) { S tb =_s + static_cast<std::size_t>(_offset); _dest->serialize_in(tb);}
+							};
+template<class T>			class serializer_size_of<std::unique_ptr<T>, std::enable_if_t<std::is_base_of_v<Ibuffer_serializable, T>>>
+							{	using TX = std::remove_const_t<T>;
+								public:
+								constexpr static std::size_t  _get_append_size(const std::unique_ptr<T>& _object) { return _object->get_size_of(); }
 								template<class S> 
 								constexpr static std::size_t  _get_extract_size(const S& _buffer, int64_t& _offset) noexcept { CGDK_ASSERT_ERROR; return 0;}
 							};
@@ -2322,14 +2348,14 @@ template<typename T>		class serializer_size_of<T, std::enable_if_t<is_associativ
 //-----------------------------------------------------------------------------
 // aggrigate structure (reflection)
 //-----------------------------------------------------------------------------
-template <std::size_t ISIZE>	constexpr std::size_t alliened_offset_pre     (std::size_t _source, std::size_t _add);
-template <>						constexpr std::size_t alliened_offset_pre< 1> (std::size_t _source, std::size_t) { return _source; }
-template <>						constexpr std::size_t alliened_offset_pre< 2> (std::size_t _source, std::size_t _add) { return (!(_source & 0x01) || _add <= 1) ? _source : _source + 1;}
-template <>						constexpr std::size_t alliened_offset_pre< 4> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x03); return (remained == 0 || ( 4 - remained) >= _add) ? _source : ((_source & (~0x03)) +  4);}
-template <>						constexpr std::size_t alliened_offset_pre< 8> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x07); return (remained == 0 || ( 8 - remained) >= _add) ? _source : ((_source & (~0x07)) +  8);}
-template <>						constexpr std::size_t alliened_offset_pre<16> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x0f); return (remained == 0 || (16 - remained) >= _add) ? _source : ((_source & (~0x0f)) + 16);}
-template <>						constexpr std::size_t alliened_offset_pre<32> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x1f); return (remained == 0 || (32 - remained) >= _add) ? _source : ((_source & (~0x1f)) + 32);}
-template <>						constexpr std::size_t alliened_offset_pre<64> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x3f); return (remained == 0 || (64 - remained) >= _add) ? _source : ((_source & (~0x3f)) + 64);}
+template <std::size_t ISIZE>	constexpr std::size_t align_offset_pre     (std::size_t _source, std::size_t _add);
+template <>						constexpr std::size_t align_offset_pre< 1> (std::size_t _source, std::size_t) { return _source; }
+template <>						constexpr std::size_t align_offset_pre< 2> (std::size_t _source, std::size_t _add) { return (!(_source & 0x01) || _add <= 1) ? _source : _source + 1;}
+template <>						constexpr std::size_t align_offset_pre< 4> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x03); return (remained == 0 || ( 4 - remained) >= _add) ? _source : ((_source & (~0x03)) +  4);}
+template <>						constexpr std::size_t align_offset_pre< 8> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x07); return (remained == 0 || ( 8 - remained) >= _add) ? _source : ((_source & (~0x07)) +  8);}
+template <>						constexpr std::size_t align_offset_pre<16> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x0f); return (remained == 0 || (16 - remained) >= _add) ? _source : ((_source & (~0x0f)) + 16);}
+template <>						constexpr std::size_t align_offset_pre<32> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x1f); return (remained == 0 || (32 - remained) >= _add) ? _source : ((_source & (~0x1f)) + 32);}
+template <>						constexpr std::size_t align_offset_pre<64> (std::size_t _source, std::size_t _add) { auto remained = (_source & 0x3f); return (remained == 0 || (64 - remained) >= _add) ? _source : ((_source & (~0x3f)) + 64);}
 
 namespace reflection
 {
