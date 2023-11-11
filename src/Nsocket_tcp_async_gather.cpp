@@ -120,13 +120,15 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 	if (!this->m_hold_send)
 		this->m_hold_send = this->shared_from_this();
 
-	// 2) 전송을 위한 boost::asio::const_buffer를 설정.
+	// 2) 전송을 위한 boost::asio::const_buffer
 	boost::asio::const_buffer buffer_transfer { _send_node.buf_send.data(), _send_node.buf_send.size()};
 
 	// 3) send async
 	this->m_socket.async_write_some(buffer_transfer,
         [=, this](boost::system::error_code ec, std::size_t /*length*/)
         {
+
+
 			// check) 
 			if (ec)
 			{
@@ -149,6 +151,8 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 
 			// - reset m_sending
 			this->m_sending = SEND_NODE();
+
+			// 설명) 그 사이에 queueing된 것이 있으면 전송하고 없으면 그냥 끝낸다.
 
 			// check) 
 			if (this->m_send_msgs.empty() || this->m_socket_state < ESOCKET_STATUE::CLOSING)
@@ -175,7 +179,7 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 				// - alloc buffer
 				auto buf_send = alloc_shared_buffer(size);
 
-				// - gather buffers and clear
+				// - gather buffers as one and clear buffers
 				for (auto& iter : this->m_send_msgs)
 				{
 					buf_send.append(iter.buf_send.size(), iter.buf_send.data());
@@ -185,6 +189,7 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 				// = set ...
 				this->m_sending = SEND_NODE{ buf_send, message_count };
 
+				// - send async again~
 				this->process_send_gather_async(this->m_sending);
 			}
 			catch (...)

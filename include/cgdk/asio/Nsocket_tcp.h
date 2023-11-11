@@ -34,7 +34,7 @@ protected:
 			void process_receive_async();
 
 			shared_buffer m_received_msg;
-			boost::asio::mutable_buffer m_receiving_msg;
+			boost::asio::mutable_buffer m_asio_receiving_msg;
 			std::shared_ptr<Isocket_tcp> m_hold_async;
 			shared_buffer::object_ptr_t m_hold_receiving;
 };

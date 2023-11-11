@@ -37,10 +37,21 @@ void CGDK::asio::Nsocket_tcp::process_connect_complete()
 
 	// 3) reset buffer
 	this->m_received_msg = alloc_shared_buffer(RECEIVE_BUFFER_SIZE);
-	this->m_receiving_msg = boost::asio::mutable_buffer{ this->m_received_msg.data(), RECEIVE_BUFFER_SIZE};
+	this->m_asio_receiving_msg = boost::asio::mutable_buffer{ this->m_received_msg.data(), RECEIVE_BUFFER_SIZE};
 
-	// 4) read async
-	this->process_receive_async();
+	try
+	{
+		// 4) read async
+		this->process_receive_async();
+	}
+	catch (...)
+	{
+		// - close socket!
+		this->process_closesocket(boost::asio::error::operation_aborted);
+
+		// reraise)
+		throw;
+	}
 }
 
 void CGDK::asio::Nsocket_tcp::process_closesocket(boost::system::error_code _error_code) noexcept
@@ -134,9 +145,18 @@ bool CGDK::asio::Nsocket_tcp::process_send_sync(SEND_NODE&& _send_node)
 }
 void CGDK::asio::Nsocket_tcp::process_receive_async()
 {
+	// ----------------------------------------------------------------------------
+	// 설명) 비동기 receive를 건다.
+	// 
+	// 전송 데이터를 받기 위해 receive 버퍼를 미러 걸어 놓는 작업과
+	// 그 비동기 receive가 완료 되어 왔을 때 message를 처리하고 다시
+	// receive를 거는 작업을 수행합니다.
+	// 
+	// ----------------------------------------------------------------------------
+
 	// definitions) 
-	static const size_t MAX_MESSAGE_SIZE = 1024 * 1024;
-	static const size_t MIN_MESSAGE_BUFFER_ROOM = 256;
+	static const size_t MAX_MESSAGE_SIZE = 1024 * 1024; // 메시지의 최대 크기(오류나 해킹으로 인해 너무 큰 메시지가 들어오면 문제가 될 수 있으므로 크기 제한을 해줍니다..)
+	static const size_t MIN_MESSAGE_BUFFER_ROOM = 256; // receive 버퍼의 최소 크기.
 
 	// 1) hold self (비동기 receive 처리가 완료 될 때까지 객체의 소멸을 막기 위해 hold)
 	if(!this->m_hold_async)
@@ -146,7 +166,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 	this->m_hold_receiving = this->m_received_msg.get_source();
 
 	// 3) send async
-	this->m_socket.async_read_some(this->m_receiving_msg,
+	this->m_socket.async_read_some(this->m_asio_receiving_msg,
 		[=, this](boost::system::error_code _error_code, std::size_t _length)
 		{
 			// - release receiving buffer
@@ -212,7 +232,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 					}
 
 					// - make message ( 반드시 복사해야 한다. on_message 처리 중 값을 변화시킬 수 있으므로...)
-					temp_buffer = temp_received ^ message_size;
+					temp_buffer = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 temp_buffer로 넣는다.
 
 					// - on message
 					this->on_message(temp_buffer);
@@ -230,9 +250,9 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 				// - 
 				this->m_received_msg = temp_received;
-				this->m_receiving_msg += _length;
+				this->m_asio_receiving_msg += _length;
 
-				if (this->m_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_receiving_msg.size() < temp_buffer.size())
+				if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < temp_buffer.size())
 				{
 					// - 기본 메시지 buffer 크기
 					auto size_new = RECEIVE_BUFFER_SIZE;
@@ -250,7 +270,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 					// - 새로운 buffer를 설정한다.
 					this->m_received_msg = buf_new + offset(temp_received.size());
-					this->m_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
+					this->m_asio_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
 				}
 
 				// - read 

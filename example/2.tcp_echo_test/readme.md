@@ -1,6 +1,23 @@
 # simle tcp echo
-클라이언트가 서버에 접속되면 10개의 메시지를 전송하고 <br>
-메시지를 받은 서버는 클라이언트로 바로 echo 전송하는 예제입니다.<br>
+대규모 송수신과 랜덤 접속 테스트를 할 수 있는 서버와 클라이언트 입니다.<br>
+asio인 만큼 극단적인 성능까지는 아니더라도 일반적인 서버에서 충분히 쓸 수 있을 만큼의 성능을 발휘해 줍니다.<br>
+이 tcp echo test server와 client로 크게 2가지의 테스트를 수행 할 수 있습니다.<br>
+<br>
+__첫번째, 접속 테스트__<br>
+1초당 정해진 수량의 socket을 신규로 접속하고 접속 해제하는 테스트입니다.<br>
+초당 수백 수천번의 접속과 접속 해제를 하며 접속 성능과 함께 안정성을 확인할 수 있습니다.<br>
+서버가 다운되거나 더이상 접속을 받지 못하거나 메모리가 계속 증가하게 되면 안되겠죠.<br>
+<br>
+
+__두번째, 전송 능력 테스트__<br>
+접속한 소캣당 많은 수의 메시지를 전송하여 얼마만큼의 메시지를 안정적으로 송수신할 수 있는지를 테스트 할 수 있습니다.<br>
+test client는 전송하는 메시지의 크기를 8byte로 부터 256Mbyte 크기까지 설정하여 송수신 테스트를 할 수 있습니다.<br>
+또 초당 몇 개의 메시지를 전송할 것인가를 설정할 수도 있습니다.<br>
+<br>
+__세번째, 두가지 모두 테스트__<br>
+접속테스트와 전송 테스트를 한꺼번에 진행 할 수 있습니다.
+서버용 모듈이라면 접속과 송수신을 한꺼번에 동작시켜 하드웨어 성능의 극한까지 테스트 해서 안정적이여아만 할 것입니다.
+
 
 ## Directory
 
@@ -33,146 +50,7 @@ $ make
 ```
 <br>
 
-## server
-기본 구성 요소인 acceptor의 사용법으로 보여 줍니다.<br>
+## 사용법
 
-'CGDK.asio.tcp_echo_server.vs17.sln'<br>
-
-1. 먼저 CGDK.asio의 헤더 파일을 include해줍니다.<br>
-
-```c++
-#include "cgdk/asio.h"
-```
-<br>
-
-2. socket_tcp를 CGDK::asio::Nsocket_tcp 상속 받아 정의합니다.<br>
-3. on_connect, on_disconnect, on_message 함수를 재정의해 줍니다.<br>
-```c++
-class socket_tcp : public asio::Nsocket_tcp
-{
-public:
-	virtual void on_connect() override
-	{
-		// trace)
-		std::cout << "@ connected" << std::endl;
-	}
-	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept override
-	{
-		// trace)
-		std::cout << "@ disconnted" << std::endl;
-	}
-	virtual int on_message(shared_buffer& _msg) override
-	{
-		// trace)
-		std::cout << "@ message received " << _msg.size() << "bytes" << std::endl;
-
-		// - echo send
-		send(_msg);
-		return 1;
-	}
-};
-```
-<br>
-
-4. server는 acceptor를 생성 후 start함수로 20000번 포트로 클라이언트의 접속을 대기합니다.<br>
-
-```c++
-int main()
-{
-	// trace)
-	std::cout << "starting server..." << std::endl;
-
-	// 1) create acceptor
-	auto pacceptor = std::make_shared<asio::acceptor<socket_tcp>>();
-
-	// 2) start accept
-	pacceptor->start(tcp::endpoint{ boost::asio::ip::tcp::v6(), 20000 });
-
-	// 3) wait for exit pressing ESC key
-	while (_getch() != 27);
-
-	// trace)
-	std::cout << "terminating server..." << std::endl;
-}
-```
-<br>
-
-5. 접속이 들어오면 sockt_tcp 객체를 신규 생성해 on_connect 함수를 호출해 줍니다.<br>
-6. 메시지가 전달되어 오면 on_message 함수를 호출해 줍니다.<br>
-7. 접속이 종료되면 on_disconnect 함수를 호출해 줍니다.<br>
-8. socket_tcp 객체의 멤버함수인 send를 호출하면 그 소켓이 연결된 클라이언트로 메시지를 전송합니다.<br>
-<br>
-<br>
-
-## client<br>
-
-클라이언트가 접속을 해서 메시지를 전송하는 것을 보여 줍니다.<br>
-
-'CGDK.asio.tcp_echo_client.vs17.sln'<br>
-
-1. 먼저 socket_tcp을 CGDK::asio::Nsocket_tcp과 CGDK::asio::Nconnect_requestable를 상속받아 정의합니다.<br>
-   ('CGDK::asio::Nconnect_requestable'는 접속 기능을 제공합니다.)<br>
-
-```c++
-class socket_tcp : public asio::Nsocket_tcp, public asio::Nconnect_requestable
-{
-public:
-	virtual void on_connect() override
-	{
-		// trace)
-		std::cout << "@ connected" << std::endl;
-
-		// - make message 
-		auto buf = alloc_shared_buffer(32);
-		buf.append<uint32_t>(8);
-		buf.append<uint32_t>(100);
-
-		// - send 10 times
-		for(int i=0;i<10;++i)
-			send(buf);
-	}
-	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept override
-	{
-		// trace)
-		std::cout << "@ disconnted" << std::endl;
-	}
-	virtual int on_message(shared_buffer& _msg) override
-	{
-		// trace)
-		std::cout << "@ message received " << _msg.size() << "bytes" << std::endl;
-		return 1;
-	}
-};
-```
-<br>
-
-2. socket_tcp 객체를 생성합니다.<br>
-3. socket_tcp 객체의 멤버함수인 start 함수를 호출해 원하는 주소로 접속을 시도한다.<br>
-   접속 주소는 boost::asio::ip를 사용해 지정합니다.<br>
-
-```c++
-int main()
-{
-	// trace)
-	std::cout << "starting client..." << std::endl;
-
-	// 1) create socket
-	auto psocket_tcp = std::make_shared<socket_tcp>();
-
-	// 2) start(connect)
-	psocket_tcp->start(boost::asio::ip::tcp::endpoint{ boost::asio::ip::address_v4::loopback(), 20000 });
-
-	// 3) wait for exit pressing ESC key
-	while (_getch() != 27);
-
-	// trace)
-	std::cout << "terminating client..." << std::endl;
-}
-```
-
-<br>
-
-4. 접속이 성공하면 on_connect가 호출되며 실패하면 on_fail_connect가 호출됩니다.
-5. 접속이 종료되면 on_disconnect 함수, 메시지가 전달되어 오면 on_message 함수가 호출됩니다.
-6. socket의 멤버함수인 send를 사용해 메시지를 전송할 수 있습니다.(서버에서의 socket과 동일합니다.)
-7. socket의 on_connect에서 8byte 메시지를 상대에게 10번 전송하도록 작성 되었습니다.
+서버와 클라이언트는 실행 파일을 실행 하시면 됩니다.
+서버와 클라이언트의 console 화면에 조작키에 대한 설명이 나올 것 입니다.
