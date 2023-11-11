@@ -1,10 +1,10 @@
 # What is CGDK.asio classes
 asio를 이용해 CGDK와 유사한 인터페이스를 가지도록 설계한 network 모듈입니다.<br>
-송수신은 CGDK.buffer를 사용하도록 설계를 했습니다.<br>
-네트워크 송수신 through-put 성능 향상을 위해 기본적인 비동기 전송 처리를 구현했습니다.<br>
+송수신에 CGDK.buffer를 사용해 구현했습니다.<br>
+네트워크 송수신 through-put 성능 향상을 위해 기본적인 비동기 및 gathering 전송 처리를 구현했습니다.<br>
+(다만 asio의 특성상 buffer를 사용한 조금 부족함 gathering 처리이긴 합니다만...)
 asio를 사용한 간략한 버전인 만큼 CGDK에서 제공되는 메모리풀이나 객체풀, 다양한 송수신 효율화 및 안정화 알고리즘들은 구현되지 않았지만 <br>
 일반적인 상용 server에서도 사용할 수 있을 정도의 성능과 안정성은 제공할 것으로 생각합니다.<br>
-
 <br>
 
 # Getting Start
@@ -24,14 +24,15 @@ windows의 경우 이 디렉토리에 'CGDK.asio.vs17.sln' 파일을 열어 엔�
 간단한 서버와 클라이언트 예제입니다.
 (엔진('/src')를 먼저 컴파일 후 컴파일 하셔야 됩니다.)
 디렉토리에 자세한 설명이 있습니다.
-1.simple ()
+1.simple 간단한 서버와 클라이언트의 예제입니다.
+2.tcp_echo_test tcp 송수신 능력과 접속 능력을 테스트 할 수 있는 서버와 클라이언트 예제입니다.
 
 <br>
 
 # Compile
 ### windows
 visual studio 2022이상 필요합니다.<br>
-엔진은 'src/CGDK.asio.vs17.sln'을 열어 컴파일 하시면 .lib 혹은 .a 파일이 생성됩니다.<br>
+'src/CGDK.asio.vs17.sln'을 열어 컴파일 하시면 .lib 파일이 생성됩니다.<br>
 
 ### linux
 gcc와 cmake가 필요합니다.<br>
@@ -46,6 +47,8 @@ $ cmake . -DCMAKE_BUILD_TYPE=Release
 $ make
 ```
 프로젝트 루트 디렉토리에서 make를 하면 엔진 컴파일(lib파일)과 example까지 한번에 컴파일할 수 있습니다.<br>
+정적 라이브로리(.a 파일)을 /lib 디렉토리에 생성합니다.<br>
+('.so' 파일이 필요하시면 cmake 파일을 조금 수정하시면 됩니다. 하지만 서버라면 웬만하면 '.a'파일을 쓰는 것을 추천합니다.)<br>
 <br>
 <br>
 > sangducks@gmail.com<br>
