@@ -1,7 +1,7 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                                 CGDK.asio                                 *
+#*                      Ver 10.0 / release 2019.12.11                        *
 #*                                                                           *
 #*                                   CMake                                   *
 #*                                                                           *
@@ -20,7 +20,7 @@
 # setting
 #-----------------------------------------------------------------------------
 # 1) project name
-PROJECT ( "CGDK.asio.example" )
+PROJECT ( "CGDK.asio.ex.example.tcp_echo" )
 
 # 2) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -37,8 +37,9 @@ CMAKE_POLICY( VERSION 3.20 )
 #-----------------------------------------------------------------------------
 # compile
 #-----------------------------------------------------------------------------
-# 1) simple tcp echo
-ADD_SUBDIRECTORY (1.simple)
+# 1) client - CGCII
+ADD_SUBDIRECTORY (client)
 
-# 1) simple tcp echo
-ADD_SUBDIRECTORY (2.tcp_echo_test)
+# 2) client - asio
+ADD_SUBDIRECTORY (server)
+

@@ -23,6 +23,7 @@ public:
 	virtual ~Nconnector() noexcept;
 
 	void start(const boost::asio::any_io_executor& _executor);
+	void start();
 	void close() noexcept;
 
 	void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);

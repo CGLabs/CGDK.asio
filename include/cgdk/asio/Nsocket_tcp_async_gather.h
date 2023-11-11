@@ -16,11 +16,11 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nsocket_tcp_gather_buffer : public Nsocket_tcp_gather
+class CGDK::asio::Nsocket_tcp_async_gather : public Nsocket_tcp_async
 {
 public:
-			Nsocket_tcp_gather_buffer();
-	virtual ~Nsocket_tcp_gather_buffer() noexcept;
+			Nsocket_tcp_async_gather();
+	virtual ~Nsocket_tcp_async_gather() noexcept;
 
 protected:
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;

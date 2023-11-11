@@ -17,7 +17,7 @@
 #pragma once
 
 #ifdef _WIN32
-	#pragma warning(disable:4250 6001 6255 6258 6387 26439 26451 26452 26495 26498)
+	#pragma warning(disable:4250 6001 6255 6258 6387 26437 26439 26451 26452 26495 26498)
 #endif
 
 #include <boost/asio/io_service.hpp>
@@ -30,7 +30,7 @@
 #include <thread>
 
 #ifdef _WIN32
-	#pragma warning(default:6001 6255 6258 6387 26439 26451 26452 26495 26498)
+	#pragma warning(default:6001 6255 6258 6387 26437 26439 26451 26452 26495 26498)
 #endif
 
 #include "cgdk/shared_buffer"
@@ -52,8 +52,8 @@ namespace CGDK
 		class Nconnector;
 		class Nconnect_requestable;
 		class Nsocket_tcp;
-		class Nsocket_tcp_gather;
-		class Nsocket_tcp_gather_buffer;
+		class Nsocket_tcp_async;
+		class Nsocket_tcp_async_gather;
 		class Nsocket_tcp_client;
 
 		template <class> class acceptor;
@@ -68,8 +68,8 @@ namespace CGDK
 #include "asio/Nstatistics.h"
 #include "asio/Isocket_tcp.h"
 #include "asio/Nsocket_tcp.h"
-#include "asio/Nsocket_tcp_gather.h"
-#include "asio/Nsocket_tcp_gather_buffer.h"
+#include "asio/Nsocket_tcp_async.h"
+#include "asio/Nsocket_tcp_async_gather.h"
 #include "asio/Nconnect_requestable.h"
 #include "asio/Nsocket_tcp_client.h"
 #include "asio/Nconnective.h"

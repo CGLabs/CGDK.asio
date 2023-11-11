@@ -1,17 +1,17 @@
 ﻿#include "cgdk/asio.h"
 
 
-CGDK::asio::Nsocket_tcp_gather_buffer::Nsocket_tcp_gather_buffer()
+CGDK::asio::Nsocket_tcp_async_gather::Nsocket_tcp_async_gather()
 {
 }
 
-CGDK::asio::Nsocket_tcp_gather_buffer::~Nsocket_tcp_gather_buffer() noexcept
+CGDK::asio::Nsocket_tcp_async_gather::~Nsocket_tcp_async_gather() noexcept
 {
 	// 1) complete close socket
 	this->process_closesocket(boost::asio::error::connection_aborted);
 }
 
-void CGDK::asio::Nsocket_tcp_gather_buffer::process_closesocket(boost::system::error_code _error_code) noexcept
+void CGDK::asio::Nsocket_tcp_async_gather::process_closesocket(boost::system::error_code _error_code) noexcept
 {
 	// 1) abortive close
 	this->process_close_native_handle();
@@ -63,7 +63,7 @@ void CGDK::asio::Nsocket_tcp_gather_buffer::process_closesocket(boost::system::e
 	}
 }
 
-bool CGDK::asio::Nsocket_tcp_gather_buffer::process_send(SEND_NODE&& _send_node)
+bool CGDK::asio::Nsocket_tcp_async_gather::process_send(SEND_NODE&& _send_node)
 {
 	// check) 
 	if (this->m_socket_state < ESOCKET_STATUE::CLOSING)
@@ -114,7 +114,7 @@ bool CGDK::asio::Nsocket_tcp_gather_buffer::process_send(SEND_NODE&& _send_node)
 	return result;
 }
 
-void CGDK::asio::Nsocket_tcp_gather_buffer::process_send_gather_async(const SEND_NODE& _send_node)
+void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_NODE& _send_node)
 {
 	// 1) hold self
 	if (!this->m_hold_send)
