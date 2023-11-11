@@ -23,7 +23,10 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
-# 2) project version
+# 2) project name
+PROJECT ( "cgcii.asio" )
+
+# 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
 SET ( PROJECT_VERSION_MINOR 0 )
 SET ( PROJECT_VERSION_PATCH 100 )
