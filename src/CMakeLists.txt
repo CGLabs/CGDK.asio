@@ -87,8 +87,8 @@ Nconnect_requestable.cpp
 Nacceptor.cpp
 Isocket_tcp.cpp
 Nsocket_tcp.cpp
-Nsocket_tcp_gather.cpp
-Nsocket_tcp_gather_buffer.cpp
+Nsocket_tcp_async.cpp
+Nsocket_tcp_async_gather.cpp
 system.cpp
 )
 

@@ -62,7 +62,7 @@ public:
 			std::size_t			m_connect_test_max = 0;
 
 	// 2) send test
-			std::atomic<uint64_t> m_traffic_send_requested = 0;
+			std::atomic<int64_t> m_traffic_send_requested = 0;
 			bool				m_enable_traffic_test = false;
 			std::size_t			m_traffic_test_selected = 0;
 			std::size_t			m_traffic_test_count_per_single = 0;

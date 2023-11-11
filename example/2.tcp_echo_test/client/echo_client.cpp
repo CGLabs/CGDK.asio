@@ -397,15 +397,15 @@ void test_tcp_echo_client::process_execute_send()
 	// 1) send
 	this->process_send_message(m_traffic_test_selected, m_traffic_test_count_per_single);
 
+	// 2) ...
+	auto value = --this->m_traffic_send_requested;
+
 	// check)
 	if (this->m_enable_traffic_test == false)
 		return;
 
-	// 2) ...
-	auto value = --this->m_traffic_send_requested;
-
 	// check) 0이 아닐 경우 또 걸기...
-	if (value != 0)
+	if (value > 0)
 	{
 		auto result_future = std::async(&test_tcp_echo_client::process_execute_send, this);
 
