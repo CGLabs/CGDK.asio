@@ -60,6 +60,9 @@ void CGDK::asio::system::process_run_executor()
 	// declare) 
 	boost::system::error_code ec;
 
+	// - work quard
+	auto work_guard = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(this->io_service.get_executor());
+
 	for (;;)
 	{
 		// - run

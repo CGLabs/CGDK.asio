@@ -395,7 +395,7 @@ void test_tcp_echo_client::destroy()
 void test_tcp_echo_client::process_execute_send()
 {
 	// 1) send
-	this->process_send_message(m_traffic_test_selected, m_traffic_test_count_per_single);
+	this->process_send_message(this->m_traffic_test_selected, this->m_traffic_test_count_per_single);
 
 	// 2) ...
 	auto value = --this->m_traffic_send_requested;
@@ -415,7 +415,7 @@ void test_tcp_echo_client::process_execute_send()
 
 void test_tcp_echo_client::process_execute()
 {
-	while (m_is_thread_run)
+	while (this->m_is_thread_run)
 	{
 		// 1) traffice test
 		this->process_traffic_test();

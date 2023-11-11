@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.ex.example.tcp_echo.client" )
+PROJECT ( "CGDK.asio.example.tcp_echo.client" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
