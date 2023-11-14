@@ -11,14 +11,14 @@ asio를 사용한 간략한 버전인 만큼 CGDK에서 제공되는 메모리�
 ### Directory 설명
 - /include<br>
 .h 파일들이 들어 있는 디렉토리로 컴파일시 이곳을 include directory로 설정해 주어야 합니다.<br>
-그리고 'include/cgdk/asio.h' 파일을 #include를 통해 포함시켜주면 사용 가능합니다.<br>
+그리고 'include/cgdk/asio.h' 파일을 포함(#include ...)시켜주면 사용 가능합니다.<br>
 
 - /src <br>
 .cpp 파일들이 들어 있는 폴더입니다.<br>
-windows의 경우 이 디렉토리에 'CGDK.asio.vs17.sln' 파일을 열어 엔진를 컴파일 할 수 있습니다.<br>
+windows의 경우 이 디렉토리에 'CGDK.asio.vs17.sln' 파일을 열어 코어를 컴파일 할 수 있습니다.<br>
 
 - /lib<br>
-엔진이 컴파일 되면 '/lib/cgdk/asio' 디렉토리에 .lib파일 혹은 .a파일이 생성됩니다.<br>
+코어가 컴파일 되면 '/lib/cgdk/asio' 디렉토리에 .lib파일 혹은 .a파일이 생성됩니다.<br>
 
 - /example<br>
 간단한 서버와 클라이언트 예제입니다.
