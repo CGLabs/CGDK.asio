@@ -1,5 +1,5 @@
 # simle tcp echo
-가장 간단한 server와 client를 만드는 예제를 보여줍니다.
+간단한 server와 client를 만드는 예제를 보여줍니다.
 클라이언트가 서버에 접속되면 10개의 메시지를 전송하고 <br>
 메시지를 받은 서버는 클라이언트로 바로 echo 전송하는 예제입니다.<br>
 알아야 하는 것은 socket 클래스, acceptor 클래스 이 두가지만 아시면 됩니다.
