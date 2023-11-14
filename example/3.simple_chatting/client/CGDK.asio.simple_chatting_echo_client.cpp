@@ -95,8 +95,8 @@ int main()
 			}
 			else
 			{
+				std::cout << static_cast<char>(ch);
 				g_chatting_input.append(1, static_cast<char>(ch));
-				::putchar(ch);
 			}
 		}
 
