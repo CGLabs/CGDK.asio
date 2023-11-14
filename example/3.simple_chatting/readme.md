@@ -1,9 +1,9 @@
-# simle tcp echo
-간단한 server와 client를 만드는 예제를 보여줍니다.
-클라이언트가 서버에 접속되면 10개의 메시지를 전송하고 <br>
-메시지를 받은 서버는 클라이언트로 바로 echo 전송하는 예제입니다.<br>
-알아야 하는 것은 socket 클래스, acceptor 클래스 이 두가지만 아시면 됩니다.
-socket은 server와 client이 동일하게 사용되지만 client는 접속 기능을 추가한다는 것만 차이가 있습니다.
+# simle chatting
+콘솔창을 사용한 간단하 chatting server와 client의 예제입니다..
+서버는 하나의 채팅방만 존재합니다.
+따라서 서버에 접속한 클라이언트는 이 방에 입장합니다.
+서버는 멤버의 입장과 퇴장을 전체 멤버에게 알립니다.(다만 멤버의 id가 존재하지 않습니다.)
+클라이언트에서 문자열을 전송하면 전체 멤버들에게 채팅 매시지가 전송됩니다.<br>
 
 ## Directory
 
@@ -54,36 +54,58 @@ __3.__ 상속 받은 후 on_connect, on_disconnect, on_message 함수를 재정�
 이 함수들은 각각 접속되었을 때, 접속이 종료되었을 때, 메시지가 전달되어 왔을 때 호출 되는 함수입니다.
 
 ```c++
-class socket_tcp : public asio::Nsocket_tcp
+class socket_tcp : public asio::Nsocket_tcp, public asio::Nconnect_requestable
 {
 public:
-	virtual void on_connect() override
-	{
-		// trace)
-		std::cout << "@ connected" << std::endl;
-	}
-	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept override
-	{
-		// trace)
-		std::cout << "@ disconnted" << std::endl;
-	}
-	virtual int on_message(shared_buffer& _msg) override
-	{
-		// trace)
-		std::cout << "@ message received " << _msg.size() << "bytes" << std::endl;
-
-		// - echo send
-		send(_msg);
-		return 1;
-	}
+	virtual void on_connect() override;
+	virtual void on_disconnect(boost::system::error_code _error_code) noexcept override;
+	virtual int on_message(shared_buffer& _msg) override;
 };
 ```
 <br>
 
-__4.__ acceptor를 생성합니다. 이 때 앞에서 정의한 socket_tcp 클래스를 템플릿 인자로 넣어 줍니다.<br>
-생성된 acceptor 객체의 start함수를 호출하면 listen을 시작합니다.(클라이언트 접속을 기다립니다.)<br>
-이때 bind할 주소를 20000번 포트로 설정합니다.<br>
-(ip v6로 ip를 설정하면 ip v4로도 같이 받습니다. ip v4로 설정하면 ip v4만 받습니다. 물론 bind_any일 때)
+```c++
+void socket_tcp::on_connect() 
+{
+	// 1) group에 입장합니다.(enter chatting group)
+	g_pgroup_chatting->enter_member(std::dynamic_pointer_cast<socket_tcp>(this->shared_from_this()));
+
+	// trace)
+	std::cout << "@ connected" << std::endl;
+}
+
+void socket_tcp::on_disconnect(boost::system::error_code /*_error_code*/) noexcept
+{
+	// 1) group에서 퇴장합니다.(leave chatting group)
+	g_pgroup_chatting->leave_member(std::dynamic_pointer_cast<socket_tcp>(this->shared_from_this()));
+
+	// trace)
+	std::cout << "@ disconnted" << std::endl;
+}
+
+int socket_tcp::on_message(shared_buffer& _msg)
+{
+	// 1) 전체 group의 멤버들에게 전송합니다.(send to all member)
+	g_pgroup_chatting->send(_msg);
+
+	// trace)
+	std::cout << "@ message received" << std::endl;
+
+	// return) 
+	return 1;
+}
+```
+__4.__ 클라이언트가 접속을 하면(socket_tcp::on_connect) 바로 g_group_chatting에 입장시킵니다.
+ 이때 shared_from_this 함수로 this(자신)의 shared_ptr를 얻어냅니다.
+ 하지만 이것은 socket_tcp의 포인터가 아니므로 dynamic_pointer_cast<socket_tcp>를 사용해 std::shared_ptr<socket_tcp>로 캐스팅을 해줍니다.
+ 
+
+__5.__ 클라이언트가 접속 해제를 하면 g_pgroul_chatting에서 퇴장시킵니다.<br>
+이때도 역시 on_connect 때와 같이 shared_from_hist를 dynamic_pointer_cast한 shared_ptr<socket_tcp>를 사용해 퇴장시켜줍니다.
+
+__6.__ 메시지가 전송되어 오면 g_pgroup_chatting의 모든 멤버들에게 그대로 echo 전송을 헤줍니다.
+<br>
+
 
 ```c++
 int main()
