@@ -2,7 +2,6 @@
 
 void group_chatting::enter_member(std::shared_ptr<socket_tcp>&& _pmember)
 {
-
 	// lock)
 	std::lock_guard lock(this->m_lock_memer);
 

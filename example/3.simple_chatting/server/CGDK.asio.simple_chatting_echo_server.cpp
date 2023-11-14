@@ -9,7 +9,7 @@
 int main()
 {
 	// trace)
-	std::cout << "starting server..." << std::endl;
+	std::cout << "starting server... [CGDK.asio example.3.simple_chatting server]" << std::endl;
 
 	// 1) create entities
 	g_pgroup_chatting = std::make_shared<group_chatting>();

@@ -3,4 +3,7 @@
   <ItemGroup>
     <ClCompile Include="CGDK.asio.simple_chatting_echo_client.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\definitions_message.h" />
+  </ItemGroup>
 </Project>

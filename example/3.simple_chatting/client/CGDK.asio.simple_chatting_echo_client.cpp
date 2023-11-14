@@ -8,9 +8,10 @@
 	int _getch();
 #endif
 using namespace std::chrono_literals;
+std::string g_chatting_input;
 
 
-class socket_tcp : public asio::Nsocket_tcp, public asio::Nconnect_requestable, std::enable_shared_from_this<socket_tcp>
+class socket_tcp : public asio::Nsocket_tcp, public asio::Nconnect_requestable
 {
 public:
 	virtual void on_connect() override
@@ -32,15 +33,16 @@ public:
 		switch (msg_recv.extract<int>())
 		{
 		case	eMESSAGE::ENTER:
-				std::cout << "> member entered" << std::endl;
+				std::cout << '\r' << "> member entered" << std::endl << ">> " << g_chatting_input;
 				break;
 
 		case	eMESSAGE::LEAVE:
-				std::cout << "< member leaved" << std::endl;
+				std::cout << '\r' << "< member leaved" << std::endl << ">> " << g_chatting_input;
 				break;
 
 		case	eMESSAGE::CHATTING:
-				std::cout << '\r' << msg_recv.extract<std::string>() << std::endl;
+				std::cout << "\r\033[J" << msg_recv.extract<std::string>() << std::endl << ">> " << g_chatting_input;
+			
 				break;
 		}
 
@@ -61,7 +63,7 @@ shared_buffer make_chatting_message(const std::string& _string)
 int main()
 {
 	// trace)
-	std::cout << "starting client..." << std::endl;
+	std::cout << "starting client... [CGDK.asio example.3.simple_chatting client]" << std::endl;
 
 	// 1) create socket
 	auto psocket_tcp = std::make_shared<socket_tcp>();
@@ -69,17 +71,14 @@ int main()
 	// 2) start(connect)
 	psocket_tcp->start(boost::asio::ip::tcp::endpoint{ boost::asio::ip::address_v4::loopback(), 20000 });
 
-	// declare)
-	std::string chatting_input;
-
 	// 3) loop(exit pressing ESC key)
 	for (;;)
 	{
 		// - key 눌렀나?
-		if (_kbhit())
+		if (::_kbhit())
 		{
 			// - Key를 읽는다.
-			int	ch = _getch();
+			int	ch = ::_getch();
 
 			// - ESC키를 누르면 접속을 종료한다.
 			if (ch == 27)
@@ -91,18 +90,18 @@ int main()
 			if(ch == 0x0a)
 		#endif
 			{
-				psocket_tcp->send(make_chatting_message(chatting_input));
-				chatting_input.clear();
+				auto str_end = std::move(g_chatting_input);
+				psocket_tcp->send(make_chatting_message(str_end));
 			}
 			else
 			{
-				chatting_input.append(1, static_cast<char>(ch));
+				g_chatting_input.append(1, static_cast<char>(ch));
+				::_putch(ch);
 			}
 		}
 
 		std::this_thread::sleep_for(10ms);
 	}
-
 
 	// trace)
 	std::cout << "terminating client..." << std::endl;
