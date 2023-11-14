@@ -82,7 +82,7 @@ SET (SRC_FILES
 util.linux.cpp
 
 # main
-CGDK.asio.tcp_echo_server.cpp
+CGDK.asio.simple_tcp_server.cpp
 
 )
 
