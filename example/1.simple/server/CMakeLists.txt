@@ -1,9 +1,9 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                      Ver 10.0 / release 2019.12.11                        *
+#*                             CGDK.asio classes                             *
 #*                                                                           *
-#*                     CMake - CGDK.asio.tcp_echo_server                     *
+#*                     CMake - example.simple_tcp.server                     *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.tcp_echo_server" )
+PROJECT ( "CGDK.asio.example.simple_tcp.server" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )

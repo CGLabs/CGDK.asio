@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                                 CGDK.asio                                 *
 #*                                                                           *
-#*                                   CMake                                   *
+#*                              CMake - example                              *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -37,8 +37,11 @@ SET ( DEFAULT_BUILD_TYPE Debug )
 #-----------------------------------------------------------------------------
 # compile
 #-----------------------------------------------------------------------------
-# 1) simple tcp echo
+# 1) simple tcp server/client
 ADD_SUBDIRECTORY (1.simple)
 
-# 1) simple tcp echo
+# 2) tcp echo server/client
 ADD_SUBDIRECTORY (2.tcp_echo_test)
+
+# 3) simple chatting server/client
+ADD_SUBDIRECTORY (3.simple_chatting)

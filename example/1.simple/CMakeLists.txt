@@ -1,9 +1,9 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                                asio classes                               *
+#*                             CGDK.asio classes                             *
 #*                                                                           *
-#*                                   CMake                                   *
+#*                        CMake - example.simple_tcp                         *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "cgcii.asio.example.tcp_ech" )
+PROJECT ( "CGDK.asio.example.simple_tcp" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )

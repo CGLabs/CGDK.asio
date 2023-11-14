@@ -1,9 +1,9 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                      Ver 10.0 / release 2019.12.11                        *
+#*                             CGDK.asio classes                             *
 #*                                                                           *
-#*             CMake - CGDK10.tcp_echo.client.console with asio              *
+#*                    CMake - example.tcp_echo_test.client                   *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *

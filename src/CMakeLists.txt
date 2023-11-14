@@ -1,7 +1,7 @@
 #*****************************************************************************
 #*                                                                           *
 #*                      Cho sanghyun's Game Classes II                       *
-#*                                 CGDK.asio                                 *
+#*                             CGDK.asio classes                             *
 #*                                                                           *
 #*                                   CMake                                   *
 #*                                                                           *
