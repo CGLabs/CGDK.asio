@@ -4,6 +4,16 @@
     <ClCompile Include="CGDK.asio.simple_chatting_echo_client.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\definitions_message.h" />
+    <Filter Include="common">
+      <UniqueIdentifier>{29113aa3-de25-4fb2-982a-aadfde9b9a7e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\definitions_message.h">
+      <Filter>common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vcpkg.json" />
   </ItemGroup>
 </Project>

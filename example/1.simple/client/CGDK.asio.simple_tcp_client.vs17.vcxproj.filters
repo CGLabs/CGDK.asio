@@ -7,6 +7,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cgdk.asio.tcp_echo_client.cpp" />
+    <ClCompile Include="CGDK.asio.simple_tcp_client.cpp" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,16 @@
     <ClInclude Include="group_chatting.h" />
     <ClInclude Include="socket_tcp.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="..\definitions_message.h" />
+    <ClInclude Include="..\definitions_message.h">
+      <Filter>common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{ca4d227c-9e42-4b51-9471-630817d3ee52}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vcpkg.json" />
   </ItemGroup>
 </Project>

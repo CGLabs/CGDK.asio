@@ -82,8 +82,8 @@ SET (SRC_FILES
 util.linux.cpp
 
 # echo server console
-CGDK.asio.tcp_echo_server.console.cpp
-CGDK.asio.tcp_echo_server.console.ex.cpp
+CGDK.asio.tcp_echo_server.cpp
+CGDK.asio.tcp_echo_server.ex.cpp
 )
 
 

@@ -7,6 +7,6 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CGDK.asio.tcp_echo_server.cpp" />
+    <ClCompile Include="CGDK.asio.simple_tcp_server.cpp" />
   </ItemGroup>
 </Project>

@@ -85,7 +85,7 @@ util.linux.cpp
 echo_client.cpp
 
 # main
-CGDK.asio.tcp_echo_server.cpp
+CGDK.asio.tcp_echo_client.cpp
 echo_client.cpp
 )
 
