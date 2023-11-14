@@ -20,7 +20,7 @@
 class eMESSAGE
 {
 public:
-	static const int ENTER = 1;
-	static const int LEAVE = 2;
-	static const int CHATTING = 3;
+	static constexpr int ENTER = 1;
+	static constexpr int LEAVE = 2;
+	static constexpr int CHATTING = 3;
 };
