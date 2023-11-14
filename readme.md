@@ -51,5 +51,13 @@ $ make
 ('.so' 파일이 필요하시면 cmake 파일을 조금 수정하시면 됩니다. 하지만 서버라면 웬만하면 '.a'파일을 쓰는 것을 추천합니다.)<br>
 <br>
 <br>
+# Example<br>
+1. __simple server/client__ 간단한 server와 client를 만드는 예제입니다. (https://github.com/CGLabs/CGDK.asio/tree/main/example/1.simple)<br>
+2. __tcp echo server/client__ 송수신 성능을 확인하기 위한 server와 client 예제입니다.(https://github.com/CGLabs/CGDK.asio/tree/main/example/2.tcp_echo_test)<br>
+<br>
+### 라이센스(License)
+   MIT License(IT) 를 따르고 있습니다.<br>
+
 > sangducks@gmail.com<br>
 > sangduck@cgcii.co.kr<br>
+
