@@ -80,10 +80,10 @@ public:
 ```
 <br>
 
-__4.__ acceptor를 생성해 좁니다. 이 때 정의한 socket_tcp를 템플릿 인자로 넣어 줍니다.<br>
-생성된 acceptor 객체의 start함수를 호출해 listen을 시작헤 클라이언트 접속을 기다립니다.<br>
+__4.__ acceptor를 생성합니다. 이 때 앞에서 정의한 socket_tcp 클래스를 템플릿 인자로 넣어 줍니다.<br>
+생성된 acceptor 객체의 start함수를 호출하면 listen을 시작합니다.(클라이언트 접속을 기다립니다.)<br>
 이때 bind할 주소를 20000번 포트로 설정합니다.<br>
-(ip v6로 설정하면 ip v4 역시 같이 받습니다. ip v4로 설정하면 ip v4만 받습니다.)
+(ip v6로 ip를 설정하면 ip v4로도 같이 받습니다. ip v4로 설정하면 ip v4만 받습니다. 물론 bind_any일 때)
 
 ```c++
 int main()
