@@ -54,7 +54,7 @@ $ make
 # Example<br>
 1. __simple server/client__ 간단한 server와 client를 만드는 예제입니다. (https://github.com/CGLabs/CGDK.asio/tree/main/example/1.simple)<br>
 2. __tcp echo server/client__ 송수신 성능을 확인하기 위한 server와 client 예제입니다.(https://github.com/CGLabs/CGDK.asio/tree/main/example/2.tcp_echo_test)<br>
-3. __simle chattingserver/client__ 간단한 채팅 서버의 구현 server와 client 예제입니다.(https://github.com/CGLabs/CGDK.asio/tree/main/example/3.simple_chatting)<br>
+3. __simle chattingserver/client__ 초간단 채팅 server와 client 예제입니다.(https://github.com/CGLabs/CGDK.asio/tree/main/example/3.simple_chatting)<br>
 <br>
 
 ### 라이센스(License)<br>
