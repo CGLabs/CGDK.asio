@@ -239,7 +239,10 @@ public:
 				break;
 
 		case	eMESSAGE::CHATTING:
-				std::cout << "\r\033[J" << msg_recv.extract<std::string>() << std::endl << ">> " << g_chatting_input;
+				std::cout << "\r\033[J"
+					  << msg_recv.extract<std::string>()
+					  << std::endl
+  					  << ">> " << g_chatting_input;
 			
 				break;
 		}
@@ -259,7 +262,7 @@ __3.__ 채팅 메시지 보내기<br>
 키입력을 받으면 ESC와 enter를 제외한 입력을 'g_chatting_input' 변수에 하나씩 저장해 높습니다.<br>
 그리고 enter키를 입력하면 지금까지 저장한 문자열을 전송하고 'g_chatting_input'를 클리어합니다.<br>
 <br>
-__4.__ 이때 서버로 전송할 매시를 make_chatting_message를 사용해 작성한 후 서버로 바로 전송한다.<br>
+__4.__ 이때 서버로 전송할 메시지를 make_chatting_message를 사용해 직렬화한 버퍼를 서버로 바로 전송한다.<br>
 ```c++
 shared_buffer make_chatting_message(const std::string& _string)
 {
