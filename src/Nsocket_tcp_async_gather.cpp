@@ -106,7 +106,7 @@ bool CGDK::asio::Nsocket_tcp_async_gather::process_send(SEND_NODE&& _send_node)
 	}
 	catch (...)
 	{
-		// reraise) 
+		// - set false 
 		result = false;
 	}
 
