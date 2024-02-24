@@ -75,7 +75,7 @@ bool CGDK::asio::Nsocket_tcp_async_gather::process_send(SEND_NODE&& _send_node)
 	// declare)
 	bool result = true;
 
-	try
+	try 
 	{
 		// lock) 
 		std::unique_lock lock(this->m_lock_socket);
