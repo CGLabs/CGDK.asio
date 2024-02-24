@@ -299,6 +299,11 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 			}
 			catch (...)
 			{
+				// - close socket 
+				this->process_closesocket(boost::asio::error::operation_aborted);
+
+				// - release
+				this->m_hold_async.reset();
 			}
 		});
 }
