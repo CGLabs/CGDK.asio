@@ -165,6 +165,13 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 	// 2) hold receiving buffer(비동기 receive 처기가 완료 될 때까지 buffer가 할당해제 되지 않도록 하기 위해 hold)
 	this->m_hold_receiving = this->m_received_msg.get_source();
 
+	// lock) 
+	std::lock_guard cs(this->m_lock_socket);
+
+	// check) 
+	if (this->m_socket.is_open() == false)
+		throw std::runtime_error("socket closed");
+
 	// 3) send async
 	this->m_socket.async_read_some(this->m_asio_receiving_msg,
 		[=, this](boost::system::error_code _error_code, std::size_t _length)

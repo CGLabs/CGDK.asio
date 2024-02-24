@@ -127,8 +127,6 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 	this->m_socket.async_write_some(buffer_transfer,
         [=, this](boost::system::error_code ec, std::size_t /*length*/)
         {
-
-
 			// check) 
 			if (ec)
 			{
