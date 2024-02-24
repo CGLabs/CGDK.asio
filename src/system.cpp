@@ -16,13 +16,13 @@ std::shared_ptr<CGDK::asio::system> CGDK::asio::system::init_instance(int _threa
 		// lock) 
 		std::lock_guard cs(lock_instance);
 
-		// - create instance
+		// 1) create instance
 		temp_instance = std::make_shared<asio::system>();
 
-		// - prepare thread
+		// 2) prepare thread
 		temp_instance->process_prepare_thread(_thread_count);
 
-		// - set instance
+		// 3) set instance
 		pinstance = temp_instance;
 	}
 
@@ -41,12 +41,12 @@ CGDK::asio::system::~system() noexcept
 	this->process_destroy();
 
 	// declare)
-	std::vector<std::shared_ptr<std::thread>> vector_threads = std::move(this->m_vector_threads);
+	const auto vector_threads = std::move(this->m_vector_threads);
 
 	// 2) wait terminal of all threads
-	for (auto& iter : vector_threads)
+	for (const auto& it : vector_threads)
 	{
-		iter->join();
+		it->join();
 	}
 }
 
@@ -61,7 +61,7 @@ void CGDK::asio::system::process_run_executor()
 	boost::system::error_code ec;
 
 	// 1) work quard
-	boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard(this->io_service.get_executor());
+	auto work_guard = boost::asio::make_work_guard(this->io_service);
 
 	for (;;)
 	{
@@ -101,9 +101,7 @@ void CGDK::asio::system::process_prepare_thread(int _thread_count)
 	// 1) ..
 		// - get thread count
 	if (_thread_count < 0)
-	{
-		_thread_count = std::thread::hardware_concurrency() * 2;
-	}
+		_thread_count = static_cast<int>(std::thread::hardware_concurrency()) * 2;
 
 	// check)
 	assert(_thread_count >= 0);
@@ -127,7 +125,7 @@ void CGDK::asio::system::process_prepare_thread(int _thread_count)
 		// - create threads
 		for (; _thread_count > 0; --_thread_count)
 		{
-			auto t = std::make_shared<std::thread>([=, this]() { this->process_run_executor(); });
+			auto t = std::make_shared<std::thread>([this]() { this->process_run_executor(); });
 
 			vector_threads.push_back(t);
 		}

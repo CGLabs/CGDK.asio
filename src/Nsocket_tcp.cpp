@@ -273,12 +273,33 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 					this->m_asio_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
 				}
 
-				// - read 
-				this->process_receive_async();
+				// declare)
+				bool is_closed = false;
+
+				// - async receive
+				{
+					// - lock
+					std::lock_guard cs(this->m_lock_socket);
+
+					// - async receive
+					if (this->m_socket.is_open() == true)
+						this->process_receive_async();
+					else
+						is_closed = true;
+				}
+
+				if (is_closed)
+				{
+					// - close socket 
+					this->process_closesocket(boost::asio::error::operation_aborted);
+
+					// - release
+					this->m_hold_async.reset();
+				}
 			}
 			catch (...)
 			{
-				// - 
+				// - close socket 
 				this->process_closesocket(boost::asio::error::operation_aborted);
 
 				// - release

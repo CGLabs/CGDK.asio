@@ -75,7 +75,7 @@ bool CGDK::asio::Nsocket_tcp_async_gather::process_send(SEND_NODE&& _send_node)
 	// declare)
 	bool result = true;
 
-	try
+	try 
 	{
 		// lock) 
 		std::unique_lock lock(this->m_lock_socket);
@@ -106,7 +106,7 @@ bool CGDK::asio::Nsocket_tcp_async_gather::process_send(SEND_NODE&& _send_node)
 	}
 	catch (...)
 	{
-		// reraise) 
+		// - set false 
 		result = false;
 	}
 
@@ -127,8 +127,6 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 	this->m_socket.async_write_some(buffer_transfer,
         [=, this](boost::system::error_code ec, std::size_t /*length*/)
         {
-
-
 			// check) 
 			if (ec)
 			{
