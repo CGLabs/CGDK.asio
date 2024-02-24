@@ -64,6 +64,9 @@ void CGDK::asio::Isocket_tcp::process_connective_closesocket() noexcept
 
 bool CGDK::asio::Isocket_tcp::process_close_native_handle() noexcept
 {
+	// lock) 
+	std::lock_guard cs(m_lock_socket);
+
 	// check) 
 	if (this->m_socket.is_open() == false)
 		return false;

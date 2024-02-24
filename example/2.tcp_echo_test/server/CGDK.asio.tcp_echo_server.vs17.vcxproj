@@ -10,13 +10,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGDK.asio.tcp_echo_server.cpp" />
+    <ClCompile Include="CGDK.asio.tcp_echo_server.ex.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{0f220b3d-340d-472b-8ca6-1d2070d69e61}</ProjectGuid>
     <RootNamespace>tcpechoserverboostconsole</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>CGDK10.tcp_echo_server.asio.console</ProjectName>
+    <ProjectName>CGDK.tcp_echo_server.asio.console</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -104,10 +108,6 @@
       <AdditionalLibraryDirectories>..\..\..\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CGDK.asio.tcp_echo_server.console.cpp" />
-    <ClCompile Include="CGDK.asio.tcp_echo_server.console.ex.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
