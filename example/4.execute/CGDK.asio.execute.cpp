@@ -15,8 +15,6 @@
 //*                          http://www.CGCII.co.kr                           *
 //*                                                                           *
 //*****************************************************************************
-#pragma once
-
 #include "cgdk/asio.h"
 #include <iostream>
 
