@@ -45,7 +45,6 @@ namespace CGDK
 	namespace asio
 	{
 		class Isocket_tcp;
-
 		class Nstatistics;
 		class Nconnective;
 		class Nacceptor;

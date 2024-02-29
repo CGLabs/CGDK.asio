@@ -1,4 +1,4 @@
-//*****************************************************************************
+﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                       Ver 10.0 / Release 2019.12.11                       *
@@ -20,8 +20,11 @@
 #include "cgdk/asio.h"
 #include <iostream>
 
-#include "../definitions_message.h"
-#include "socket_tcp.h"
-#include "group_chatting.h"
+int main()
+{
+	// 1) post함수
+	asio::system::post([]() { std::cout << "this is posted\n"; });
 
-extern std::shared_ptr<group_chatting> g_pgroup_chatting;
+	// 2) dispatch 함수
+	asio::system::dispatch([]() { std::cout << "this is dispatched\n"; });
+}
