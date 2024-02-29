@@ -77,9 +77,6 @@ LINK_DIRECTORIES(
 # source files
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
-# precompiled heaser
-pch.cpp
-
 # util linux
 util.linux.cpp
 
