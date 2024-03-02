@@ -7,6 +7,43 @@ std::mutex CGDK::asio::system::lock_instance;
 std::shared_ptr<CGDK::asio::system> CGDK::asio::system::pinstance;
 
 
+bool CGDK::asio::system::register_schedulable(std::shared_ptr<Ischedulable>&& _pschedulable)
+{
+	// check) executor가 nullptr인지 확인한다.
+	if(_pschedulable == nullptr)
+		return false;
+
+	// 1) scheduler를 얻는다.
+	auto pschedulable_manager = get_instance()->m_pschedulable_manager;
+
+	// check) scheduler가 nullptr이면 안됀다.
+	assert(pschedulable_manager);
+
+	// check) scheduler가 없으면 Exception을 던진다.
+	if(!pschedulable_manager)
+		throw std::exception();
+
+	// return) scheduler에 붙인다.
+	return pschedulable_manager->register_schedulable(std::move(_pschedulable));
+}
+
+bool CGDK::asio::system::unregister_schedulable(Ischedulable* _pschedulable) noexcept
+{
+	// check) executor가 nullptr인지 확인한다.
+	if(_pschedulable == nullptr)
+		return false;
+
+	// 1) scheduler를 얻는다.
+	auto pschedulable_manager = get_instance()->m_pschedulable_manager;
+
+	// check) scheduler가 없으면 여기서 끝낸다.
+	if(!pschedulable_manager)
+		return false;
+
+	// 2) Schedulable Manager에서 Schedulable을 제거한다.
+	return pschedulable_manager->unregister_schedulable(_pschedulable);
+}
+
 std::shared_ptr<CGDK::asio::system> CGDK::asio::system::init_instance(int _thread_count)
 {
 	// declare) 
@@ -22,7 +59,10 @@ std::shared_ptr<CGDK::asio::system> CGDK::asio::system::init_instance(int _threa
 		// 2) prepare thread
 		temp_instance->process_prepare_thread(_thread_count);
 
-		// 3) set instance
+		// 3) prepare scheduler
+		temp_instance->process_prepare_scheduler();
+
+		// 4) set instance
 		pinstance = temp_instance;
 	}
 
@@ -98,8 +138,7 @@ void CGDK::asio::system::process_prepare_thread(int _thread_count)
 	// check)
 	assert(this->m_is_thread_run == false);
 
-	// 1) ..
-		// - get thread count
+	// 1) get thread count
 	if (_thread_count < 0)
 		_thread_count = static_cast<int>(std::thread::hardware_concurrency()) * 2;
 
@@ -130,16 +169,42 @@ void CGDK::asio::system::process_prepare_thread(int _thread_count)
 			vector_threads.push_back(t);
 		}
 
+		// - create sigle executor
+		auto pexecutor_single = std::make_shared<executor::single>();
+
 		// - stroe thread objects
+		this->m_pexecutor_single = std::move(pexecutor_single);
 		this->m_vector_threads = std::move(vector_threads);
 	}
 }
 
-void CGDK::asio::system::process_destroy()
+void CGDK::asio::system::process_prepare_scheduler()
+{
+	// 1) create scheduler
+	auto pschedulable_manager = std::make_shared<schedulable_manager>();
+
+	// 2) start
+	pschedulable_manager->process_start();
+
+	// 3) set
+	this->m_pschedulable_manager = std::move(pschedulable_manager);
+}
+
+
+void CGDK::asio::system::process_destroy() noexcept
 {
 	// 1) thread run flag 'false'
 	this->m_is_thread_run = false;
 
-	// 2) stop
+	// 2) create scheduler
+	auto pschedulable_manager = std::move(this->m_pschedulable_manager);
+
+	// 3) start
+	pschedulable_manager->process_stop();
+
+	// 4) close single executor
+	this->m_pexecutor_single.reset();
+	
+	// 5) stop
 	this->io_service.stop();
 }

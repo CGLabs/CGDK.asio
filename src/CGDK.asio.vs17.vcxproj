@@ -435,6 +435,9 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\acceptor.h" />
     <ClInclude Include="..\include\cgdk\asio\connector.h" />
     <ClInclude Include="..\include\cgdk\asio\definitions.h" />
+    <ClInclude Include="..\include\cgdk\asio\executor.single.h" />
+    <ClInclude Include="..\include\cgdk\asio\Iexecutable.h" />
+    <ClInclude Include="..\include\cgdk\asio\Ischedulable.h" />
     <ClInclude Include="..\include\cgdk\asio\Isocket_tcp.h" />
     <ClInclude Include="..\include\cgdk\asio\Nacceptor.h" />
     <ClInclude Include="..\include\cgdk\asio\Nconnective.h" />
@@ -445,9 +448,13 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_async_gather.h" />
     <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_client.h" />
     <ClInclude Include="..\include\cgdk\asio\Nstatistics.h" />
+    <ClInclude Include="..\include\cgdk\asio\schedulable.executable.h" />
+    <ClInclude Include="..\include\cgdk\asio\schedulable.Iexecutable.h" />
+    <ClInclude Include="..\include\cgdk\asio\schedulable_manager.h" />
     <ClInclude Include="..\include\cgdk\asio\system.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="executor.single.cpp" />
     <ClCompile Include="Isocket_tcp.cpp" />
     <ClCompile Include="Nacceptor.cpp" />
     <ClCompile Include="Nconnective.cpp" />
@@ -457,6 +464,7 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClCompile Include="Nsocket_tcp_async.cpp" />
     <ClCompile Include="Nsocket_tcp_async_gather.cpp" />
     <ClCompile Include="Nstatistics.cpp" />
+    <ClCompile Include="schedulable_manager.cpp" />
     <ClCompile Include="system.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

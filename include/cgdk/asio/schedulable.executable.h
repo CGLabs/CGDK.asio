@@ -16,20 +16,20 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nconnector : public Nconnective
+template <class TEXECUTE = std::function<void()>>
+class CGDK::asio::schedulable::executable: virtual public schedulable::Iexecutable
 {
 public:
-			Nconnector();
-	virtual ~Nconnector() noexcept;
+			executable() noexcept {}
+			executable(TEXECUTE&& _function) noexcept : m_function_completion(std::forward<TEXECUTE>(_function)) {}
+	virtual	~executable() noexcept {}
 
-	void start(const boost::asio::any_io_executor& _executor);
-	void start();
-	void close() noexcept;
-
-	void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);
-	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
-	void process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error);
+			void				set_function(TEXECUTE&& _function) noexcept { std::lock_guard cs(this->m_lockable_completion); this->m_function_completion = std::forward<TEXECUTE>(_function); }
+	[[nodiscard]] TEXECUTE&		get_function() const noexcept { std::lock_guard cs(this->m_lockable_completion); return this->m_function_completion; }
 
 private:
-			boost::asio::any_io_executor m_executor;
+			std::mutex			m_lockable_completion;
+			TEXECUTE			m_function_completion{ nullptr };
+	virtual	void				process_execute() override { this->m_function_completion(); }
 };
+

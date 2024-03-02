@@ -16,20 +16,25 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nconnector : public Nconnective
+class CGDK::asio::Ischedulable
 {
 public:
-			Nconnector();
-	virtual ~Nconnector() noexcept;
+	virtual ~Ischedulable() noexcept {}
 
-	void start(const boost::asio::any_io_executor& _executor);
-	void start();
-	void close() noexcept;
+	virtual	bool				process_on_register() = 0;
+	virtual	void				process_on_unregister() = 0;
+	virtual bool				process_schedule() = 0;
 
-	void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);
-	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
-	void process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error);
+			void				next_tick(clock::time_point _tick_next) { this->m_tick_next = _tick_next; }
+	[[nodiscard]] auto			next_tick() const noexcept { return this->m_tick_next; }
 
-private:
-			boost::asio::any_io_executor m_executor;
+	[[nodiscard]] auto			execute_interval() const noexcept { return this->m_tick_diff_execute; }
+			void				execute_interval(clock::duration _tick_interval) { this->m_tick_diff_execute = _tick_interval; this->m_tick_next = clock::now() + m_tick_diff_execute; }
+
+protected:
+			std::shared_ptr<schedulable_manager> m_pschedulable_manager;
+			clock::time_point m_tick_next = clock::time_point::max();
+			clock::duration	m_tick_diff_execute = 1s;
+			//statistics::schedulable m_statistics_schedulable;
+			friend class schedulable_manager;
 };

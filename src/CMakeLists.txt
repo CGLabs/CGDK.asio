@@ -79,6 +79,10 @@ INCLUDE_DIRECTORIES(
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
 
+# core (execute)
+executor.single.cpp
+schedulable_manager.cpp
+
 # core (asio)
 Nstatistics.cpp
 Nconnective.cpp
