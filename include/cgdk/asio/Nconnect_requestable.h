@@ -19,11 +19,10 @@
 class CGDK::asio::Nconnect_requestable : virtual public Isocket_tcp
 {
 public:
-			Nconnect_requestable() {}
 	virtual ~Nconnect_requestable() noexcept {}
-public:
-	void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
+
+			void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
 
 protected:
-	void process_connect_request_complete(const boost::system::error_code& _error);
+			void process_connect_request_complete(const boost::system::error_code& _error);
 };

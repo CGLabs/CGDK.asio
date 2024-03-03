@@ -19,7 +19,6 @@
 class CGDK::asio::Nacceptor : public Nconnective
 {
 public:
-			Nacceptor();
 	virtual ~Nacceptor() noexcept;
 
 			void start(boost::asio::ip::tcp::endpoint _endpoint);

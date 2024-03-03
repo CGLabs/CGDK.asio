@@ -64,7 +64,6 @@ public:
 				// return)
 				return true;
 			}
-
 			bool cancel(Iexecutable* _pexecutable) noexcept;
 			void cancel() noexcept;
 private:
@@ -73,13 +72,13 @@ private:
 			void process_push_executable(EXECUTION_AT&& _execute_at);
 			void process_pop_executable() noexcept;
 			void process_schedulable();
-	static	void				fn_thread(single* _this);
-
-			std::atomic<int>	m_flag_run;
-	mutable std::thread			m_thread;
 
 			std::vector<EXECUTION_AT> m_priorityqueue_executable;
-			std::mutex			m_lockable_priorityqueue;
+			std::mutex m_lockable_priorityqueue;
 			std::condition_variable	m_cv_priorityqueue_exist;
 			std::condition_variable	m_cv_priorityqueue_in_time;
+
+			std::atomic<int> m_flag_run;
+	mutable std::thread m_thread;
+	static	void fn_thread(single* _this);
 };
