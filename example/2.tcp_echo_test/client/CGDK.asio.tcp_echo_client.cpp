@@ -582,7 +582,7 @@ void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _u
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
 		sprintf(temp_string, "%-12s", to_string_scaled(total_sended_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec).c_str());
+		sprintf(temp_string, "%-12s", to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 	#endif
 		buf_output << "\x1b[90m   failed \x1b[0m"sv << now_count_send_failed << "\x1b[K\n"sv;
