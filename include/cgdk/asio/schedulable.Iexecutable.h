@@ -16,13 +16,42 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nconnect_requestable : virtual public Isocket_tcp
+class CGDK::asio::schedulable::Iexecutable : virtual public Ischedulable, virtual public asio::Iexecutable
 {
-public:
-	virtual ~Nconnect_requestable() noexcept {}
-
-			void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
-
 protected:
-			void process_connect_request_complete(const boost::system::error_code& _error);
+	virtual ~Iexecutable() noexcept {}
+
+	virtual	bool				process_on_register() override
+	{
+		// 1) set next tick time
+		this->m_tick_next = clock::now() + this->m_tick_diff_execute;
+
+		// return)
+		return true;
+	}
+	virtual	void				process_on_unregister() override
+	{
+		this->m_tick_next = (clock::time_point::max)();
+	}
+	virtual	bool				process_schedule() override
+	{
+		// check) 
+		if (clock::now() < this->m_tick_next)
+			return false;
+
+		// 1) execute
+		try
+		{
+			this->process_execute();
+		}
+		catch (...)
+		{
+		}
+
+		// 2) set next tick
+		this->m_tick_next = this->m_tick_next + this->m_tick_diff_execute;
+
+		// return)
+		return true;
+	}
 };

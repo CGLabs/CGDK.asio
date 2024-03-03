@@ -15,8 +15,9 @@ bool CGDK::asio::Isocket_tcp::closesocket() noexcept
 {
 	// 1) set linger option (abortive close)
 	{
+		[[maybe_unused]] boost::system::error_code ec;
 		boost::asio::socket_base::linger option(true, 0);
-		this->m_socket.set_option(option);
+		this->m_socket.set_option(option, ec);
 	}
 
 	// 2) close native socket handle
@@ -27,8 +28,9 @@ bool CGDK::asio::Isocket_tcp::disconnect() noexcept
 {
 	// 1) set linger option (graceful close)
 	{
+		[[maybe_unused]] boost::system::error_code ec;
 		boost::asio::socket_base::linger option(false, 0);
-		this->m_socket.set_option(option);
+		this->m_socket.set_option(option, ec);
 	}
 
 	// declare) 

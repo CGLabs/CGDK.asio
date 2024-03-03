@@ -16,13 +16,9 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nconnect_requestable : virtual public Isocket_tcp
+class CGDK::asio::Iexecutable
 {
 public:
-	virtual ~Nconnect_requestable() noexcept {}
-
-			void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
-
-protected:
-			void process_connect_request_complete(const boost::system::error_code& _error);
+	virtual ~Iexecutable() noexcept {}
+	virtual void process_execute() = 0;
 };

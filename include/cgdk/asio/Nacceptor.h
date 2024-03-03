@@ -2,7 +2,7 @@
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -19,7 +19,6 @@
 class CGDK::asio::Nacceptor : public Nconnective
 {
 public:
-			Nacceptor();
 	virtual ~Nacceptor() noexcept;
 
 			void start(boost::asio::ip::tcp::endpoint _endpoint);

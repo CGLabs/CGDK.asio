@@ -2,7 +2,7 @@
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *

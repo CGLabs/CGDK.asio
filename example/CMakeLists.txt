@@ -45,3 +45,7 @@ ADD_SUBDIRECTORY (2.tcp_echo_test)
 
 # 3) simple chatting server/client
 ADD_SUBDIRECTORY (3.simple_chatting)
+
+# 4) execute - system post & dispatch
+ADD_SUBDIRECTORY (4.execute)
+

@@ -1,10 +1,6 @@
 ﻿#include "cgdk/asio.h"
 
 
-CGDK::asio::Nacceptor::Nacceptor()
-{
-}
-
 CGDK::asio::Nacceptor::~Nacceptor() noexcept
 {
 	this->close();

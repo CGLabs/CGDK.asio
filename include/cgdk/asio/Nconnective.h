@@ -2,7 +2,7 @@
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -22,20 +22,19 @@ public:
 			Nconnective();
 	virtual ~Nconnective() noexcept;
 
-	void send(const shared_buffer& _buffer) { return this->send(shared_buffer(_buffer)); }
-	void send(shared_buffer&& _buffer);
-	void close_connectable_all() noexcept;
-	void disconnect_connectable_all() noexcept;
-	void destroy_connectable_all() noexcept;
-
-	auto& get_lockable() noexcept { return m_lockable_list_sockets; }
-	auto count() const noexcept { return m_list_sockets.size(); }
-	auto begin() noexcept { return m_list_sockets.begin(); }
-	auto end() noexcept { return m_list_sockets.end(); }
+			void send(const shared_buffer& _buffer) { return this->send(shared_buffer(_buffer)); }
+			void send(shared_buffer&& _buffer);
+			void close_connectable_all() noexcept;
+			void disconnect_connectable_all() noexcept;
+			void destroy_connectable_all() noexcept;
+			auto& get_lockable() noexcept { return m_lockable_list_sockets; }
+			auto count() const noexcept { return m_list_sockets.size(); }
+			auto begin() noexcept { return m_list_sockets.begin(); }
+			auto end() noexcept { return m_list_sockets.end(); }
 
 protected:
-	void process_register_socket(const std::shared_ptr<Isocket_tcp>& _psocket);
-	void process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept;
+			void process_register_socket(const std::shared_ptr<Isocket_tcp>& _psocket);
+			void process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept;
 
 private:
 			std::recursive_mutex m_lockable_list_sockets;

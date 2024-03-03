@@ -2,7 +2,7 @@
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -35,7 +35,6 @@ protected:
 	virtual void process_connect_complete() = 0;
 	virtual bool process_send(SEND_NODE&& _send_node) = 0;
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept = 0;
-
 			void process_connective_closesocket() noexcept;
 			bool process_close_native_handle() noexcept;
 
@@ -43,12 +42,12 @@ protected:
 			std::recursive_mutex m_lock_socket;
 			std::shared_ptr<Nconnective> m_pconnective;
 			std::atomic<ESOCKET_STATUE> m_socket_state;
-			friend class Nconnective;
-			friend class Nconnector;
-			friend class Nacceptor;
-
 			std::chrono::system_clock::time_point m_time_connect;
 			std::chrono::system_clock::time_point m_time_disconnect;
 			std::chrono::system_clock::time_point m_time_last_send;
 			std::chrono::system_clock::time_point m_time_last_receives;
+
+			friend class Nconnective;
+			friend class Nconnector;
+			friend class Nacceptor;
 };

@@ -2,7 +2,7 @@
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *
@@ -28,6 +28,8 @@
 #include <memory>
 #include <mutex>
 #include <thread>
+#include <chrono>
+#include <condition_variable>
 
 #ifdef _WIN32
 	#pragma warning(default:6001 6255 6258 6387 26437 26439 26451 26452 26495 26498)
@@ -39,13 +41,17 @@ using namespace boost::asio::ip;
 using boost::asio::mutable_buffer;
 using boost::asio::const_buffer;
 using namespace CGDK;
+using namespace std::literals;
 
 namespace CGDK
 {
 	namespace asio
 	{
-		class Isocket_tcp;
+		using clock = std::chrono::system_clock;
 
+		class Iexecutable;
+		class Ischedulable;
+		class Isocket_tcp;
 		class Nstatistics;
 		class Nconnective;
 		class Nacceptor;
@@ -55,17 +61,32 @@ namespace CGDK
 		class Nsocket_tcp_async;
 		class Nsocket_tcp_async_gather;
 		class Nsocket_tcp_client;
-
+		namespace executor
+		{
+			class single;
+		};
+		namespace schedulable
+		{
+			class Iexecutable;
+			template<class> class executable;
+		}
 		template <class> class acceptor;
 		template <class> class connector;
 
 		class system;
+		class schedulable_manager;
 	}
 	const size_t RECEIVE_BUFFER_SIZE = 8192;
 }
 
 #include "asio/definitions.h"
 #include "asio/Nstatistics.h"
+#include "asio/Iexecutable.h"
+#include "asio/Ischedulable.h"
+#include "asio/schedulable.Iexecutable.h"
+#include "asio/schedulable.executable.h"
+#include "asio/schedulable_manager.h"
+#include "asio/executor.single.h"
 #include "asio/Isocket_tcp.h"
 #include "asio/Nsocket_tcp.h"
 #include "asio/Nsocket_tcp_async.h"

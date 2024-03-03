@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
-#include <iostream>
 using namespace std::literals;
 
 #if defined(_WIN32)
@@ -370,7 +369,7 @@ void print_title()
 
 	buf_output << " ---------------------------------------------------\n"sv;
 	buf_output << "\n"sv;
-	buf_output << "\x1b[97m    CGCII tcp echo client \x1b[0m\n"sv;
+	buf_output << "\x1b[97m    boost.asio tcp echo client \x1b[0m\n"sv;
 	buf_output << "\n"sv;
 	buf_output << "\n"sv;
 	buf_output << "  [command]\n"sv;
@@ -423,6 +422,74 @@ void print_endpoint(test_tcp_echo_client* _ptest_tcp_echo_client)
 	std::cout << " [remote endpoint]\n";
 	std::cout << "\x1b[90m address : \x1b[0m" << end_point.address().to_string() << "\x1b[K\n";
 	std::cout << "\x1b[90m port    : \x1b[0m" << end_point.port() << "\x1b[K\n\n";
+}
+
+std::string to_string_dot_seperated(uint64_t _value)
+{
+	// check)
+	if (_value == 0)
+		return std::string("0");
+
+	char result[128];
+	int pos = 127;
+	result[pos--] = 0;
+	while (_value)
+	{
+		if (!((pos-3) % 4))
+			result[pos--] = ',';
+		result[pos--] = (_value % 10) + '0';
+		_value /= 10;
+	}
+
+	// check)
+	assert(pos < 126);
+
+	// return) 
+	return std::string(result + pos + 1, 126 - pos);
+}
+
+std::string to_string_scaled(uint64_t _value)
+{
+	//constexpr uint64_t SCALE_1 = 0x0000'0000'0000'03ff;
+	//constexpr uint64_t SCALE_2 = 0x0000'0000'000f'fc00;
+	constexpr uint64_t SCALE_3 = 0x0000'0000'3ff0'0000;
+	constexpr uint64_t SCALE_4 = 0x0000'00ff'c000'0000;
+	constexpr uint64_t SCALE_5 = 0x0003'ff00'0000'0000;
+	constexpr uint64_t SCALE_6 = 0xfffc'0000'0000'0000;
+
+	if (_value & SCALE_6)
+		return to_string_dot_seperated(_value >> 30) + "G";
+	else if (_value & SCALE_5)
+		return to_string_dot_seperated(_value >> 30) + "G";
+	else if (_value & SCALE_4)
+		return to_string_dot_seperated(_value >> 20) + "M";
+	else if (_value & SCALE_3)
+		return to_string_dot_seperated(_value >> 10) + "K";
+	else
+		return to_string_dot_seperated(_value);
+}
+
+std::string to_string_scaled(float _value)
+{
+	//constexpr uint64_t SCALE_1 = 0x0000'0000'0000'03ff;
+	//constexpr uint64_t SCALE_2 = 0x0000'0000'000f'fc00;
+	constexpr uint64_t SCALE_3 = 0x0000'0000'3ff0'0000;
+	constexpr uint64_t SCALE_4 = 0x0000'00ff'c000'0000;
+	constexpr uint64_t SCALE_5 = 0x0003'ff00'0000'0000;
+	constexpr uint64_t SCALE_6 = 0xfffc'0000'0000'0000;
+
+	uint64_t value = static_cast<uint64_t>(_value);
+
+	if (value & SCALE_6)
+		return to_string_dot_seperated(value >> 30) + "G";
+	else if (value & SCALE_5)
+		return to_string_dot_seperated(value >> 30) + "G";
+	else if (value & SCALE_4)
+		return to_string_dot_seperated(value >> 20) + "M";
+	else if (value & SCALE_3)
+		return to_string_dot_seperated(value >> 10) + "K";
+	else
+		return to_string_dot_seperated(value);
 }
 
 void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _update_now)
@@ -480,7 +547,6 @@ void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _u
 		buf_output << "\x1b[90m   dis/s \x1b[0m"; buf_output << total_disconnected_per_sec; buf_output << "\x1b[K\n\n";
 	}
 
-
 	// 5) traffic info
 	{
 		// declare) 
@@ -508,37 +574,37 @@ void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _u
 		last_count_received = now_count_received;
 		last_count_received_byte = now_count_received_byte;
 
-	#if !defined(_WIN32)
-		// declare) 
-		char temp_string[256] = { 0, };
-	#endif
-
 		// - sended
 		buf_output << " [send]    ";
 	#if defined(_WIN32)
-		buf_output << "\x1b[90m   messages \x1b[0m"; buf_output << std::format("{:12d}", now_count_sended);
-		buf_output << "\x1b[90m   messages/s \x1b[0m"; buf_output << std::format("{:12.2}", total_sended_message_per_sec);
+		buf_output << "\x1b[90m   messages \x1b[0m"sv; buf_output << std::format("{:>12s}"sv, to_string_scaled(now_count_sended));
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}"sv, to_string_scaled(total_sended_message_per_sec));
+		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << std::format("{:>12s}"sv, to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)));
 	#else
-		sprintf(temp_string, "%12lu", now_count_sended);
-		buf_output << "\x1b[90m   messages \x1b[0m" << temp_string;
-		sprintf(temp_string, "%12.2f", total_sended_message_per_sec);
-		buf_output << "\x1b[90m   messages/s \x1b[0m" << temp_string;
+		char temp_string[256] = { 0, };
+		sprintf(temp_string, "%12s", to_string_scaled(now_count_sended).c_str());
+		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
+		sprintf(temp_string, "%12s", to_string_scaled(total_sended_message_per_sec).c_str());
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
+		sprintf(temp_string, "%12s", to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)).c_str());
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 	#endif
-		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << static_cast<uint64_t>(total_sended_byte_per_sec);
-		buf_output << "\x1b[90m   failed \x1b[0m" << now_count_send_failed << "\x1b[K\n";
+		buf_output << "\x1b[90m   failed \x1b[0m"sv << now_count_send_failed << "\x1b[K\n"sv;
 
 		// - received
 		buf_output << " [receive] ";
 	#if defined(_WIN32)
-		buf_output << "\x1b[90m   messages \x1b[0m"; buf_output << std::format("{:12d}", now_count_received);
-		buf_output << "\x1b[90m   messages/s \x1b[0m"; buf_output << std::format("{:12.2}", total_receive_message_per_sec);
+		buf_output << "\x1b[90m   messages \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(now_count_received));
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(total_receive_message_per_sec));
+		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << std::format("{:>12s}", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec))) << "\x1b[K\n"sv;
 	#else
-		sprintf(temp_string, "%12lu", now_count_received);
-		buf_output << "\x1b[90m   messages \x1b[0m" << temp_string;
-		sprintf(temp_string, "%12.2f", total_receive_message_per_sec);
-		buf_output << "\x1b[90m   messages/s \x1b[0m" << temp_string;
+		sprintf(temp_string, "%12s", to_string_scaled(now_count_received).c_str());
+		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
+		sprintf(temp_string, "%12s", to_string_scaled(total_receive_message_per_sec).c_str());
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
+		sprintf(temp_string, "%12s", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec)).c_str());
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string << "\x1b[K\n"sv;
 	#endif
-		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << static_cast<uint64_t>(total_receive_byte_per_sec) << "\x1b[K\n"sv;
 		buf_output << "\n";
 	}
 

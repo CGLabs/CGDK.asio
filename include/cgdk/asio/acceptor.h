@@ -1,9 +1,8 @@
 ﻿//*****************************************************************************
 //*                                                                           *
 //*                      Cho sanghyun's Game Classes II                       *
-//*                       Ver 10.0 / Release 2019.12.11                       *
 //*                                                                           *
-//*                           asio network classes                            *
+//*                          asio.ex network classes                          *
 //*                                                                           *
 //*                                                                           *
 //*                                                                           *

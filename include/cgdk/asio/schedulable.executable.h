@@ -16,13 +16,20 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nconnect_requestable : virtual public Isocket_tcp
+template <class TEXECUTE = std::function<void()>>
+class CGDK::asio::schedulable::executable: virtual public schedulable::Iexecutable
 {
 public:
-	virtual ~Nconnect_requestable() noexcept {}
+			executable() noexcept {}
+			executable(TEXECUTE&& _function) noexcept : m_function_completion(std::forward<TEXECUTE>(_function)) {}
+	virtual	~executable() noexcept {}
 
-			void start(boost::asio::ip::tcp::endpoint _endpoint_connect);
+			void set_function(TEXECUTE&& _function) noexcept { std::lock_guard cs(this->m_lockable_completion); this->m_function_completion = std::forward<TEXECUTE>(_function); }
+	[[nodiscard]] TEXECUTE& get_function() const noexcept { std::lock_guard cs(this->m_lockable_completion); return this->m_function_completion; }
 
-protected:
-			void process_connect_request_complete(const boost::system::error_code& _error);
+private:
+			std::mutex m_lockable_completion;
+			TEXECUTE m_function_completion{ nullptr };
+	virtual	void process_execute() override { this->m_function_completion(); }
 };
+
