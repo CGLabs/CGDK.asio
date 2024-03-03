@@ -599,7 +599,7 @@ void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _u
 		sprintf(temp_string, "%-12s", to_string_scaled(total_receive_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 		sprintf(temp_string, "%-12s", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec)).c_str());
-		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
+		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string << "\x1b[K\n"sv;
 
 	#endif
 		buf_output << "\n";
