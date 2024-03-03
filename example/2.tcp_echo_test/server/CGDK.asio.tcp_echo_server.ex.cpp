@@ -119,9 +119,6 @@ std::string to_string_scaled(uint64_t _value)
 
 std::string to_string_scaled(float _value)
 {
-	//sprintf(temp_string, "%12.2f", total_receive_message_per_sec);
-	//buf_output << "\x1b[90m   messages/s \x1b[0m" << temp_string;
-
 	//constexpr uint64_t SCALE_1 = 0x0000'0000'0000'03ff;
 	//constexpr uint64_t SCALE_2 = 0x0000'0000'000f'fc00;
 	constexpr uint64_t SCALE_3 = 0x0000'0000'3ff0'0000;
@@ -227,9 +224,9 @@ void print_statistics_info()
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}"sv, to_string_scaled(total_sended_message_per_sec));
 	#else
 		char temp_string[256] = { 0, };
-		sprintf(temp_string, "%-12s", to_string_scaled(now_count_sended));
+		sprintf(temp_string, "%-12s", to_string_scaled(now_count_sended).c_str());
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(total_sended_message_per_sec));
+		sprintf(temp_string, "%-12s", to_string_scaled(total_sended_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 	#endif
 		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << std::format("{:>12s}"sv, to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)));
