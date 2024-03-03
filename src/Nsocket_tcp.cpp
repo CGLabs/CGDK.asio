@@ -228,8 +228,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 							throw std::length_error("message length is invalid");
 
 						// - release
-						if (this->m_hold_async)
-							hold_async = std::move(this->m_hold_async);
+						hold_async = std::move(this->m_hold_async);
 
 						// break) 
 						break;
@@ -298,8 +297,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 					this->process_closesocket(boost::asio::error::operation_aborted);
 
 					// - release
-					if(this->m_hold_async)
-						hold_async = std::move(this->m_hold_async);
+					hold_async = std::move(this->m_hold_async);
 				}
 			}
 			catch (...)
@@ -308,8 +306,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 				this->process_closesocket(boost::asio::error::operation_aborted);
 
 				// - release
-				if (this->m_hold_async)
-					hold_async = std::move(this->m_hold_async);
+				hold_async = std::move(this->m_hold_async);
 			}
 		});
 }
