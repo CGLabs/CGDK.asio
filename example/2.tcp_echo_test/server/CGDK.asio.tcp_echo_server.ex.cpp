@@ -93,7 +93,11 @@ std::string to_string_dot_seperated(uint64_t _value)
 		_value /= 10;
 	}
 
-	return std::string(result + pos + 1);
+	// check)
+	assert(pos > 126);
+
+	// return) 
+	return std::string(result + pos + 1, 126 - pos);
 }
 
 std::string to_string_scaled(uint64_t _value)
@@ -247,7 +251,6 @@ void print_statistics_info()
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 		sprintf(temp_string, "%12s", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec)).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string << "\x1b[K\n"sv;
-
 	#endif
 		buf_output << "\n";
 	}
