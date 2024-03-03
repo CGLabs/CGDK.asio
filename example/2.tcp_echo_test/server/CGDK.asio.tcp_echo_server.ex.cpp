@@ -238,7 +238,7 @@ void print_statistics_info()
 		buf_output << "\x1b[90m   messages \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(now_count_received));
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(total_receive_message_per_sec));
 	#else
-		sprintf(temp_string, "%-12lu"sv, to_string_scaled(now_count_received).c_str());
+		sprintf(temp_string, "%-12lu", to_string_scaled(now_count_received).c_str());
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
 		sprintf(temp_string, "%-12.2f", to_string_scaled(total_receive_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;

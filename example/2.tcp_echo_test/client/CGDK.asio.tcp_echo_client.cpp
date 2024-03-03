@@ -467,9 +467,6 @@ std::string to_string_scaled(uint64_t _value)
 
 std::string to_string_scaled(float _value)
 {
-	//sprintf(temp_string, "%12.2f", total_receive_message_per_sec);
-	//buf_output << "\x1b[90m   messages/s \x1b[0m" << temp_string;
-
 	//constexpr uint64_t SCALE_1 = 0x0000'0000'0000'03ff;
 	//constexpr uint64_t SCALE_2 = 0x0000'0000'000f'fc00;
 	constexpr uint64_t SCALE_3 = 0x0000'0000'3ff0'0000;
@@ -594,7 +591,7 @@ void print_statistics_info(test_tcp_echo_client* _ptest_tcp_echo_client, bool _u
 		buf_output << "\x1b[90m   messages \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(now_count_received));
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(total_receive_message_per_sec));
 	#else
-		sprintf(temp_string, "%-12lu"sv, to_string_scaled(now_count_received).c_str());
+		sprintf(temp_string, "%-12lu", to_string_scaled(now_count_received).c_str());
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
 		sprintf(temp_string, "%-12.2f", to_string_scaled(total_receive_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
