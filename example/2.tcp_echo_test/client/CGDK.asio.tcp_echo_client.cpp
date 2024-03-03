@@ -442,7 +442,7 @@ std::string to_string_dot_seperated(uint64_t _value)
 	}
 
 	// check)
-	assert(pos > 126);
+	assert(pos < 126);
 
 	// return) 
 	return std::string(result + pos + 1, 126 - pos);
