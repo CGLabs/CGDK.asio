@@ -1,7 +1,7 @@
 ﻿#include "cgdk/asio.h"
 
 
-bool CGDK::asio::schedulable_manager::process_start()
+bool CGDK::asio::schedulable_manager::process_initialize()
 {
 	// 1) set m_flag_run 'true' and get old state
 	const int state_old = this->m_flag_run.exchange(1);
@@ -34,7 +34,7 @@ bool CGDK::asio::schedulable_manager::process_start()
 	catch (...)
 	{
 		// - stop
-		this->process_stop();
+		this->process_destroy();
 
 		// reraise)
 		throw;
@@ -43,7 +43,7 @@ bool CGDK::asio::schedulable_manager::process_start()
 	return true;
 }
 
-void CGDK::asio::schedulable_manager::process_stop() noexcept
+void CGDK::asio::schedulable_manager::process_destroy() noexcept
 {
 	// 1) set m_flag_run 'false' and get old state
 	const int state_old = this->m_flag_run.exchange(0);

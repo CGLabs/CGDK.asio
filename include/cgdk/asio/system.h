@@ -84,25 +84,30 @@ public:
 	static	bool register_schedulable(std::shared_ptr<Ischedulable>&& _pschedulable);
 	static	bool unregister_schedulable(Ischedulable* _pschedulable) noexcept;
 
-	[[nodiscard]] static boost::asio::io_service& get_io_service() { return get_instance()->io_service; }
-	[[nodiscard]] static std::shared_ptr<asio::system> get_instance() { if (!pinstance) { return init_instance(); }; return pinstance; }
-	static std::shared_ptr<asio::system> init_instance(int _thread_count = -1);
-	static void destroy_instance() noexcept;
-	static void run_executor();
+	[[nodiscard]] static boost::asio::io_service& get_io_service() { return get_instance()->m_io_service; }
+	[[nodiscard]] static std::shared_ptr<system> get_instance() { if (!pinstance) { return process_initialize_instance(); }; return pinstance; }
+	static	void run_executor();
 
-protected:
-			void process_prepare_thread(int _thread_count);
-			void process_prepare_scheduler();
-			void process_run_executor();
+private:
+	static	std::shared_ptr<system> process_initialize_instance(int _thread_count = -1);
+			void process_initialize(int _thread_count);
 			void process_destroy() noexcept;
+			void process_initialize_thread(int _thread_count);
+			void process_destroy_thread() noexcept;
+			void process_initialize_single_executor();
+			void process_destroy_single_executor() noexcept;
+			void process_initialize_scheduler();
+			void process_destroy_scheduler() noexcept;
+			void process_run_executor();
+
 			template <class T> 
-			void process_post(T _completor) { io_service.post(std::forward<T>(_completor)); }
+			void process_post(T _completor) { m_io_service.post(std::forward<T>(_completor)); }
 			template <class T>
 			void process_post(T _completor, clock::time_point _tick_execute) { this->m_pexecutor_single->post_at(std::forward<T>(_completor), _tick_execute); }
 			template <class T>
-			void process_dispatch(T _completor) { io_service.dispatch(std::forward<T>(_completor)); }
+			void process_dispatch(T _completor) { m_io_service.dispatch(std::forward<T>(_completor)); }
 
-			boost::asio::io_service io_service;
+			boost::asio::io_service m_io_service;
 			std::vector<std::shared_ptr<std::thread>> m_vector_threads;
 			std::shared_ptr<executor::single> m_pexecutor_single;
 			std::shared_ptr<schedulable_manager> m_pschedulable_manager;

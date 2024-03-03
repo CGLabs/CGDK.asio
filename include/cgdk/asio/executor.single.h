@@ -67,7 +67,7 @@ public:
 			bool cancel(Iexecutable* _pexecutable) noexcept;
 			void cancel() noexcept;
 private:
-			void process_create();
+			void process_initialize();
 			void process_destroy() noexcept;
 			void process_push_executable(EXECUTION_AT&& _execute_at);
 			void process_pop_executable() noexcept;
@@ -81,4 +81,5 @@ private:
 			std::atomic<int> m_flag_run;
 	mutable std::thread m_thread;
 	static	void fn_thread(single* _this);
+	friend class system;
 };

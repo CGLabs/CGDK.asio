@@ -23,8 +23,8 @@ public:
 			bool unregister_schedulable(Ischedulable* _pschedulable) noexcept { return this->process_detach(_pschedulable) != 0; }
 
 private:
-			bool process_start();
-			void process_stop() noexcept;
+			bool process_initialize();
+			void process_destroy() noexcept;
 			bool process_execute(clock::duration _ticks_wait, intptr_t _option);
 			bool process_attach(std::shared_ptr<Ischedulable>&& _pschedulable);
 			bool process_detach(Ischedulable* _pschedulable) noexcept;

@@ -3,7 +3,6 @@
 
 CGDK::asio::executor::single::single() : m_flag_run(0)
 {
-	this->process_create();
 }
 
 CGDK::asio::executor::single::~single() noexcept
@@ -125,7 +124,7 @@ void CGDK::asio::executor::single::cancel() noexcept
 	}
 }
 
-void CGDK::asio::executor::single::process_create()
+void CGDK::asio::executor::single::process_initialize()
 {
 	// 1) set m_flag_run 'true' and get old state
 	const int state_old = this->m_flag_run.exchange(1);
