@@ -81,5 +81,5 @@ private:
 			std::atomic<int> m_flag_run;
 	mutable std::thread m_thread;
 	static	void fn_thread(single* _this);
-	friend class system;
+	friend class CGDK::asio::system;
 };

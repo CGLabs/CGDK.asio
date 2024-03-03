@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="schedulable_manager.cpp">
+      <Filter>system\schedulable</Filter>
+    </ClCompile>
+    <ClCompile Include="Isocket_tcp.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nacceptor.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nconnect_requestable.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nconnective.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nconnector.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nsocket_tcp.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nsocket_tcp_async.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Nsocket_tcp_async_gather.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="executor.single.cpp">
+      <Filter>system\executor</Filter>
+    </ClCompile>
+    <ClCompile Include="Nstatistics.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="system.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\cgdk\asio.h" />
+    <ClInclude Include="..\include\cgdk\asio\definitions.h" />
+    <ClInclude Include="..\include\cgdk\asio\schedulable_manager.h">
+      <Filter>system\schedulable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Ischedulable.h">
+      <Filter>system\schedulable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_client.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Isocket_tcp.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nacceptor.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nconnect_requestable.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nconnective.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nconnector.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_async.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nsocket_tcp_async_gather.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\acceptor.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\connector.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\executor.single.h">
+      <Filter>system\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Iexecutable.h">
+      <Filter>system\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Nstatistics.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\schedulable.Iexecutable.h">
+      <Filter>system\schedulable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\schedulable.executable.h">
+      <Filter>system\schedulable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\system.h">
+      <Filter>system</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vcpkg.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="socket">
+      <UniqueIdentifier>{4bcbd55c-2c3c-4f55-9b15-3e81150ef6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{1aa7a3fd-5562-4bd3-bab3-812af6812845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\executor">
+      <UniqueIdentifier>{6c1a124e-533d-44ae-ba0b-a7c845c08ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\schedulable">
+      <UniqueIdentifier>{2153a6c5-a230-477c-9592-1fb9fd95aacc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
