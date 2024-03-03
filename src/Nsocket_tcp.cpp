@@ -224,9 +224,6 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 						if (message_size > MAX_MESSAGE_SIZE)
 							throw std::length_error("message length is invalid");
 
-						// - release
-						this->m_hold_async.reset();
-
 						// break) 
 						break;
 					}
