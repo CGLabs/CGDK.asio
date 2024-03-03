@@ -67,8 +67,8 @@ int main()
 	// 4) loop - wait press any key 
 	for (;;)
 	{
-		// - output traffic info
-		print_statistics_info();
+		//// - output traffic info
+		//print_statistics_info();
 
 		// - key pressed
 		if (_kbhit())
