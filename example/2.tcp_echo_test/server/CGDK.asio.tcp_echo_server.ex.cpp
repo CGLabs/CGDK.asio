@@ -225,11 +225,11 @@ void print_statistics_info()
 		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << std::format("{:>12s}"sv, to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)));
 	#else
 		char temp_string[256] = { 0, };
-		sprintf(temp_string, "%-12s", to_string_scaled(now_count_sended).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(now_count_sended).c_str());
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(total_sended_message_per_sec).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(total_sended_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(static_cast<uint64_t>(total_sended_byte_per_sec)).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
 	#endif
 		buf_output << "\x1b[90m   failed \x1b[0m"sv << now_count_send_failed << "\x1b[K\n"sv;
@@ -241,11 +241,11 @@ void print_statistics_info()
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv; buf_output << std::format("{:>12s}", to_string_scaled(total_receive_message_per_sec));
 		buf_output << "\x1b[90m   bytes/s \x1b[0m"sv << std::format("{:>12s}", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec))) << "\x1b[K\n"sv;
 	#else
-		sprintf(temp_string, "%-12s", to_string_scaled(now_count_received).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(now_count_received).c_str());
 		buf_output << "\x1b[90m   messages \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(total_receive_message_per_sec).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(total_receive_message_per_sec).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string;
-		sprintf(temp_string, "%-12s", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec)).c_str());
+		sprintf(temp_string, "%12s", to_string_scaled(static_cast<uint64_t>(total_receive_byte_per_sec)).c_str());
 		buf_output << "\x1b[90m   messages/s \x1b[0m"sv << temp_string << "\x1b[K\n"sv;
 
 	#endif
