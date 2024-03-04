@@ -32,7 +32,9 @@ public:
 			auto& native_handle() noexcept { return m_socket; }
 
 protected:
-	virtual void process_connect_complete() = 0;
+	virtual void process_request_connect() = 0;
+	virtual void process_fail_connect(boost::system::error_code _error_code) noexcept = 0;
+	virtual void process_complete_connect() = 0;
 	virtual bool process_send(SEND_NODE&& _send_node) = 0;
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept = 0;
 			void process_connective_closesocket() noexcept;

@@ -75,7 +75,7 @@ void CGDK::asio::Nconnective::process_register_socket(const std::shared_ptr<Isoc
 		if (_psocket->m_pconnective)
 			throw std::runtime_error("socket aleady have connective");
 
-		_psocket->m_pconnective = this->shared_from_this();;
+		_psocket->m_pconnective = this->shared_from_this();
 	}
 	catch (...)
 	{
@@ -87,11 +87,11 @@ void CGDK::asio::Nconnective::process_register_socket(const std::shared_ptr<Isoc
 	}
 }
 
-void CGDK::asio::Nconnective::process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept
+void CGDK::asio::Nconnective::process_unregister_socket(Isocket_tcp* _psocket) noexcept
 {
 	std::unique_lock lock(this->m_lockable_list_sockets);
 
-	// check)
+	// 1) reset connective
 	{
 		// lock) 
 		std::lock_guard cs(_psocket->m_lock_socket);
@@ -103,14 +103,21 @@ void CGDK::asio::Nconnective::process_unregister_socket(const std::shared_ptr<Is
 		_psocket->m_pconnective.reset();
 	}
 
-	// 1) erase socket
-	this->m_list_sockets.erase(_psocket);
+	// 2) find
+	auto iter_find = this->m_list_sockets.find(_psocket);
+
+	// check)
+	if (iter_find == this->m_list_sockets.end())
+		return;
+
+	// 3) erase socket
+	this->m_list_sockets.erase(iter_find);
 }
 
 void CGDK::asio::Nconnective::destroy_connectable_all() noexcept
 {
 	// declare) 
-	std::set<std::shared_ptr<Isocket_tcp>> list_sockets;
+	std::set<std::shared_ptr<Isocket_tcp>,compare> list_sockets;
 
 	// 1) move sockets
 	{

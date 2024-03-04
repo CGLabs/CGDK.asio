@@ -26,7 +26,7 @@ protected:
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
 	virtual bool process_send(SEND_NODE&& _send_node) override;
 			void process_send_async(const SEND_NODE& _send_node);
-
+public:
 			std::list<SEND_NODE> m_send_msgs;
 			std::shared_ptr<Isocket_tcp> m_hold_send;
 };
