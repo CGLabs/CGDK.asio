@@ -58,16 +58,16 @@ void CGDK::asio::Nconnector::request_connect(std::shared_ptr<Isocket_tcp> _socke
 			throw std::runtime_error("socket aleady connected or tring connectiong");
 	}
 
+	// 2) process connect request 
+	_socket_new->process_request_connect();
+
 	try
 	{
-		// 2) register socket first
+		// 3) register socket first
 		this->process_register_socket(_socket_new);
 
 		// statistics) 
 		++Nstatistics::statistics_connect_try;
-
-		// 3) process connect request 
-		_socket_new->process_request_connect();
 
 		// 4) request connect
 		_socket_new->native_handle().async_connect(_endpoint_connect, [=, this](const boost::system::error_code& _error)

@@ -19,17 +19,31 @@ void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _end
 			throw std::runtime_error("socket aleady connected or tring connectiong");
 	}
 
-	// 2) 
+	// 2) call 'process_request_connect'
 	this->process_request_connect();
 
 	// statistics) 
 	++Nstatistics::statistics_connect_try;
 
 	// 3) request connect
-	this->m_socket.async_connect(_endpoint_connect, [=,this](const boost::system::error_code& _error)
-		{
-			this->process_connect_request_complete(_error);
-		});
+	try
+	{
+		this->m_socket.async_connect(_endpoint_connect, [=, this](const boost::system::error_code& _error)
+			{
+				this->process_connect_request_complete(_error);
+			});
+	}
+	catch (...)
+	{
+		// - call 'process_fail_connect'
+		this->process_fail_connect(boost::asio::error::operation_aborted);
+
+		// - rollback (set socket state ESOCKET_STATUE::NONE)
+		this->m_socket_state.exchange(ESOCKET_STATUE::NONE);
+
+		// reraise)
+		throw;
+	}
 }
 
 void CGDK::asio::Nconnect_requestable::process_connect_request_complete(const boost::system::error_code& _error)
@@ -37,6 +51,9 @@ void CGDK::asio::Nconnect_requestable::process_connect_request_complete(const bo
 	// check) 실패했을 경우 socket을 등록 해제후 close하고 끝낸다.
 	if (_error)
 	{
+		// - call 'process_fail_connect'
+		this->process_fail_connect(_error);
+
 		// - rollback (set socket state ESOCKET_STATUE::NONE)
 		this->m_socket_state.exchange(ESOCKET_STATUE::NONE);
 
