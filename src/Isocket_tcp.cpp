@@ -61,7 +61,7 @@ void CGDK::asio::Isocket_tcp::process_connective_closesocket() noexcept
 	}
 
 	// 2) clear acceptor
-	pconnective->process_unregister_socket(this->shared_from_this());
+	pconnective->process_unregister_socket(this);
 }
 
 bool CGDK::asio::Isocket_tcp::process_close_native_handle() noexcept

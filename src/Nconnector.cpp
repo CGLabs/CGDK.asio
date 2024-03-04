@@ -77,11 +77,17 @@ void CGDK::asio::Nconnector::request_connect(std::shared_ptr<Isocket_tcp> _socke
 	}
 	catch (...)
 	{
+		// - on fail connect
+		_socket_new->process_fail_connect(boost::asio::error::operation_aborted);
+
 		// - rollback
-		this->process_unregister_socket(_socket_new);
+		this->process_unregister_socket(_socket_new.get());
 
 		// - rollback (set socket state ESOCKET_STATUE::NONE)
 		_socket_new->m_socket_state.exchange(ESOCKET_STATUE::NONE);
+
+		// - abortive close
+		_socket_new->process_close_native_handle();
 
 		// reraise)
 		throw;
@@ -105,10 +111,16 @@ void CGDK::asio::Nconnector::process_connect_completion(std::shared_ptr<Isocket_
 	}
 	catch (...)
 	{
+		// - on fail connect
+		_socket->process_fail_connect(_error);
+
 		// - rollback
 		_socket->process_connective_closesocket();
 
 		// - rollback (set socket state ESOCKET_STATUE::NONE)
 		_socket->m_socket_state.exchange(ESOCKET_STATUE::NONE);
+
+		// - abortive close
+		_socket->process_close_native_handle();
 	}
 }

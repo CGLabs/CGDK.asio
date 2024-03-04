@@ -34,10 +34,16 @@ public:
 
 protected:
 			void process_register_socket(const std::shared_ptr<Isocket_tcp>& _psocket);
-			void process_unregister_socket(const std::shared_ptr<Isocket_tcp>& _psocket) noexcept;
+			void process_unregister_socket(Isocket_tcp* _psocket) noexcept;
 
 private:
-			std::recursive_mutex m_lockable_list_sockets;
-			std::set<std::shared_ptr<Isocket_tcp>> m_list_sockets;
+			struct compare 
+			{
+				using is_transparent = void;
+				bool operator() (const std::shared_ptr<Isocket_tcp>& _lhs, const std::shared_ptr<Isocket_tcp>& _rhs) const { return _lhs.get() < _rhs.get(); }
+				bool operator() (const std::shared_ptr<Isocket_tcp>& _lhs, const Isocket_tcp* _rhs) const { return _lhs.get() < _rhs; }
+				bool operator() (const Isocket_tcp* _lhs, const std::shared_ptr<Isocket_tcp>& _rhs) const { return _lhs < _rhs.get(); }
+			};			std::recursive_mutex m_lockable_list_sockets;
+			std::set<std::shared_ptr<Isocket_tcp>, compare> m_list_sockets;
 	friend class Isocket_tcp;
 };

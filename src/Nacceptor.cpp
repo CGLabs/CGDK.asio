@@ -227,7 +227,7 @@ void CGDK::asio::Nacceptor::instance::process_accept()
 			}
 			catch (...)
 			{
-				this->pacceptor->process_unregister_socket(psocket);
+				this->pacceptor->process_unregister_socket(psocket.get());
 
 				// - rollback (set socket state ESOCKET_STATUE::NONE)
 				psocket->m_socket_state.exchange(ESOCKET_STATUE::NONE);

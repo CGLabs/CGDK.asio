@@ -3,7 +3,7 @@
 #include "cgdk/asio.h"
 #include <future>
 
-class socket_tcp : public asio::Nsocket_tcp_async
+class socket_tcp : public asio::Nsocket_tcp_async_gather
 {
 protected:
 	virtual void on_connect() {}
@@ -50,8 +50,7 @@ public:
 			void				request_closesocket(std::size_t _count);
 			void				request_closesocket_all();
 			void				request_disconnect_socket(std::size_t _count);
-			void				request_disconnect_socket_all();
-			void				request_send();
+			void				request_disconnect_socket_all();			void				request_send();
 			void				request_send_immidiately(std::size_t _count);
 			void				request_send_error_message_zero();
 

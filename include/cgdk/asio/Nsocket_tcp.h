@@ -30,11 +30,13 @@ protected:
 	virtual int on_message(shared_buffer& /*_msg*/) { return 0; }
 
 	virtual void process_request_connect() override;
+	virtual void process_fail_connect(boost::system::error_code _error_code) noexcept override;
 	virtual void process_complete_connect() override;
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
 	virtual bool process_send(SEND_NODE&& _send_node) override;
 			bool process_send_sync(SEND_NODE&& _send_node);
 			void process_receive_async();
+public:
 
 			shared_buffer m_received_msg;
 			boost::asio::mutable_buffer m_asio_receiving_msg;

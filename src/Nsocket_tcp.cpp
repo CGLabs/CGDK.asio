@@ -16,6 +16,11 @@ void CGDK::asio::Nsocket_tcp::process_request_connect()
 	this->on_request_connect();
 }
 
+void CGDK::asio::Nsocket_tcp::process_fail_connect(boost::system::error_code _error_code) noexcept
+{
+	this->on_fail_connect(_error_code);
+}
+
 void CGDK::asio::Nsocket_tcp::process_complete_connect()
 {
 	// 1) set socket state ESOCKET_STATUE::ESTABLISHED
@@ -170,133 +175,144 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 	// 2) hold receiving buffer(비동기 receive 처기가 완료 될 때까지 buffer가 할당해제 되지 않도록 하기 위해 hold)
 	this->m_hold_receiving = this->m_received_msg.get_source();
 
-	// 3) send async
-	this->m_socket.async_read_some(this->m_asio_receiving_msg,
-		[=, this](boost::system::error_code _error_code, std::size_t _length)
-		{
-			// - release receiving buffer
-			this->m_hold_receiving.reset();
-
-			// - disconnected?
-			if (_error_code.failed())
+	try
+	{
+		// 3) send async
+		this->m_socket.async_read_some(this->m_asio_receiving_msg,
+			[=, this](boost::system::error_code _error_code, std::size_t _length)
 			{
-				// ----------------------------------------------------------------------------
-				// 설명) error는 ...
-				//  'boost::asio::error::eof' -> 정상접속 종료(graceful close)
-				//  'boost::asio::error::connection_reset' -> 비정상 접속 종료(abortive close)
-				// ----------------------------------------------------------------------------
-				// - closesocket
-				this->process_closesocket(_error_code);
-	
-				// - release
-				this->m_hold_async.reset();
+				// - release receiving buffer
+				this->m_hold_receiving.reset();
 
-				// return) 
-				return;
-			}
-
-			// declare)
-			std::shared_ptr<Isocket_tcp> hold_async;
-
-			// statistics)
-			this->m_time_last_receives = std::chrono::system_clock::now();
-
-			// - 임시로 복사
-			auto temp_received = this->m_received_msg;
-
-			// - 받은 만큼 길이를 더해준다.
-			temp_received.add_size(_length);
-
-			// declare)
-			size_t count_messages = 0;
-
-			// declare)
-			shared_buffer temp_buffer;
-
-			try
-			{
-				// loop) remained_size가 header_size보다 작으면 message 읽기 중단.
-				while (temp_received.size() >= 4)
+				// - disconnected?
+				if (_error_code.failed())
 				{
-					// - get message size
-					auto message_size = temp_received.front<uint32_t>();
+					// ----------------------------------------------------------------------------
+					// 설명) error는 ...
+					//  'boost::asio::error::eof' -> 정상접속 종료(graceful close)
+					//  'boost::asio::error::connection_reset' -> 비정상 접속 종료(abortive close)
+					// ----------------------------------------------------------------------------
+					// - closesocket
+					this->process_closesocket(_error_code);
 
-					// check) 
-					if (message_size < 4)
-						throw std::length_error("message length is invalid");
+					// - release
+					this->m_hold_async.reset();
 
-					// check) 
-					if (message_size > temp_received.size())
-					{
-						// check) 
-						if (message_size > MAX_MESSAGE_SIZE)
-							throw std::length_error("message length is invalid");
-
-						// - release
-						hold_async = std::move(this->m_hold_async);
-
-						// break) 
-						break;
-					}
-
-					// - make message ( 반드시 복사해야 한다. on_message 처리 중 값을 변화시킬 수 있으므로...)
-					temp_buffer = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 temp_buffer로 넣는다.
-
-					// - on message
-					this->on_message(temp_buffer);
-					 
-					// statistics)
-					++count_messages;
-
-					// - 처리한 만큼 buffer를 줄인다.
-					temp_received += offset(message_size);
-				}
-
-				// statistics) 
-				Nstatistics::statistics_receive_bytes += _length;
-				Nstatistics::statistics_receive_messages += count_messages;
-
-				// - 
-				this->m_received_msg = temp_received;
-				this->m_asio_receiving_msg += _length;
-
-				if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < temp_buffer.size())
-				{
-					// - 기본 메시지 buffer 크기
-					auto size_new = RECEIVE_BUFFER_SIZE;
-
-					// - 만약 다음 메시지의 크기가 기본 메시지 buffer 크기보다 크면 메시지 크기 만큼을 더한다.
-					if (temp_buffer.size() > RECEIVE_BUFFER_SIZE)
-						size_new += temp_buffer.size();
-
-					// - 새로운 buffer를 할 당받는다.
-					auto buf_new = alloc_shared_buffer(size_new);
-
-					// - 남아 있는 데이터가 있으면 새로운 buffer의 제일 앞에 복사한다.
-					if(temp_received.size() != 0)
-						memcpy(buf_new.data(), temp_received.data(), temp_received.size());
-
-					// - 새로운 buffer를 설정한다.
-					this->m_received_msg = buf_new + offset(temp_received.size());
-					this->m_asio_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
+					// return) 
+					return;
 				}
 
 				// declare)
-				bool is_closed = false;
+				std::shared_ptr<Isocket_tcp> hold_async;
 
-				// - async receive
+				// statistics)
+				this->m_time_last_receives = std::chrono::system_clock::now();
+
+				// - 임시로 복사
+				auto temp_received = this->m_received_msg;
+
+				// - 받은 만큼 길이를 더해준다.
+				temp_received.add_size(_length);
+
+				// declare)
+				size_t count_messages = 0;
+
+				// declare)
+				shared_buffer temp_buffer;
+
+				try
 				{
-					// - lock
-					std::lock_guard cs(this->m_lock_socket);
+					// loop) remained_size가 header_size보다 작으면 message 읽기 중단.
+					while (temp_received.size() >= 4)
+					{
+						// - get message size
+						auto message_size = temp_received.front<uint32_t>();
+
+						// check) 
+						if (message_size < 4)
+							throw std::length_error("message length is invalid");
+
+						// check) 
+						if (message_size > temp_received.size())
+						{
+							// check) 
+							if (message_size > MAX_MESSAGE_SIZE)
+								throw std::length_error("message length is invalid");
+
+							// - release
+							hold_async = std::move(this->m_hold_async);
+
+							// break) 
+							break;
+						}
+
+						// - make message ( 반드시 복사해야 한다. on_message 처리 중 값을 변화시킬 수 있으므로...)
+						temp_buffer = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 temp_buffer로 넣는다.
+
+						// - on message
+						this->on_message(temp_buffer);
+
+						// statistics)
+						++count_messages;
+
+						// - 처리한 만큼 buffer를 줄인다.
+						temp_received += offset(message_size);
+					}
+
+					// statistics) 
+					Nstatistics::statistics_receive_bytes += _length;
+					Nstatistics::statistics_receive_messages += count_messages;
+
+					// - 
+					this->m_received_msg = temp_received;
+					this->m_asio_receiving_msg += _length;
+
+					if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < temp_buffer.size())
+					{
+						// - 기본 메시지 buffer 크기
+						auto size_new = RECEIVE_BUFFER_SIZE;
+
+						// - 만약 다음 메시지의 크기가 기본 메시지 buffer 크기보다 크면 메시지 크기 만큼을 더한다.
+						if (temp_buffer.size() > RECEIVE_BUFFER_SIZE)
+							size_new += temp_buffer.size();
+
+						// - 새로운 buffer를 할 당받는다.
+						auto buf_new = alloc_shared_buffer(size_new);
+
+						// - 남아 있는 데이터가 있으면 새로운 buffer의 제일 앞에 복사한다.
+						if (temp_received.size() != 0)
+							memcpy(buf_new.data(), temp_received.data(), temp_received.size());
+
+						// - 새로운 buffer를 설정한다.
+						this->m_received_msg = buf_new + offset(temp_received.size());
+						this->m_asio_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
+					}
+
+					// declare)
+					bool is_closed = false;
 
 					// - async receive
-					if (this->m_socket.is_open() == true)
-						this->process_receive_async();
-					else
-						is_closed = true;
-				}
+					{
+						// - lock
+						std::lock_guard cs(this->m_lock_socket);
 
-				if (is_closed)
+						// - async receive
+						if (this->m_socket.is_open() == true)
+							this->process_receive_async();
+						else
+							is_closed = true;
+					}
+
+					if (is_closed)
+					{
+						// - close socket 
+						this->process_closesocket(boost::asio::error::operation_aborted);
+
+						// - release
+						hold_async = std::move(this->m_hold_async);
+					}
+				}
+				catch (...)
 				{
 					// - close socket 
 					this->process_closesocket(boost::asio::error::operation_aborted);
@@ -304,14 +320,17 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 					// - release
 					hold_async = std::move(this->m_hold_async);
 				}
-			}
-			catch (...)
-			{
-				// - close socket 
-				this->process_closesocket(boost::asio::error::operation_aborted);
+			});
+	}
+	catch (...)
+	{
+		// - rollback
+		this->m_hold_async.reset();
 
-				// - release
-				hold_async = std::move(this->m_hold_async);
-			}
-		});
+		// - rollback
+		this->m_hold_receiving.reset();
+
+		// reraise)
+		throw;
+	}
 }
