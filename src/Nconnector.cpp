@@ -67,7 +67,7 @@ void CGDK::asio::Nconnector::request_connect(std::shared_ptr<Isocket_tcp> _socke
 		++Nstatistics::statistics_connect_try;
 
 		// 3) process connect request 
-		_socket_new->process_connect_request();
+		_socket_new->process_request_connect();
 
 		// 4) request connect
 		_socket_new->native_handle().async_connect(_endpoint_connect, [=, this](const boost::system::error_code& _error)
@@ -97,7 +97,7 @@ void CGDK::asio::Nconnector::process_connect_completion(std::shared_ptr<Isocket_
 			throw std::runtime_error("connection failure");
 
 		// 1) process connect socket
-		_socket->process_connect_complete();
+		_socket->process_complete_connect();
 
 		// statistics) 
 		++Nstatistics::statistics_connect_success;

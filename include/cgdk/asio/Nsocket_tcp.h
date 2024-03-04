@@ -29,8 +29,8 @@ protected:
 	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept {}
 	virtual int on_message(shared_buffer& /*_msg*/) { return 0; }
 
-	virtual void process_connect_request() override;
-	virtual void process_connect_complete() override;
+	virtual void process_request_connect() override;
+	virtual void process_complete_connect() override;
 	virtual void process_closesocket(boost::system::error_code _error_code) noexcept override;
 	virtual bool process_send(SEND_NODE&& _send_node) override;
 			bool process_send_sync(SEND_NODE&& _send_node);

@@ -219,7 +219,7 @@ void CGDK::asio::Nacceptor::instance::process_accept()
 			try
 			{
 				// 2) connect
-				psocket->process_connect_complete();
+				psocket->process_complete_connect();
 
 				// statistics) 
 				++Nstatistics::statistics_connect_success;

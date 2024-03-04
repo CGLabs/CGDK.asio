@@ -20,7 +20,7 @@ void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _end
 	}
 
 	// 2) 
-	this->process_connect_request();
+	this->process_request_connect();
 
 	// statistics) 
 	++Nstatistics::statistics_connect_try;
@@ -47,7 +47,7 @@ void CGDK::asio::Nconnect_requestable::process_connect_request_complete(const bo
 	try
 	{
 		// 1) process connect socket
-		this->process_connect_complete();
+		this->process_complete_connect();
 
 		// statistics) 
 		++Nstatistics::statistics_connect_success;
