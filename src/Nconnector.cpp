@@ -29,11 +29,17 @@ void CGDK::asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _end
 	// 1) allock new socket
 	auto psocket_new = this->process_create_socket();
 
+	// 2) 
+	this->request_connect(psocket_new, _endpoint_connect);
+}
+
+void CGDK::asio::Nconnector::request_connect(std::shared_ptr<Isocket_tcp> _socket_new, boost::asio::ip::tcp::endpoint _endpoint_connect)
+{
 	// check) 
-	assert(psocket_new);
+	assert(_socket_new);
 
 	// check)
-	if (!psocket_new)
+	if (!_socket_new)
 		throw std::bad_alloc();
 
 	// 1) set socket state ESOCKET_STATUE::ESTABLISHED
@@ -42,7 +48,7 @@ void CGDK::asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _end
 		ESOCKET_STATUE socket_state_old = ESOCKET_STATUE::NONE;
 
 		// - change state
-		auto changed = psocket_new->m_socket_state.compare_exchange_weak(socket_state_old, ESOCKET_STATUE::SYN);
+		auto changed = _socket_new->m_socket_state.compare_exchange_weak(socket_state_old, ESOCKET_STATUE::SYN);
 
 		// check)
 		assert(changed == true);
@@ -55,24 +61,27 @@ void CGDK::asio::Nconnector::request_connect(boost::asio::ip::tcp::endpoint _end
 	try
 	{
 		// 2) register socket first
-		this->process_register_socket(psocket_new);
+		this->process_register_socket(_socket_new);
 
 		// statistics) 
 		++Nstatistics::statistics_connect_try;
 
-		// 3) request connect
-		psocket_new->native_handle().async_connect(_endpoint_connect, [=,this](const boost::system::error_code& _error)
+		// 3) process connect request 
+		_socket_new->process_connect_request();
+
+		// 4) request connect
+		_socket_new->native_handle().async_connect(_endpoint_connect, [=, this](const boost::system::error_code& _error)
 			{
-				this->process_connect_completion(psocket_new, _error);
+				this->process_connect_completion(_socket_new, _error);
 			});
 	}
 	catch (...)
 	{
 		// - rollback
-		this->process_unregister_socket(psocket_new);
+		this->process_unregister_socket(_socket_new);
 
 		// - rollback (set socket state ESOCKET_STATUE::NONE)
-		psocket_new->m_socket_state.exchange(ESOCKET_STATUE::NONE);
+		_socket_new->m_socket_state.exchange(ESOCKET_STATUE::NONE);
 
 		// reraise)
 		throw;

@@ -19,10 +19,13 @@ void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _end
 			throw std::runtime_error("socket aleady connected or tring connectiong");
 	}
 
+	// 2) 
+	this->process_connect_request();
+
 	// statistics) 
 	++Nstatistics::statistics_connect_try;
 
-	// 2) request connect
+	// 3) request connect
 	this->m_socket.async_connect(_endpoint_connect, [=,this](const boost::system::error_code& _error)
 		{
 			this->process_connect_request_complete(_error);

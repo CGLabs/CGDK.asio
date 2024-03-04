@@ -26,6 +26,7 @@ public:
 			void start();
 			void close() noexcept;
 			void request_connect(boost::asio::ip::tcp::endpoint _endpoint_connect);
+			void request_connect(std::shared_ptr<Isocket_tcp> _socket_new, boost::asio::ip::tcp::endpoint _endpoint_connect);
 	virtual std::shared_ptr<Isocket_tcp> process_create_socket() = 0;
 			void process_connect_completion(std::shared_ptr<Isocket_tcp> _socket, const boost::system::error_code& _error);
 

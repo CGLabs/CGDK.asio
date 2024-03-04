@@ -11,6 +11,11 @@ CGDK::asio::Nsocket_tcp::~Nsocket_tcp() noexcept
 	this->process_closesocket(boost::asio::error::connection_aborted);
 }
 
+void CGDK::asio::Nsocket_tcp::process_connect_request()
+{
+	this->on_request_connect();
+}
+
 void CGDK::asio::Nsocket_tcp::process_connect_complete()
 {
 	// 1) set socket state ESOCKET_STATUE::ESTABLISHED
