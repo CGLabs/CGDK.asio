@@ -49,9 +49,11 @@ namespace CGDK
 	{
 		using clock = std::chrono::system_clock;
 
+		class Imessageable;
 		class Iexecutable;
 		class Ischedulable;
 		class Isocket_tcp;
+		class message_transmitter;
 		class Nstatistics;
 		class Nconnective;
 		class Nacceptor;
@@ -77,10 +79,15 @@ namespace CGDK
 		class schedulable_manager;
 	}
 	const size_t RECEIVE_BUFFER_SIZE = 8192;
+
+	template <class, class>	class Igroupable;
+	template <class> class Igroup;
 }
 
 #include "asio/definitions.h"
 #include "asio/Nstatistics.h"
+#include "asio/Imessageable.h"
+#include "asio/message_transmitter.h"
 #include "asio/Iexecutable.h"
 #include "asio/Ischedulable.h"
 #include "asio/schedulable.Iexecutable.h"
