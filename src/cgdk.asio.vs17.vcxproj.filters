@@ -98,6 +98,7 @@
     <ClInclude Include="..\include\cgdk\asio\system.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Imessageable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -117,6 +118,9 @@
     </Filter>
     <Filter Include="system\schedulable">
       <UniqueIdentifier>{2153a6c5-a230-477c-9592-1fb9fd95aacc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="group">
+      <UniqueIdentifier>{32d9b4a3-84f6-4949-b147-396dbfa3d78b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

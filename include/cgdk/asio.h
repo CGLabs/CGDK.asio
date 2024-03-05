@@ -49,6 +49,7 @@ namespace CGDK
 	{
 		using clock = std::chrono::system_clock;
 
+		class Imessageable;
 		class Iexecutable;
 		class Ischedulable;
 		class Isocket_tcp;
@@ -81,6 +82,7 @@ namespace CGDK
 
 #include "asio/definitions.h"
 #include "asio/Nstatistics.h"
+#include "asio/Imessageable.h"
 #include "asio/Iexecutable.h"
 #include "asio/Ischedulable.h"
 #include "asio/schedulable.Iexecutable.h"

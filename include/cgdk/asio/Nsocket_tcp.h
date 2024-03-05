@@ -16,7 +16,7 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nsocket_tcp : virtual public Isocket_tcp
+class CGDK::asio::Nsocket_tcp : virtual public Isocket_tcp, virtual public Imessageable
 {
 public:
 			Nsocket_tcp();
@@ -27,7 +27,7 @@ protected:
 	virtual void on_connect() {}
 	virtual void on_fail_connect(boost::system::error_code /*_error_code*/) noexcept {}
 	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept {}
-	virtual int on_message(shared_buffer& /*_msg*/) { return 0; }
+	virtual int on_message(sMESSAGE& /*_msg*/) { return 0; }
 
 	virtual void process_request_connect() override;
 	virtual void process_fail_connect(boost::system::error_code _error_code) noexcept override;
@@ -36,8 +36,9 @@ protected:
 	virtual bool process_send(SEND_NODE&& _send_node) override;
 			bool process_send_sync(SEND_NODE&& _send_node);
 			void process_receive_async();
-public:
+	virtual int process_message(sMESSAGE _msg) override { return this->on_message(_msg); }
 
+public:
 			shared_buffer m_received_msg;
 			boost::asio::mutable_buffer m_asio_receiving_msg;
 			std::shared_ptr<Isocket_tcp> m_hold_async;

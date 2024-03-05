@@ -218,7 +218,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 				size_t count_messages = 0;
 
 				// declare)
-				shared_buffer temp_buffer;
+				sMESSAGE msg;
 
 				try
 				{
@@ -247,10 +247,10 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 						}
 
 						// - make message ( 반드시 복사해야 한다. on_message 처리 중 값을 변화시킬 수 있으므로...)
-						temp_buffer = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 temp_buffer로 넣는다.
+						msg.buf_message = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 msg.buf_message로 넣는다.
 
 						// - on message
-						this->on_message(temp_buffer);
+						this->on_message(msg);
 
 						// statistics)
 						++count_messages;
@@ -267,14 +267,14 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 					this->m_received_msg = temp_received;
 					this->m_asio_receiving_msg += _length;
 
-					if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < temp_buffer.size())
+					if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < msg.buf_message.size())
 					{
 						// - 기본 메시지 buffer 크기
 						auto size_new = RECEIVE_BUFFER_SIZE;
 
 						// - 만약 다음 메시지의 크기가 기본 메시지 buffer 크기보다 크면 메시지 크기 만큼을 더한다.
-						if (temp_buffer.size() > RECEIVE_BUFFER_SIZE)
-							size_new += temp_buffer.size();
+						if (msg.buf_message.size() > RECEIVE_BUFFER_SIZE)
+							size_new += msg.buf_message.size();
 
 						// - 새로운 buffer를 할 당받는다.
 						auto buf_new = alloc_shared_buffer(size_new);
