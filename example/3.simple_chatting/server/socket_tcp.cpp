@@ -18,10 +18,10 @@ void socket_tcp::on_disconnect(boost::system::error_code /*_error_code*/) noexce
 	std::cout << "@ disconnted" << std::endl;
 }
 
-int socket_tcp::on_message(shared_buffer& _msg)
+int socket_tcp::on_message(sMESSAGE& _msg)
 {
 	// 1) 전체 group의 멤버들에게 전송합니다.(send to all member)
-	g_pgroup_chatting->send(_msg);
+	g_pgroup_chatting->send(_msg.buf_message);
 
 	// trace)
 	std::cout << "@ message received" << std::endl;

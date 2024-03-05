@@ -30,10 +30,10 @@ public:
 		// trace)
 		std::cout << "@ disconnted" << std::endl;
 	}
-	virtual int on_message(shared_buffer& _msg) override
+	virtual int on_message(sMESSAGE& _msg) override
 	{
 		// trace)
-		std::cout << "@ message received " << _msg.size() << "bytes" << std::endl;
+		std::cout << "@ message received " << _msg.buf_message.size() << "bytes" << std::endl;
 		return 1;
 	}
 };

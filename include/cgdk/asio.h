@@ -79,6 +79,9 @@ namespace CGDK
 		class schedulable_manager;
 	}
 	const size_t RECEIVE_BUFFER_SIZE = 8192;
+
+	template <class, class>	class Igroupable;
+	template <class> class Igroup;
 }
 
 #include "asio/definitions.h"

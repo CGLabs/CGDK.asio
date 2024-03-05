@@ -39,12 +39,12 @@ public:
 	virtual void on_disconnect(boost::system::error_code /*_error_code*/) noexcept override
 	{
 	}
-	virtual int on_message(shared_buffer& _msg) override
+	virtual int on_message(sMESSAGE& _msg) override
 	{
 		if (g_disable_echo)
 			return 0;
 
-		this->send(_msg);
+		this->send(_msg.buf_message);
 
 		return 1;
 	}

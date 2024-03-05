@@ -24,10 +24,10 @@ public:
 		// trace)
 		std::cout << "@ disconnted" << std::endl;
 	}
-	virtual int on_message(shared_buffer& _msg) override
+	virtual int on_message(sMESSAGE& _msg) override
 	{
 		// 1) 메시지를 읽기 위한 임시 buffer_view (message_size 부분을 뛰기 위해 4Byte offset)
-		buffer_view msg_recv = _msg + offset(4);
+		buffer_view msg_recv = _msg.buf_message + offset(4);
 
 		// 2) get type
 		switch (msg_recv.extract<int>())

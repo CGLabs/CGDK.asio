@@ -428,7 +428,6 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\include\cgdk\asio\group.list.inl" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
@@ -437,9 +436,9 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\connector.h" />
     <ClInclude Include="..\include\cgdk\asio\definitions.h" />
     <ClInclude Include="..\include\cgdk\asio\executor.single.h" />
-    <ClInclude Include="..\include\cgdk\asio\group.list.h" />
     <ClInclude Include="..\include\cgdk\asio\Iexecutable.h" />
     <ClInclude Include="..\include\cgdk\asio\Igroup.h" />
+    <ClInclude Include="..\include\cgdk\asio\Igroupable.h" />
     <ClInclude Include="..\include\cgdk\asio\Imessageable.h" />
     <ClInclude Include="..\include\cgdk\asio\Imessage_transmitter.h" />
     <ClInclude Include="..\include\cgdk\asio\Ischedulable.h" />

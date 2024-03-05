@@ -37,7 +37,7 @@ protected:
  
 protected:
 	template <class group_t>
-	static	void				member_group_as(group_t* _pgroup, _TMEMBER* _pmember) noexcept	{ _pmember->_set_group(_pgroup);}
+	static	void				member_group_as(group_t* _pgroup, std::shared_ptr<_TMEMBER>&& _pmember) noexcept { _pmember->_set_group(_pgroup);}
 	static	void				reset_member_group(_TMEMBER* _pmember) noexcept { _pmember->_reset_group();}
 	[[nodiscard]] static lockable<>& member_group_lock(_TMEMBER* _pmember) noexcept { return _pmember->m_lockable_group;}
 };

@@ -27,8 +27,7 @@
 class CGDK::asio::message_transmitter
 {
 public:
-			int					transmit_message(sMESSAGE& _msg) { return process_transmit_message(_msg); }
-			int					transmit_message(sMESSAGE&& _msg) { return process_transmit_message(_msg); }
+			int					transmit_message(sMESSAGE& _msg);// { return this->transmit_message(_msg); }
 
 			bool				register_messageable(const std::shared_ptr<Imessageable>& _pmessageable);
 			bool				register_messageable(std::shared_ptr<Imessageable>&& _pmessageable);
