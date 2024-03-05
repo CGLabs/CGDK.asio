@@ -102,9 +102,6 @@
     <ClInclude Include="..\include\cgdk\asio\Igroup.h">
       <Filter>group</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\cgdk\asio\Imessage_transmitter.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\cgdk\asio\Igroupable.h">
       <Filter>group</Filter>
     </ClInclude>
