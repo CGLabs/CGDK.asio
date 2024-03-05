@@ -53,6 +53,7 @@ namespace CGDK
 		class Iexecutable;
 		class Ischedulable;
 		class Isocket_tcp;
+		class message_transmitter;
 		class Nstatistics;
 		class Nconnective;
 		class Nacceptor;
@@ -83,6 +84,7 @@ namespace CGDK
 #include "asio/definitions.h"
 #include "asio/Nstatistics.h"
 #include "asio/Imessageable.h"
+#include "asio/message_transmitter.h"
 #include "asio/Iexecutable.h"
 #include "asio/Ischedulable.h"
 #include "asio/schedulable.Iexecutable.h"
