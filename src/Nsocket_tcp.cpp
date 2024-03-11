@@ -269,8 +269,8 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 					if (this->m_asio_receiving_msg.size() < MIN_MESSAGE_BUFFER_ROOM || this->m_asio_receiving_msg.size() < msg.buf_message.size())
 					{
-						// - 기본 메시지 buffer 크기
-						auto size_new = RECEIVE_BUFFER_SIZE;
+						// - 기본 메시지 buffer 크기 + 받아 놓은 데이터 크기
+						auto size_new = RECEIVE_BUFFER_SIZE + temp_received.size();
 
 						// - 만약 다음 메시지의 크기가 기본 메시지 buffer 크기보다 크면 메시지 크기 만큼을 더한다.
 						if (msg.buf_message.size() > RECEIVE_BUFFER_SIZE)
@@ -284,7 +284,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 							memcpy(buf_new.data(), temp_received.data(), temp_received.size());
 
 						// - 새로운 buffer를 설정한다.
-						this->m_received_msg = buf_new + offset(temp_received.size());
+						this->m_received_msg = buf_new ^ temp_received.size();
 						this->m_asio_receiving_msg = boost::asio::mutable_buffer{ buf_new.data() + temp_received.size(), size_new - temp_received.size() };
 					}
 
