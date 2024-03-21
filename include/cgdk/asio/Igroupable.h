@@ -18,11 +18,11 @@
 
 #pragma once
 
-template <class _TMEMBER, class _TGROUP=CGDK::asio::Igroup<_TMEMBER>>
-class CGDK::asio::Igroupable
+template <class _TMEMBER, class _TGROUP = CGDK::Igroup<_TMEMBER>>
+class CGDK::Igroupable
 {
 public:
-	virtual	~Igroupable() noexcept { assert(this->m_pgroup.empty());}
+	virtual	~Igroupable() noexcept { assert(!this->m_pgroup);}
 
 	[[nodiscard]] std::shared_ptr<_TGROUP> get_group() noexcept  { std::lock_guard<std::mutex> cs(this->m_cs_group); return this->_get_group();	}
 	[[nodiscard]] bool			is_member_of(const Igroup<_TMEMBER>* _pgroup) const noexcept { std::lock_guard<std::mutex> cs(this->m_cs_group); return this->_is_member_of(_pgroup); }
@@ -32,17 +32,17 @@ public:
 				auto pgroup = this->get_group();
 
 				// check) 아에 Group에 속해 있지 않으면 그냥 끝낸다.
-				if (pgroup.empty())
+				if (!pgroup)
 					return;
 
 				// 1) casting
-				auto pmember_base = dynamic_cast<_TMEMBER*>(this);
+				auto pmember= dynamic_cast<_TMEMBER*>(this);
 
 				// check)
-				assert(pmember_base != nullptr);
+				assert(pmember != nullptr);
 
 				// 2) 일단 Group에서 Leave를 먼저 한다.
-				_TGROUP::request_leave(pgroup.get(), pmember_base);
+				pgroup->leave(pmember);
 			}
 	[[nodiscard]] std::shared_ptr<_TGROUP> _get_group() const noexcept { return this->m_pgroup;}
 	[[nodiscard]] bool			_is_member_of(const Igroup<_TMEMBER>* _pgroup) const noexcept { return this->m_pgroup.get() == _pgroup; }
@@ -50,11 +50,12 @@ public:
 private:
 			std::shared_ptr<_TGROUP> m_pgroup;
 			std::mutex			m_cs_group;
+			std::any			m_iter;
 
 			template <class TSETGROUP>
-			void				_set_group(std::shared_ptr<TSETGROUP>&& _pgroup) noexcept { this->m_pgroup = st::move(_pgroup); }
+			void				_set_group(std::shared_ptr<TSETGROUP>&& _pgroup) noexcept { this->m_pgroup = std::move(_pgroup); }
 			void				_reset_group() noexcept { this->m_pgroup.reset();}
 
 	// friend)
-	friend	Igroup<_TMEMBER>;
+	friend	class Igroup<_TMEMBER>;
 };

@@ -105,6 +105,9 @@
     <ClInclude Include="..\include\cgdk\asio\Igroupable.h">
       <Filter>group</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\group.list.h">
+      <Filter>group</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />

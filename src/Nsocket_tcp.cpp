@@ -163,11 +163,6 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 	// receive를 거는 작업을 수행합니다.
 	// 
 	// ----------------------------------------------------------------------------
-
-	// definitions) 
-	static const size_t MAX_MESSAGE_SIZE = 1024 * 1024; // 메시지의 최대 크기(오류나 해킹으로 인해 너무 큰 메시지가 들어오면 문제가 될 수 있으므로 크기 제한을 해줍니다..)
-	static const size_t MIN_MESSAGE_BUFFER_ROOM = 256; // receive 버퍼의 최소 크기.
-
 	// 1) hold self (비동기 receive 처리가 완료 될 때까지 객체의 소멸을 막기 위해 hold)
 	if(!this->m_hold_async)
 		this->m_hold_async = this->shared_from_this();
@@ -222,21 +217,25 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 
 				try
 				{
+					// - get message size
+					const auto min_message_size = this->m_message_size_min;
+					const auto max_message_size = this->m_message_size_max;
+
 					// loop) remained_size가 header_size보다 작으면 message 읽기 중단.
-					while (temp_received.size() >= 4)
+					while (temp_received.size() >= min_message_size)
 					{
 						// - get message size
-						auto message_size = temp_received.front<uint32_t>();
+						auto message_size = this->process_get_message_size(temp_received);
 
 						// check) 
-						if (message_size < 4)
+						if (message_size < min_message_size)
 							throw std::length_error("message length is invalid");
 
 						// check) 
 						if (message_size > temp_received.size())
 						{
 							// check) 
-							if (message_size > MAX_MESSAGE_SIZE)
+							if (message_size > max_message_size)
 								throw std::length_error("message length is invalid");
 
 							// - release
@@ -250,7 +249,7 @@ void CGDK::asio::Nsocket_tcp::process_receive_async()
 						msg.buf_message = temp_received ^ message_size; // temp_received의 size만 message_size로 변경해서 msg.buf_message로 넣는다.
 
 						// - on message
-						this->on_message(msg);
+						this->process_message(msg);
 
 						// statistics)
 						++count_messages;

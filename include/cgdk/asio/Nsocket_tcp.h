@@ -36,6 +36,7 @@ protected:
 	virtual bool process_send(SEND_NODE&& _send_node) override;
 			bool process_send_sync(SEND_NODE&& _send_node);
 			void process_receive_async();
+	virtual size_t process_get_message_size(const CGDK::buffer_view& _buf) const { return _buf.front<uint32_t>(); }
 	virtual int process_message(sMESSAGE _msg) override { return this->on_message(_msg); }
 
 public:
@@ -43,4 +44,6 @@ public:
 			boost::asio::mutable_buffer m_asio_receiving_msg;
 			std::shared_ptr<Isocket_tcp> m_hold_async;
 			shared_buffer::object_ptr_t m_hold_receiving;
+			size_t m_message_size_min{ MIN_MESSAGE_SIZE };
+			size_t m_message_size_max{ MAX_MESSAGE_SIZE };
 };

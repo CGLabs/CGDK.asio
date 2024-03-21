@@ -30,7 +30,9 @@
 #include <mutex>
 #include <thread>
 #include <chrono>
+#include <any>
 #include <condition_variable>
+#include <limits.h>
 
 #ifdef _WIN32
 	#pragma warning(default:6001 6255 6258 6387 26437 26439 26451 26452 26495 26498)
@@ -83,6 +85,10 @@ namespace CGDK
 
 	template <class, class>	class Igroupable;
 	template <class> class Igroup;
+	namespace group
+	{
+		template<class,class> class list;
+	};
 }
 
 #include "asio/definitions.h"
@@ -107,6 +113,10 @@ namespace CGDK
 #include "asio/acceptor.h"
 #include "asio/connector.h"
 #include "asio/system.h"
+#include "asio/Igroup.h"
+#include "asio/Igroupable.h"
+#include "asio/group.list.h"
+
 
 
 //----------------------------------------------------------------------------
