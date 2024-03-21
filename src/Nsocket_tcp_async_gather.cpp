@@ -125,7 +125,7 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 
 	// 3) send async
 	this->m_socket.async_write_some(buffer_transfer,
-        [=, this](boost::system::error_code ec, std::size_t /*length*/)
+        [=, this](boost::system::error_code ec, std::size_t length)
         {
 			// check) 
 			if (ec)
@@ -137,22 +137,36 @@ void CGDK::asio::Nsocket_tcp_async_gather::process_send_gather_async(const SEND_
 				return;
 			}
 
+			// statistics)
+			Nstatistics::statistics_send_bytes += this->m_sending.buf_send.size();
+
 			// declare) 
 			std::shared_ptr<Isocket_tcp> hold_this;
 
 			// lock) 
 			std::unique_lock lock(this->m_lock_socket);
 
-			// statistics)
-			Nstatistics::statistics_send_messages += this->m_sending.message_count;
-			Nstatistics::statistics_send_bytes += this->m_sending.buf_send.size();
+			// - move
+			auto temp_node = std::move(this->m_sending);
 
-			// - reset m_sending
-			this->m_sending = SEND_NODE();
+			// check)
+			if (temp_node.buf_send.empty())
+				return;
 
-			// 설명) 그 사이에 queueing된 것이 있으면 전송하고 없으면 그냥 끝낸다.
+			// - proceding
+			temp_node.buf_send += offset(length);
 
-			// check) 
+			// - send complete? 
+			if (temp_node.buf_send.size() == 0)
+			{
+				Nstatistics::statistics_send_messages += temp_node.message_count;
+			}
+			else
+			{
+				this->m_send_msgs.push_front(std::move(temp_node));
+			}
+
+			// check) 그 사이에 queueing된 것이 있으면 전송하고 없으면 그냥 끝낸다. 
 			if (this->m_send_msgs.empty() || this->m_socket_state < ESOCKET_STATUE::CLOSING)
 			{
 				// - release 
