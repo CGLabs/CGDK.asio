@@ -121,7 +121,7 @@ void CGDK::asio::Nsocket_tcp_async::process_send_async(const SEND_NODE& _send_no
 
 	// 3) send async
 	this->m_socket.async_write_some(buffer_transfer,
-        [=, this](boost::system::error_code ec, std::size_t /*length*/)
+        [=, this](boost::system::error_code ec, std::size_t length)
         {
 			// check) 
 			if (ec)
@@ -139,6 +139,22 @@ void CGDK::asio::Nsocket_tcp_async::process_send_async(const SEND_NODE& _send_no
 			// lock) 
 			std::unique_lock lock(m_lock_socket);
 
+			// - get message
+			auto& msg_send = this->m_send_msgs.front();
+
+			// - process
+			msg_send.buf_send += offset(length);
+
+			// check) ...
+			if (msg_send.buf_send.size() == 0)
+			{
+				Nstatistics::statistics_send_messages += msg_send.message_count;;
+				this->m_send_msgs.pop_front();
+			}
+
+			// statistics)
+			Nstatistics::statistics_send_bytes += length;
+
 			// check) 
 			if (this->m_send_msgs.empty() || this->m_socket_state < ESOCKET_STATUE::CLOSING)
 			{
@@ -149,15 +165,6 @@ void CGDK::asio::Nsocket_tcp_async::process_send_async(const SEND_NODE& _send_no
 				return;
 			}
 
-			// - get message
-			auto& msg_send = this->m_send_msgs.front();
-
-			// statistics)
-			Nstatistics::statistics_send_messages += msg_send.message_count;;
-			Nstatistics::statistics_send_bytes += msg_send.buf_send.size();
-
-			// - pop front
-			this->m_send_msgs.pop_front();
 
 			// check) 
 			if (this->m_send_msgs.empty())

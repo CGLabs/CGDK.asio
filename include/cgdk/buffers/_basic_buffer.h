@@ -14,6 +14,10 @@
 
 #pragma once
 
+#if !defined(FMT_FORMAT_H_) && defined(__cpp_lib_format)
+	#include <format>
+#endif
+
 namespace CGDK
 {
 #if defined(FMT_FORMAT_H_)
@@ -22,21 +26,12 @@ namespace CGDK
 	{
 		return fmt::format(_format, std::forward<TREST>(_rest)...);
 	}
-#elif defined(__cpp_lib_format) && defined(_FORMAT_)
-	#include <format>
-	#if defined(__GNUC__)
+#else
+	#if !defined(__cpp_lib_format)
 		template <class T, class... TREST>
 		constexpr std::basic_string<T> _fmt_format_string(std::basic_string_view<T> _format, TREST&&... _rest)
 		{
-		#if defined(__linux__)
-			// check) GCC don't support {fmt} yet~ include {fmt} manually
-			assert(false);
-
-			// retrun) failre
-			return std::basic_string<T>();
-		#else
-			return std::format(_format, std::forward<TREST>(_rest)...);
-		#endif
+			static_assert(false, "no {fmt} support");
 		}
 	#else
 		template <class... TREST>
@@ -72,13 +67,13 @@ public:
 public:
 	constexpr _basic_buffer() noexcept {}
 	constexpr _basic_buffer(const _basic_buffer& _buffer) noexcept : base_t(_buffer), bound(_buffer.get_bound()) {}
-	constexpr _basic_buffer(_basic_buffer&& _buffer) noexcept : base_t(_buffer), bound(_buffer.get_bound()) {}
+	constexpr _basic_buffer(_basic_buffer&& _buffer) noexcept : base_t(_buffer), bound(_buffer.get_bound()) { _buffer = _basic_buffer(); }
 	template <class T>
 	constexpr _basic_buffer(_buffer_view<T> _buffer) noexcept : base_t(_buffer), bound{ _buffer.get_front_ptr(), _buffer.get_back_ptr() } {}
 	template <class T>
 	constexpr _basic_buffer(_buffer_view<T> _buffer, const buffer_bound& _bound) : base_t(_buffer), bound(_bound) { _CGD_BUFFER_BOUND_CHECK(_buffer.get_front_ptr() >= _bound.lower && _buffer.get_back_ptr() <= _bound.upper); }
 	template <class T>
-	constexpr _basic_buffer(_buffer_view<T> _buffer, buffer_bound&& _bound) : base_t(_buffer), bound(_bound) { _CGD_BUFFER_BOUND_CHECK(_buffer.get_front_ptr() >= this->get_lower_bound() && _buffer.get_back_ptr() <= this->get_back_ptr<T>()); }
+	constexpr _basic_buffer(_buffer_view<T> _buffer, buffer_bound&& _bound) : base_t(_buffer), bound(std::move(_bound)) { _CGD_BUFFER_BOUND_CHECK(_buffer.get_front_ptr() >= this->get_lower_bound() && _buffer.get_back_ptr() <= this->get_back_ptr<T>()); }
 
 	template <class T, size_t N>
 	constexpr _basic_buffer(T (&_buffer)[N]) : base_t(_buffer, 0), bound{reinterpret_cast<element_t*>(_buffer), reinterpret_cast<element_t*>(_buffer + N)} {}
@@ -141,7 +136,7 @@ public:
 			template <class T>																					  
 	constexpr prpd_tr<T>		prepend(const T& _data) { return PRPD_t<self_t, T>::_do_prepend(*this, _data);;}
 			template <class T>																					  
-	constexpr prpd_tr<T>		prepend(T&& _data) { return PRPD_t<self_t, T>::_do_prepend(*this, _data);;}
+	constexpr prpd_tr<T>		prepend(T&& _data) { return PRPD_t<self_t, T>::_do_prepend(*this, _data); _data = T();}
 			template <class T> 																					  
 	constexpr base_t			prepend(const T* _data, std::size_t _count) { return _prepend_array(_data, _count);}
 			template <class T> 																					  
@@ -295,39 +290,39 @@ public:
 			}
 	constexpr self_t			operator-=(CGDK::size _rhs) { this->base_t::operator-=(_rhs); return *this; }
 	constexpr self_t&			operator+=(const base_t& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); return *this;}
-	constexpr self_t&			operator+=(base_t&& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); return *this;}
+	constexpr self_t&			operator+=(base_t&& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); _rhs = base_t(); return *this;}
 			template <class T>
 	constexpr std::enable_if_t<is_linear_container_with_buffer<T>::value, self_t&>
 								operator+=(const T& _rhs) { for (auto& iter : _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data()); } return *this; }
 			template <class T>
 	constexpr std::enable_if_t<is_linear_container_with_buffer<T>::value, self_t&>
-								operator+=(T&& _rhs) { for (auto& iter : _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data()); } return *this; }
+								operator+=(T&& _rhs) { for (auto& iter : _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data()); } _rhs = T(); return *this; }
 			template <class T, std::size_t N>
 	constexpr std::enable_if_t<std::is_base_of_v<base_t, T>, self_t&>
 								operator+=(const std::array<T, N>& _rhs) { for(auto& iter: _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data());} return *this; }
 			template <class T, std::size_t N>
 	constexpr std::enable_if_t<std::is_base_of_v<base_t, T>, self_t&>
-								operator+=(std::array<T, N>&& _rhs) { for(auto& iter: _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data());} return *this; }
+								operator+=(std::array<T, N>&& _rhs) { for(auto& iter: _rhs) { if (iter.empty()) continue; this->_append_bytes(iter.size(), iter.data());} _rhs=std::array<T,N>();return *this; }
 			template <class T, std::size_t N>
 	constexpr std::enable_if_t<std::is_base_of_v<base_t, T>, self_t&>
 								operator+=(const base_t(&_rhs)[N] ) { const T* iter = _rhs; const T* iter_end = _rhs + N; for(;iter != iter_end; ++iter) { if (iter->empty()) continue; this->_append_bytes(iter->size_, iter->data_); } return *this;	}
 	constexpr self_t&			operator+=(const self_t& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); return *this;}
-	constexpr self_t&			operator+=(self_t&& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); return *this;}
+	constexpr self_t&			operator+=(self_t&& _rhs) { this->_append_bytes(_rhs.size(), _rhs.data()); _rhs=self_t(); return *this;}
 			// [operator] =
 	constexpr self_t&			operator= (const base_t& _rhs) noexcept { _check_bound(_rhs); this->base_t::operator=(_rhs); return *this; }
-	constexpr self_t&			operator= (base_t&& _rhs) noexcept { _check_bound(_rhs); this->base_t::operator=(_rhs); return *this; }
+	constexpr self_t&			operator= (base_t&& _rhs) noexcept { _check_bound(_rhs); this->base_t::operator=(std::move(_rhs)); return *this; }
 	constexpr self_t&			operator= (const self_t& _rhs) noexcept { this->base_t::operator=(_rhs); bound = _rhs.bound; return *this; }
-	constexpr self_t&			operator= (self_t&& _rhs) noexcept { this->base_t::operator=(_rhs); bound = _rhs.bound; return *this; }
+	constexpr self_t&			operator= (self_t&& _rhs) noexcept { this->base_t::operator=(std::move(_rhs)); bound = _rhs.bound; _rhs.clear(); return *this; }
 
 			// [operator] ^=
 			template<class T>
 	constexpr self_t&			operator^=(const _buffer_view<T>& _rhs) { this->base_t::operator=(_rhs); return *this;}
 			template<class T>
-	constexpr self_t&			operator^=(_buffer_view<T>&& _rhs) { this->base_t::operator=(_rhs); return *this;}
+	constexpr self_t&			operator^=(_buffer_view<T>&& _rhs) { this->base_t::operator=(std::move(_rhs)); return *this;}
 			template<class T>
 	constexpr self_t&			operator^=(const buffer_base<T>& _rhs) { this->base_t::operator=(_rhs); return *this;}
 			template<class T>
-	constexpr self_t&			operator^=(buffer_base<T>&& _rhs) { this->base_t::operator=(_rhs); return *this;}
+	constexpr self_t&			operator^=(buffer_base<T>&& _rhs) { this->base_t::operator=(std::move(_rhs)); return *this;}
 	constexpr self_t&			operator^=(std::size_t _rhs) { this->base_t::set_size(_rhs); return *this;}
 			// [operator >> - extract
 			template <class T>
@@ -341,7 +336,7 @@ public:
 	template <class T>
 	constexpr prpd_tr<T>		_prepend(const T& _data) { return PRPD_t<self_t,T>::_do_prepend(*this, _data);}
 	template <class T>
-	constexpr prpd_tr<T>		_prepend(T&& _data) { return PRPD_t<self_t,T>::_do_prepend(*this, _data); }
+	constexpr prpd_tr<T>		_prepend(T&& _data) { return PRPD_t<self_t, T>::_do_prepend(*this, _data); _data = T(); }
 	constexpr base_t			_prepend_skip(std::size_t _size)
 			{
 				// check) lower bound
@@ -479,7 +474,7 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_prepend_string_format(const T* _format, TREST&&... _rest)
 	{
-#if defined(FMT_FORMAT_H_) || (defined(__cpp_lib_format) && defined(_FORMAT_))
+#if defined(FMT_FORMAT_H_) || defined(__cpp_lib_format)
 		// check) _format must not be nullptr
 		CGDK_ASSERT(_format != nullptr, throw std::invalid_argument("_format is nullptr [0]"));
 
@@ -586,7 +581,7 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_prepend_text_format(const T* _format, TREST&&... _rest)
 	{
-#if defined(FMT_FORMAT_H_) || (defined(__cpp_lib_format) && defined(_FORMAT_))
+#if defined(FMT_FORMAT_H_) || defined(__cpp_lib_format)
 		// check) _string이 nullptr이면 안된다.
 		CGDK_ASSERT(_format != nullptr, throw std::invalid_argument("_format is nullptr! [0]"));
 
@@ -1183,7 +1178,7 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_append_string_format(std::basic_string_view<T> _format, TREST&&... _rest)
 	{
-#if defined(FMT_FORMAT_H_) || (defined(__cpp_lib_format) && defined(_FORMAT_))
+#if defined(FMT_FORMAT_H_) || defined(__cpp_lib_format)
 		// 1) get formatted string
 		auto temp_buffer = _fmt_format_string(_format, std::forward<TREST>(_rest)...);
 		const auto length_string = temp_buffer.size() + 1;
@@ -1324,7 +1319,7 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_append_text_sprintf(const T* _format, TREST&&... _rest)
 	{
-#if defined(FMT_FORMAT_H_) || (defined(__cpp_lib_format) && defined(_FORMAT_))
+#if defined(FMT_FORMAT_H_) || defined(__cpp_lib_format)
 		//// 1) get max length
 		//const std::size_t max_length = _buffer_string_size_saturate((reinterpret_cast<const T*>(bound_upper) - reinterpret_cast<const T*>(buf_dest + sizeof(COUNT_T))));
 
@@ -1380,28 +1375,7 @@ public:
 		return this->_append_text(std::basic_string_view<T>(temp_buffer.data(), temp_buffer.size()));
 	}
 
-#elif defined(__cpp_lib_format) && defined(_FORMAT_)
-	#if defined(__GNUC__)
-	template <class T, class TFIRST, class... TREST>
-	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
-		_append_text_format(const T* _format, TFIRST&& _first, TREST&&... _rest)
-	{
-		// declare)
-		auto buf_dest = this->data_ + this->size_;
-
-		// 1) Generate trace Message
-		auto result = std::format_to_n(buf_dest, get_remained_size() - 1, std::_Fmt_string < T, TFIRST, TREST...>(std::forward<const T*>(_format)), std::forward<TFIRST>(_first), std::forward<TREST>(_rest)...);
-
-		// 2) [문자열_길이]를 구한다.
-		auto size_string = result.out - buf_dest;
-
-		// 3) [문자열_길이]만큼 더한다.
-		this->size_ += size_string;
-
-		// return) 
-		return base_t(buf_dest, size_string);
-	}
-	#else
+#elif defined(__cpp_lib_format)
 	template <class TFIRST, class... TREST>
 	base_t _append_text_format(const char* _format, TFIRST&& _first, TREST&&... _rest)
 	{
@@ -1428,18 +1402,16 @@ public:
 		// return) 
 		return this->_append_text(std::wstring_view(temp_buffer.data(), temp_buffer.size()));
 	}
-	#endif
+
 #else
 	template <class T, class TFIRST, class... TREST>
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
-		_append_text_format(const T * _format, TFIRST && _first, TREST&&... _rest)
+		_append_text_format(const T* _format, TFIRST && _first, TREST&&... _rest)
 	{
 		#if defined(__cpp_lib_format)
-			//static_assert(false, "include <format> before including 'CGDK.buffer'");
-			throw std::exception("include <format> before including 'CGDK.buffer'");
+			static_assert(false, "include <format> before including 'CGDK.buffer'");
 		#else
-			//static_assert(false, "'std::format' is not supported");
-			throw std::exception("'std::format' is not supported");
+			static_assert(false, "'std::format' is not supported");
 		#endif
 	}
 #endif
@@ -1954,12 +1926,16 @@ protected:
 
 	constexpr void				_check_bound(const _buffer_view<char>& _rhs) const
 								{
+									// check)
+									if(_rhs.empty())
+										return;
+
 									// check) 
 									CGDK_ASSERT(_rhs.get_front_ptr() >= this->get_lower_bound());
 
 									// check) 
 									if(_rhs.get_front_ptr() < this->get_lower_bound())
-										throw std::length_error("buffer overflow. out of lower bound'");
+										throw std::length_error("buffer overflow. out of lower bound'");									
 
 									// check) 
 									CGDK_ASSERT(_rhs.get_back_ptr() <= this->get_upper_bound());
