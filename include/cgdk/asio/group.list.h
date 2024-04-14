@@ -202,7 +202,7 @@ void group::list<_TMEMBER, _TPARAM>::_process_attach_member(std::shared_ptr<memb
 	this->m_container_member.push_back(_pmember);
 
 	// 2) set iterator to member
-	Igroup<_TMEMBER>::member_put_iter<iterator_t>(_pmember.get(), --this->m_container_member.end());
+	Igroup<_TMEMBER>::member_put_iter<typename iterator_t>(_pmember.get(), --this->m_container_member.end());
 
 	// 3) member group
 	Igroup<_TMEMBER>::member_group_as(std::dynamic_pointer_cast<Igroup<member_t>>(this->shared_from_this()), _pmember.get());
@@ -212,7 +212,7 @@ template <class _TMEMBER, class _TPARAM>
 void group::list<_TMEMBER, _TPARAM>::_process_detach_member(member_t* _pmember) noexcept
 {
 	// 1) erase from list
-	this->m_container_member.erase(Igroup<_TMEMBER>::member_get_iter<iterator_t>(_pmember));
+	this->m_container_member.erase(Igroup<_TMEMBER>::member_get_iter<typename iterator_t>(_pmember));
 
 	// 2) reset member group info
 	this->Igroup<_TMEMBER>::member_reset_group(_pmember);
