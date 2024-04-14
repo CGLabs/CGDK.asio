@@ -428,6 +428,8 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\include\cgdk\buffers\_basic_buffer.inl" />
+    <None Include="..\include\cgdk\buffers\_buffer_view.inl" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +459,15 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\schedulable.Iexecutable.h" />
     <ClInclude Include="..\include\cgdk\asio\schedulable_manager.h" />
     <ClInclude Include="..\include\cgdk\asio\system.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_basic_buffer.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_base.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_common.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_traits.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_unreal.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_view.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_Imemory.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_make_shared_buffer.h" />
+    <ClInclude Include="..\include\cgdk\buffers\_shared_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="executor.single.cpp" />

@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.example.group" )
+PROJECT ( "CGDK.asio.example.group.server" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -63,13 +63,13 @@ SET ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3 -Wall -Wextra" )
 
 # 8) include directories
 INCLUDE_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../include
 	./
 )
 
 # 9) library directories
 LINK_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../lib/cgdk/asio
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/cgdk/asio
 )
 
 
@@ -77,11 +77,16 @@ LINK_DIRECTORIES(
 # source files
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
+# precompiled heaser
+pch.cpp
+
 # util linux
 util.linux.cpp
 
 # main
-CGDK.asio.execute.cpp
+socket_tcp.cpp
+group_chatting.cpp
+CGDK.asio.group_server.cpp
 )
 
 

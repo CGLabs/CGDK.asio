@@ -116,9 +116,42 @@
     <ClInclude Include="..\include\cgdk\asio\message_transmitter.h">
       <Filter>message</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_basic_buffer.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_base.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_common.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_traits.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_unreal.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_buffer_view.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_Imemory.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_make_shared_buffer.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\buffers\_shared_buffer.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
+    <None Include="..\include\cgdk\buffers\_basic_buffer.inl">
+      <Filter>buffer</Filter>
+    </None>
+    <None Include="..\include\cgdk\buffers\_buffer_view.inl">
+      <Filter>buffer</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
@@ -141,6 +174,9 @@
     </Filter>
     <Filter Include="message">
       <UniqueIdentifier>{2dcfd7aa-4aca-48bc-a278-bf0d8b035e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="buffer">
+      <UniqueIdentifier>{fa9f3689-9b89-4278-a3f8-35f5baad6e27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

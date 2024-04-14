@@ -77,13 +77,11 @@ LINK_DIRECTORIES(
 # source files
 # ----------------------------------------------------------------------------
 SET (SRC_FILES
-
 # util linux
 util.linux.cpp
 
 # main
 CGDK.asio.simple_chatting_echo_client.cpp
-
 )
 
 

@@ -93,6 +93,8 @@ Isocket_tcp.cpp
 Nsocket_tcp.cpp
 Nsocket_tcp_async.cpp
 Nsocket_tcp_async_gather.cpp
+message_transmitter.cpp
+schedulable_manager.cpp
 system.cpp
 )
 
