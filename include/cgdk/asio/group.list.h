@@ -27,8 +27,8 @@ class group::list : virtual public Igroup<_TMEMBER>
 public:
 	using member_t			 = typename Igroup<_TMEMBER>::member_t;
 	using container_t		 = std::list<std::shared_ptr<member_t>>;
-	using iterator_t		 = typename container_t::template iterator;
-	using const_iterator_t	 = typename container_t::template const_iterator;
+	using iterator_t		 = container_t::template iterator;
+	using const_iterator_t	 = container_t::template const_iterator;
 	using param_t			 = _TPARAM;
 
 	virtual	~list() noexcept { this->leave_all(); }
