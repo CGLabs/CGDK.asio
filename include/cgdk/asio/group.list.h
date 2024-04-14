@@ -211,10 +211,13 @@ void group::list<_TMEMBER, _TPARAM>::_process_attach_member(std::shared_ptr<memb
 template <class _TMEMBER, class _TPARAM>
 void group::list<_TMEMBER, _TPARAM>::_process_detach_member(member_t* _pmember) noexcept
 {
-	// 1) erase from list
-	this->m_container_member.erase(Igroup<_TMEMBER>::member_get_iter<group::list<_TMEMBER, _TPARAM>::iterator_t>(_pmember));
+	// 1) get iterator
+	auto iter = Igroup<_TMEMBER>::member_get_iter<group::list<_TMEMBER, _TPARAM>::iterator_t>(_pmember);
 
-	// 2) reset member group info
+	// 2) erase from list
+	this->m_container_member.erase(iter);
+
+	// 3) reset member group info
 	this->Igroup<_TMEMBER>::member_reset_group(_pmember);
 }
 
