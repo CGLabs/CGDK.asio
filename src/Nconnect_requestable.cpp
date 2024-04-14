@@ -28,7 +28,7 @@ void CGDK::asio::Nconnect_requestable::start(boost::asio::ip::tcp::endpoint _end
 	// 3) request connect
 	try
 	{
-		this->m_socket.async_connect(_endpoint_connect, [=, this](const boost::system::error_code& _error)
+		this->m_socket.async_connect(_endpoint_connect, [this, pthis=this->shared_from_this()](const boost::system::error_code& _error)
 			{
 				this->process_connect_request_complete(_error);
 			});

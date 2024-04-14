@@ -37,6 +37,9 @@
     <ClCompile Include="system.cpp">
       <Filter>system</Filter>
     </ClCompile>
+    <ClCompile Include="message_transmitter.cpp">
+      <Filter>message</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\cgdk\asio.h" />
@@ -98,12 +101,20 @@
     <ClInclude Include="..\include\cgdk\asio\system.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\cgdk\asio\Imessageable.h" />
     <ClInclude Include="..\include\cgdk\asio\Igroup.h">
       <Filter>group</Filter>
     </ClInclude>
     <ClInclude Include="..\include\cgdk\asio\Igroupable.h">
       <Filter>group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\group.list.h">
+      <Filter>group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\Imessageable.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cgdk\asio\message_transmitter.h">
+      <Filter>message</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +138,9 @@
     </Filter>
     <Filter Include="group">
       <UniqueIdentifier>{32d9b4a3-84f6-4949-b147-396dbfa3d78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{2dcfd7aa-4aca-48bc-a278-bf0d8b035e40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
