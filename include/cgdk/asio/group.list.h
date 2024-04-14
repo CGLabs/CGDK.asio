@@ -202,7 +202,7 @@ void group::list<_TMEMBER, _TPARAM>::_process_attach_member(std::shared_ptr<memb
 	this->m_container_member.push_back(_pmember);
 
 	// 2) set iterator to member
-	Igroup<_TMEMBER>::member_put_iter(_pmember.get(), --this->m_container_member.end());
+	Igroup<_TMEMBER>::member_put_iter<iterator_t>(_pmember.get(), --this->m_container_member.end());
 
 	// 3) member group
 	Igroup<_TMEMBER>::member_group_as(std::dynamic_pointer_cast<Igroup<member_t>>(this->shared_from_this()), _pmember.get());
