@@ -43,24 +43,39 @@ void CGDK::asio::Nsocket_tcp::process_complete_connect()
 	this->m_time_connect = std::chrono::system_clock::now();
 
 	// 2) on connect
-	this->on_connect();
-
-	// 3) reset buffer
-	this->m_received_msg = alloc_shared_buffer(RECEIVE_BUFFER_SIZE);
-	this->m_asio_receiving_msg = boost::asio::mutable_buffer{ this->m_received_msg.data(), RECEIVE_BUFFER_SIZE};
-
 	try
 	{
-		// 4) read async
-		this->process_receive_async();
+		// - call 'on_connect'
+		this->on_connect();
 	}
 	catch (...)
 	{
-		// - close socket!
-		this->process_closesocket(boost::asio::error::operation_aborted);
+		// - abortive close
+		this->process_close_native_handle();
 
 		// reraise)
 		throw;
+	}
+
+	// 3) prepare receive
+	{
+		// - reset buffer
+		this->m_received_msg = alloc_shared_buffer(RECEIVE_BUFFER_SIZE);
+		this->m_asio_receiving_msg = boost::asio::mutable_buffer{ this->m_received_msg.data(), RECEIVE_BUFFER_SIZE };
+
+		try
+		{
+			// - read async
+			this->process_receive_async();
+		}
+		catch (...)
+		{
+			// - close socket!
+			this->process_closesocket(boost::asio::error::operation_aborted);
+
+			// reraise)
+			throw;
+		}
 	}
 }
 

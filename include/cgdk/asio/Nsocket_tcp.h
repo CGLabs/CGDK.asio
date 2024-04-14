@@ -16,7 +16,7 @@
 //*****************************************************************************
 #pragma once
 
-class CGDK::asio::Nsocket_tcp : virtual public Isocket_tcp, virtual public Imessageable
+class CGDK::asio::Nsocket_tcp : virtual public Isocket_tcp, public messageable
 {
 public:
 			Nsocket_tcp();
@@ -37,7 +37,6 @@ protected:
 			bool process_send_sync(SEND_NODE&& _send_node);
 			void process_receive_async();
 	virtual size_t process_get_message_size(const CGDK::buffer_view& _buf) const { return _buf.front<uint32_t>(); }
-	virtual int process_message(sMESSAGE _msg) override { return this->on_message(_msg); }
 
 public:
 			shared_buffer m_received_msg;

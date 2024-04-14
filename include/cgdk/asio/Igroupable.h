@@ -24,8 +24,8 @@ class CGDK::Igroupable
 public:
 	virtual	~Igroupable() noexcept { assert(!this->m_pgroup);}
 
-	[[nodiscard]] std::shared_ptr<_TGROUP> get_group() noexcept  { std::lock_guard<std::mutex> cs(this->m_cs_group); return this->_get_group();	}
-	[[nodiscard]] bool			is_member_of(const Igroup<_TMEMBER>* _pgroup) const noexcept { std::lock_guard<std::mutex> cs(this->m_cs_group); return this->_is_member_of(_pgroup); }
+	[[nodiscard]] std::shared_ptr<_TGROUP> get_group() noexcept  { std::lock_guard<std::recursive_mutex> cs(this->m_cs_group); return this->_get_group();	}
+	[[nodiscard]] bool			is_member_of(const Igroup<_TMEMBER>* _pgroup) const noexcept { std::lock_guard<std::recursive_mutex> cs(this->m_cs_group); return this->_is_member_of(_pgroup); }
 			void				leave_group() noexcept
 			{
 				// declare) 
@@ -49,7 +49,7 @@ public:
 
 private:
 			std::shared_ptr<_TGROUP> m_pgroup;
-			std::mutex			m_cs_group;
+			std::recursive_mutex m_cs_group;
 			std::any			m_iter;
 
 			template <class TSETGROUP>

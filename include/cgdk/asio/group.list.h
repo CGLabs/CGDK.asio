@@ -35,6 +35,10 @@ public:
 
 			int64_t				enter(std::shared_ptr<member_t>&& _pmember, param_t& _param) { return this->process_enter(std::move(_pmember), _param); }
 			int64_t				enter(std::shared_ptr<member_t>&& _pmember) { param_t temp; return this->process_enter(std::move(_pmember), temp); }
+			template <class T>
+			int64_t				enter(std::shared_ptr<T>&& _pmember, param_t& _param) { return this->process_enter(dynamic_pointer_cast<member_t>(std::move(_pmember)), _param); }
+			template <class T>
+			int64_t				enter(std::shared_ptr<T>&& _pmember) { param_t temp; return this->process_enter(dynamic_pointer_cast<member_t>(std::move(_pmember)), temp); }
 			void				leave_all() noexcept;
 	[[nodiscard]] std::mutex&	member_enter_lock() noexcept { return this->m_lockable_enter;}
 
@@ -51,7 +55,7 @@ public:
 protected:
 	virtual	void				on_enable_enter() {}
 	virtual	void				on_disable_enter() {}
-	virtual	int64_t				on_member_entering(member_t* /*_pmember*/, param_t& /*_param*/) { return 1;}
+	virtual	int64_t				on_member_entering(member_t* /*_pmember*/, param_t& /*_param*/) { return 0;}
 	virtual	void				on_member_entered(member_t* /*_pmember*/, param_t& /*_param*/) {}
 	virtual	uintptr_t			on_member_leaving(member_t* /*_pmember*/, uintptr_t _param) { return _param;}
 	virtual	void				on_member_leaved(member_t* /*_pmember*/, uintptr_t /*_result*/) {}
@@ -64,7 +68,7 @@ protected:
 
 			bool				_is_member_full() const noexcept { return this->m_container_member.size()>=this->m_count_max_member; }
 
-			bool				m_enable_enter {false};
+			bool				m_enable_enter {true};
 			std::mutex			m_lockable_enter;
 			container_t			m_container_member;
 			size_t				m_count_max_member{SIZE_MAX};
@@ -201,7 +205,7 @@ void group::list<_TMEMBER, _TPARAM>::_process_attach_member(std::shared_ptr<memb
 	Igroup<_TMEMBER>::member_put_iter(_pmember.get(), --this->m_container_member.end());
 
 	// 3) member group
-	Igroup<_TMEMBER>::member_group_as(this->shared_from_this(), _pmember.get());
+	Igroup<_TMEMBER>::member_group_as(std::dynamic_pointer_cast<Igroup<member_t>>(this->shared_from_this()), _pmember.get());
 }
 
 template <class _TMEMBER, class _TPARAM>

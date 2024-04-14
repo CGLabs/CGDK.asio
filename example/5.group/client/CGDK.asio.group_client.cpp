@@ -42,7 +42,6 @@ public:
 
 		case	eMESSAGE::CHATTING:
 				std::cout << "\r\033[J" << msg_recv.extract<std::string>() << std::endl << ">> " << g_chatting_input;
-			
 				break;
 		}
 

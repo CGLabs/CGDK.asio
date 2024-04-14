@@ -36,7 +36,7 @@ public:
 
 protected:
 	virtual	void				process_leave(_TMEMBER* _pmember, uintptr_t _param) noexcept = 0;
-			std::mutex			m_cs_group;
+			std::recursive_mutex m_cs_group;
  
 	template <class group_t>
 	static	void				member_group_as(std::shared_ptr<group_t>&& _pgroup, _TMEMBER* _pmember) noexcept { _pmember->_set_group(std::move(_pgroup));}
@@ -45,7 +45,7 @@ protected:
 	static	auto				member_put_iter(_TMEMBER* _pmember, TITER _iter) noexcept { _pmember->m_iter=_iter; }
 	template <class TITER>
 	static	auto				member_get_iter(_TMEMBER* _pmember) noexcept { return std::any_cast<TITER>(_pmember->m_iter); _pmember->m_iter.reset(); }
-	[[nodiscard]] static std::mutex& member_group_lock(_TMEMBER* _pmember) noexcept { return _pmember->m_cs_group;}
+	[[nodiscard]] static auto&	member_group_lock(_TMEMBER* _pmember) noexcept { return _pmember->m_cs_group;}
 };
 
 template <class _TMEMBER>
@@ -56,7 +56,7 @@ bool Igroup<_TMEMBER>::leave(_TMEMBER* _pmember, uintptr_t _param) noexcept
 		return false;
 
 	// lock)
-	std::lock_guard<std::mutex> cs(_pmember->m_cs_group);
+	std::lock_guard<std::recursive_mutex> cs(_pmember->m_cs_group);
 
 	// check) 아에 Group에 속해 있지 않으면 그냥 끝낸다.
 	if(_pmember->_get_group().get() != this)

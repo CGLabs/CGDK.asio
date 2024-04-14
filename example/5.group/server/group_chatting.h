@@ -17,9 +17,10 @@
 //*****************************************************************************
 #pragma once
 
-class group_chatting : public group::list<socket_tcp>
+class group_chatting : public group::list<socket_tcp>, public CGDK::asio::messageable
 {
 public:
 	virtual	void				on_member_entered(socket_tcp* _pmember, param_t& _param) override;
 	virtual	uintptr_t			on_member_leaving(socket_tcp* _pmember, uintptr_t _param) override;
+	virtual int					on_message(sMESSAGE& _msg) override;
 };

@@ -15,7 +15,10 @@
 //*                          http://www.CGCII.co.kr                           *
 //*                                                                           *
 //*****************************************************************************
-class socket_tcp : public asio::Nsocket_tcp, public asio::Nconnect_requestable, public Igroupable<socket_tcp>
+class socket_tcp : 
+	public asio::Nsocket_tcp,
+	public Igroupable<socket_tcp>, 
+	public asio::message_transmitter
 {
 public:
 	virtual void on_connect() override;

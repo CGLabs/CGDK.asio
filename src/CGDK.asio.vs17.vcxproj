@@ -443,6 +443,7 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
     <ClInclude Include="..\include\cgdk\asio\Imessageable.h" />
     <ClInclude Include="..\include\cgdk\asio\Ischedulable.h" />
     <ClInclude Include="..\include\cgdk\asio\Isocket_tcp.h" />
+    <ClInclude Include="..\include\cgdk\asio\message_transmitter.h" />
     <ClInclude Include="..\include\cgdk\asio\Nacceptor.h" />
     <ClInclude Include="..\include\cgdk\asio\Nconnective.h" />
     <ClInclude Include="..\include\cgdk\asio\Nconnector.h" />
@@ -460,6 +461,7 @@ Taskkill /IM "$(TargetName)$(TargetExt)" /FI "STATUS eq RUNNING" /F</Command>
   <ItemGroup>
     <ClCompile Include="executor.single.cpp" />
     <ClCompile Include="Isocket_tcp.cpp" />
+    <ClCompile Include="message_transmitter.cpp" />
     <ClCompile Include="Nacceptor.cpp" />
     <ClCompile Include="Nconnective.cpp" />
     <ClCompile Include="Nconnector.cpp" />

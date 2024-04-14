@@ -77,6 +77,7 @@ namespace CGDK
 		}
 		template <class> class acceptor;
 		template <class> class connector;
+		class messageable;
 
 		class system;
 		class schedulable_manager;
