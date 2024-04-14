@@ -245,7 +245,7 @@ bool group::list<_TMEMBER, _TPARAM>::for_each_member(const std::function<bool(co
 }
 
 template <class _TMEMBER, class _TPARAM>
-std::shared_ptr<_TMEMBER> group::list<_TMEMBER, _TPARAM>::find_member(const std::function<bool(const std::shared_ptr<member_t>&)>& _pred)
+std::shared_ptr<typename Igroup<_TMEMBER>::member_t> group::list<_TMEMBER, _TPARAM>::find_member(const std::function<bool(const std::shared_ptr<member_t>&)>& _pred)
 {
 	std::lock_guard lock(this->m_cs_group);
 
