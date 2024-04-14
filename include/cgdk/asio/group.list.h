@@ -212,7 +212,7 @@ template <class _TMEMBER, class _TPARAM>
 void group::list<_TMEMBER, _TPARAM>::_process_detach_member(member_t* _pmember) noexcept
 {
 	// 1) get iterator
-	auto iter = Igroup<_TMEMBER>::member_get_iter<group::list<_TMEMBER, _TPARAM>::iterator_t>(_pmember);
+	auto iter = Igroup<_TMEMBER>::member_get_iter<iterator_t>(_pmember);
 
 	// 2) erase from list
 	this->m_container_member.erase(iter);
