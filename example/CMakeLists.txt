@@ -49,3 +49,7 @@ ADD_SUBDIRECTORY (3.simple_chatting)
 # 4) execute - system post & dispatch
 ADD_SUBDIRECTORY (4.execute)
 
+# 5) group system - chatting server with group list
+ADD_SUBDIRECTORY (5.group)
+
+

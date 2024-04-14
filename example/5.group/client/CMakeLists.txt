@@ -24,7 +24,7 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 3.20 )
 CMAKE_POLICY( VERSION 3.20 )
 
 # 2) project name
-PROJECT ( "CGDK.asio.example.group" )
+PROJECT ( "CGDK.asio.example.group.client" )
 
 # 3) project version
 SET ( PROJECT_VERSION_MAJOR 10 )
@@ -81,7 +81,7 @@ SET (SRC_FILES
 util.linux.cpp
 
 # main
-CGDK.asio.execute.cpp
+CGDK.asio.group_client.cpp
 )
 
 
