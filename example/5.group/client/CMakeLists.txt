@@ -63,13 +63,13 @@ SET ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O3 -Wall -Wextra" )
 
 # 8) include directories
 INCLUDE_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../include
 	./
 )
 
 # 9) library directories
 LINK_DIRECTORIES(
-	${CMAKE_CURRENT_SOURCE_DIR}/../../lib/cgdk/asio
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/cgdk/asio
 )
 
 

@@ -24,7 +24,7 @@ uintptr_t group_chatting::on_member_leaving(socket_tcp* _pmember, uintptr_t _par
 int group_chatting::on_message(sMESSAGE& _msg)
 {
 	// 1) get source
-	auto psource = _msg.get_source<socket_tcp>();
+	[[maybe_unused]] auto psource = _msg.get_source<socket_tcp>(); // (!) this is source of msg (set at 'socket_tcp.cpp' line '24')
 
 	// 2) 전체 group의 멤버들에게 전송합니다.(send to all member)
 	g_pgroup_chatting->send(_msg.buf_message);

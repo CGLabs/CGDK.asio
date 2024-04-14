@@ -21,7 +21,6 @@
 namespace CGDK
 {
 #if defined(FMT_FORMAT_H_)
-	#define _CGDBUFFER_FMT
 	template <class T, class... TREST>
 	constexpr std::basic_string<T> _fmt_format_string(std::basic_string_view<T> _format, TREST&&... _rest)
 	{
@@ -32,10 +31,17 @@ namespace CGDK
 		template <class T, class... TREST>
 		constexpr std::basic_string<T> _fmt_format_string(std::basic_string_view<T> _format, TREST&&... _rest)
 		{
-			static_assert(false, "no {fmt} support");
+			CGDK_ASSERT(false, "no {fmt} support");
+			throw std::exception("no {fmt} support");
 		}
-	#else
-		#define _CGDBUFFER_FMT
+	#elif !defined(_FORMAT_)
+		template <class T, class... TREST>
+		constexpr std::basic_string<T> _fmt_format_string(std::basic_string_view<T> _format, TREST&&... _rest)
+		{
+			CGDK_ASSERT(false, "include <format> before including 'CGDK.buffer'");
+			throw std::exception("include <format> before including 'CGDK.buffer'");
+		}
+	@else
 		template <class... TREST>
 		constexpr std::string _fmt_format_string(std::string_view _format, TREST&&... _rest)
 		{
@@ -476,7 +482,6 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_prepend_string_format(const T* _format, TREST&&... _rest)
 	{
-#if defined(_CGDBUFFER_FMT)
 		// check) _format must not be nullptr
 		CGDK_ASSERT(_format != nullptr, throw std::invalid_argument("_format is nullptr [0]"));
 
@@ -510,14 +515,6 @@ public:
 
 		// return) 
 		return base_t(this->data_, buf_old - p);
-#else
-		#if defined(__cpp_lib_format)
-			CGDK_ASSERT(false, "include <format> before including 'CGDK.buffer'");
-			throw std::exception("include <format> before including 'CGDK.buffer'");
-		#else
-			throw std::exception("'std::format' is not supported");
-		#endif
-#endif
 	}
 	template <class T>
 	constexpr base_t			_prepend_text(std::string_view _string)
@@ -582,7 +579,6 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_prepend_text_format(const T* _format, TREST&&... _rest)
 	{
-#if defined(_CGDBUFFER_FMT)
 		// check) _string이 nullptr이면 안된다.
 		CGDK_ASSERT(_format != nullptr, throw std::invalid_argument("_format is nullptr! [0]"));
 
@@ -605,14 +601,6 @@ public:
 
 		// return) 
 		return base_t(p, size_string);
-#else
-		#if defined(__cpp_lib_format)
-			CGDK_ASSERT(false, "include <format> before including 'CGDK.buffer'");
-			throw std::exception("include <format> before including 'CGDK.buffer'");
-		#else
-			throw std::exception("'std::format' is not supported");
-		#endif
-#endif
 	}
 	constexpr base_t			_prepend_bytes(std::size_t _size, const void* _buffer)
 	{
@@ -1178,7 +1166,6 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_append_string_format(std::basic_string_view<T> _format, TREST&&... _rest)
 	{
-#if defined(_CGDBUFFER_FMT)
 		// 1) get formatted string
 		auto temp_buffer = _fmt_format_string(_format, std::forward<TREST>(_rest)...);
 		const auto length_string = temp_buffer.size() + 1;
@@ -1204,14 +1191,6 @@ public:
 
 		// return)
 		return base_t(buf_dest, added_length);
-#else
-		#if defined(__cpp_lib_format)
-			CGDK_ASSERT(false, "include <format> before including 'CGDK.buffer'");
-			throw std::exception("include <format> before including 'CGDK.buffer'");
-		#else
-			throw std::exception("'std::format' is not supported");
-		#endif
-#endif
 	}
 	template <class T, std::size_t N, class... TREST>
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
@@ -1318,7 +1297,6 @@ public:
 	constexpr std::enable_if_t<is_string_type<T>::value, base_t>
 								_append_text_sprintf(const T* _format, TREST&&... _rest)
 	{
-#if defined(_CGDBUFFER_FMT)
 		//// 1) get max length
 		//const std::size_t max_length = _buffer_string_size_saturate((reinterpret_cast<const T*>(bound_upper) - reinterpret_cast<const T*>(buf_dest + sizeof(COUNT_T))));
 
@@ -1344,14 +1322,6 @@ public:
 
 		// return)
 		return base_t(buf_dest, added_length);
-#else
-		#if defined(__cpp_lib_format)
-			CGDK_ASSERT(false, "include <format> before including 'CGDK.buffer'");
-			throw std::exception("include <format> before including 'CGDK.buffer'");
-		#else
-			throw std::exception("'std::format' is not supported");
-		#endif
-#endif
 	}
 
 #if defined(FMT_FORMAT_H_)

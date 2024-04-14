@@ -44,3 +44,4 @@ private:
 	if(__result__ != 0)						\
 		return __result__;					\
 }
+

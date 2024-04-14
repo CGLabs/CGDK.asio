@@ -25,11 +25,11 @@ template <class _TMEMBER, class _TPARAM = sMESSAGE>
 class group::list : virtual public Igroup<_TMEMBER>
 {
 public:
-	using member_t			 = typename Igroup<_TMEMBER>::member_t;
-	using container_t		 = std::list<std::shared_ptr<member_t>>;
-	using iterator_t		 = typename container_t::template iterator;
-	using const_iterator_t	 = typename container_t::template const_iterator;
-	using param_t			 = _TPARAM;
+	using member_t = Igroup<_TMEMBER>::member_t;
+	using container_t = std::list<std::shared_ptr<member_t>>;
+	using iterator_t = container_t::iterator;
+	using const_iterator_t = container_t::const_iterator;
+	using param_t = _TPARAM;
 
 	virtual	~list() noexcept { this->leave_all(); }
 
@@ -202,7 +202,7 @@ void group::list<_TMEMBER, _TPARAM>::_process_attach_member(std::shared_ptr<memb
 	this->m_container_member.push_back(_pmember);
 
 	// 2) set iterator to member
-	Igroup<_TMEMBER>::member_put_iter<iterator_t>(_pmember.get(), --this->m_container_member.end());
+	Igroup<_TMEMBER>::template member_put_iter<iterator_t>(_pmember.get(), --this->m_container_member.end());
 
 	// 3) member group
 	Igroup<_TMEMBER>::member_group_as(std::dynamic_pointer_cast<Igroup<member_t>>(this->shared_from_this()), _pmember.get());
@@ -212,13 +212,13 @@ template <class _TMEMBER, class _TPARAM>
 void group::list<_TMEMBER, _TPARAM>::_process_detach_member(member_t* _pmember) noexcept
 {
 	// 1) get iterator
-	auto iter = Igroup<_TMEMBER>::member_get_iter<iterator_t>(_pmember);
+	auto iter = Igroup<_TMEMBER>::template member_get_iter<iterator_t>(_pmember);
 
 	// 2) erase from list
 	this->m_container_member.erase(iter);
 
 	// 3) reset member group info
-	this->Igroup<_TMEMBER>::member_reset_group(_pmember);
+	Igroup<_TMEMBER>::member_reset_group(_pmember);
 }
 
 template <class _TMEMBER, class _TPARAM>
