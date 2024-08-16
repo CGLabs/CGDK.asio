@@ -3,7 +3,7 @@
 #*                      Cho sanghyun's Game Classes II                       *
 #*                             CGDK.asio classes                             *
 #*                                                                           *
-#*                      CMake - example.simple_chatting                      *
+#*                      CMake - example.group                        *
 #*                                                                           *
 #*                                                                           *
 #*                                                                           *
